@@ -5,6 +5,7 @@ from pyramid.response import Response
 if __name__ == '__main__':
     config = Configurator()
     config.include('views.index')
+    config.include('views.api')
     config.add_static_view(name='css', path='static/css')
     config.add_static_view(name='js', path='static/js')
     app = config.make_wsgi_app()
