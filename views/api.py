@@ -1,4 +1,5 @@
 import json
+import psycopg2
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
