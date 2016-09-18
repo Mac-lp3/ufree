@@ -4,6 +4,12 @@ from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 
+try:
+    conn = psycopg2.connect("dbname='ufree'")
+    cur = conn.cursor()
+except:
+    print("I am unable to connect to the database")
+
 def post_event(request):
 	"""
 	Get data for a specific event by ID.
@@ -49,6 +55,12 @@ def get_event(request):
 	"""
 
 	#look for it in the DB.
+	try:
+		cur.execute("SELECT * from events WHERE id=1")
+		rows = cur.fetchall()
+		print(rows)
+	except:
+		print("lol, no");
 	# return it if it is there. 404 else guess
 
 	return Response("Got an event") 
