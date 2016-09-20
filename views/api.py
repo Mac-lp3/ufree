@@ -56,11 +56,13 @@ def get_event(request):
 
 	#look for it in the DB.
 	try:
-		cur.execute("SELECT * from events WHERE id=1")
+		# TODO Validate
+		cur.execute("SELECT id, name from events WHERE id=" + request.matchdict['hashId'])
 		rows = cur.fetchall()
-		print(rows)
+		return {"id":rows[0][0], "name": rows[0][1]}
 	except:
 		print("lol, no");
+		raise
 	# return it if it is there. 404 else guess
 
 	return Response("Got an event") 
@@ -119,7 +121,7 @@ def includeme(config):
 
 	config.add_route('eventDetails', '/api/event/{hashId}')
 	config.add_renderer('eventDetails', 'pyramid.renderers.json_renderer_factory')
-	config.add_view(get_event, route_name='eventDetails', request_method="GET")
+	config.add_view(get_event, route_name='eventDetails', request_method="GET", renderer='json')
 	config.add_view(put_date_range, route_name='eventDetails', request_method="PUT")
 	config.add_view(post_date_range, route_name='eventDetails', request_method="POST")
 	config.add_view(delete_date_range, route_name='eventDetails', request_method="DELETE")
