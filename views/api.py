@@ -54,14 +54,19 @@ def get_event(request):
 	This returns the event object, populated by all date range objects
 	"""
 
-	#look for it in the DB.
 	try:
-		# TODO Validate
+
+   		val = int(userInput)
 		cur.execute("SELECT id, name from events WHERE id=" + request.matchdict['hashId'])
 		rows = cur.fetchall()
 		return {"id":rows[0][0], "name": rows[0][1]}
+
+	except ValueError:
+
+   		print("That's not an int!")
+   		raise
+
 	except:
-		print("lol, no");
 		raise
 	# return it if it is there. 404 else guess
 
