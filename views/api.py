@@ -2,13 +2,14 @@ import json
 import psycopg2
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 
 try:
-    conn = psycopg2.connect("dbname='ufree'")
-    cur = conn.cursor()
+	conn = psycopg2.connect("dbname='ufree'")
+	cur = conn.cursor()
 except:
-    print("I am unable to connect to the database")
+	print("I am unable to connect to the database")
 
 def post_event(request):
 	"""
@@ -56,22 +57,25 @@ def get_event(request):
 
 	try:
 
-   		val = int(userInput)
+		# validate
+		val = int(request.matchdict['hashId'])
 		cur.execute("SELECT id, name from events WHERE id=" + request.matchdict['hashId'])
 		rows = cur.fetchall()
-		return {"id":rows[0][0], "name": rows[0][1]}
+
+		if (len(rows) > 0):
+			# record found
+			return {"id":rows[0][0], "name": rows[0][1]}
+		else:
+			# ID doesn't exist
+			raise HTTPNotFound
 
 	except ValueError:
 
    		print("That's not an int!")
-   		raise
+   		raise HTTPBadRequest
 
 	except:
 		raise
-	# return it if it is there. 404 else guess
-
-	return Response("Got an event") 
-
 
 # 
 # event Api
