@@ -58,13 +58,15 @@ def get_event(request):
 	try:
 
 		# validate
-		val = int(request.matchdict['hashId'])
-		cur.execute("SELECT id, name from events WHERE id=" + request.matchdict['hashId'])
-		rows = cur.fetchall()
+		hashId = int(request.matchdict['hashId'])
+		cur.execute("SELECT id, name from events WHERE id=" + hashId)
+		eventRows = cur.fetchall()
 
-		if (len(rows) > 0):
+		if (len(eventRows) == 1):
 			# record found
-			return {"id":rows[0][0], "name": rows[0][1]}
+			return {"id":eventRows[0][0], "name": eventRows[0][1], "dateRanges": []}
+		elif (len(eventRows) > 1):
+
 		else:
 			# ID doesn't exist
 			raise HTTPNotFound
