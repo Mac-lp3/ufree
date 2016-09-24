@@ -59,20 +59,40 @@ def get_event(request):
 
 		# validate
 		hashId = int(request.matchdict['hashId'])
-		cur.execute("SELECT id, name from events WHERE id=" + hashId)
+		cur.execute("SELECT id, name from events WHERE id=" + str(hashId))
 		eventRows = cur.fetchall()
 
+		cur.execute("SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=" + str(hashId))
+		dateRangeRows = cur.fetchall()
+
 		if (len(eventRows) == 1):
-			# record found
-			return {"id":eventRows[0][0], "name": eventRows[0][1], "dateRanges": []}
+
+			# Single record found.
+			# built the return object
+			dateRangeData = []
+			for dateRange in dateRangeRows:
+				dateRangeData.append({
+					'id': dateRange[0],
+					'creator': dateRange[1],
+					'fromDate': dateRange[2],
+					'toDate': dateRange[3]
+				})
+
+			data = {}
+			data['id'] = eventRows[0][0]
+			data['name'] = eventRows[0][1]
+			data['dateRanges'] = dateRangeData
+			json_data = json.dumps(data)
+			return json_data
+
 		elif (len(eventRows) > 1):
+			print('need to do a thing here')
 
 		else:
 			# ID doesn't exist
 			raise HTTPNotFound
 
 	except ValueError:
-
    		print("That's not an int!")
    		raise HTTPBadRequest
 
