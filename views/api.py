@@ -25,29 +25,6 @@ def post_event(request):
 
 	return Response("Post an event") 
 
-def delete_event(request):
-	"""
-	Get data for a specific event by ID.
-
-	This returns the event object, populated by all date range objects
-	"""
-
-	# go to DB and delete it.
-
-	return Response("Delete an event") 
-
-def put_event(request):
-	"""
-	Get data for a specific event by ID.
-
-	This returns the event object, populated by all date range objects
-	"""
-
-	# just a name change.
-	# look up event, change the name, save it, return it
-
-	return Response("Put an event") 
-
 def get_event(request):
 	"""
 	Get data for a specific event by ID.
@@ -99,10 +76,7 @@ def get_event(request):
 	except:
 		raise
 
-# 
-# event Api
-#
-def put_date_range(request):
+def put_event(request):
 	"""
 	Update an existing date rang in this eventDetails
 
@@ -110,9 +84,28 @@ def put_date_range(request):
 	the one with the correspodning composite id.
 	"""
 
+	try: 
+
+		# validate url param
+		parsed_json = json.loads(request.json_body)
+		hashId = int(request.matchdict['hashId'])
+
+		curr.execute('INSERT INTO ')
+
+	except ValueError:
+   		print("That's not an int!")
+   		raise HTTPBadRequest
+
+	except:
+		raise
+
+	postData = request.json_body
+
+	return Response("Ya dang post")
+
 	return Response("Ya dang put")
 
-def delete_date_range(request):
+def delete_event(request):
 	"""
 	Delete an existing date rang in this eventDetails
 
@@ -131,30 +124,42 @@ def post_date_range(request):
 	"""
 
 	try: 
-		postData = request.json_body
-		print(postData);
-	except json.decoder.JSONDecodeError:
-		print("no good mang")
-		print(request)
-		raise HTTPBadRequest
+
+		# validate
+		parsed_json = json.loads(request.json_body)
+		hashId = int(request.matchdict['hashId'])
+
+		curr.execute('INSERT INTO ')
+
+	except ValueError:
+   		print("That's not an int!")
+   		raise HTTPBadRequest
+
+	except:
+		raise
 
 	postData = request.json_body
 
 	return Response("Ya dang post")
 
 def includeme(config):
+
 	config.add_route('eventBase', '/api/event')
 	config.add_renderer('eventBase', 'pyramid.renderers.json_renderer_factory')
-	config.add_view(put_event, route_name='eventBase', request_method="PUT")
-	config.add_view(post_event, route_name='eventBase', request_method="POST")
-	config.add_view(delete_event, route_name='eventBase', request_method="DELETE")
-
 
 	config.add_route('eventDetails', '/api/event/{hashId}')
 	config.add_renderer('eventDetails', 'pyramid.renderers.json_renderer_factory')
+
+	# creates new date and generates an id
+	config.add_view(post_event, route_name='eventBase', request_method="POST")
+
+	# returns the event object + children
 	config.add_view(get_event, route_name='eventDetails', request_method="GET", renderer='json')
-	config.add_view(put_date_range, route_name='eventDetails', request_method="PUT")
-	config.add_view(post_date_range, route_name='eventDetails', request_method="POST")
-	config.add_view(delete_date_range, route_name='eventDetails', request_method="DELETE")
+
+	# updates the event (new/updated date range)
+	config.add_view(put_event, route_name='eventDetails', request_method="PUT")
+
+	# deletes an event
+	config.add_view(delete_event, route_name='eventDetails', request_method="DELETE")
 
 
