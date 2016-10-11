@@ -1,6 +1,6 @@
 import json
 import psycopg2
-import ..classes.EventDao
+from classes.EventDao import EventDao
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
@@ -56,8 +56,6 @@ def put_event(request):
 		parsed_json = json.loads(request.json_body)
 		hashId = int(request.matchdict['hashId'])
 
-		curr.execute('INSERT INTO ')
-
 	except ValueError:
    		print("That's not an int!")
    		raise HTTPBadRequest
@@ -95,7 +93,6 @@ def post_date_range(request):
 		parsed_json = json.loads(request.json_body)
 		hashId = int(request.matchdict['hashId'])
 
-		curr.execute('INSERT INTO ')
 
 	except ValueError:
    		print("That's not an int!")
