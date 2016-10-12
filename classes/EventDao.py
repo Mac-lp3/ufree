@@ -10,6 +10,9 @@ class EventDao:
 		print("I am unable to connect to the database")
 
 	def load_event(eventId):
+		"""
+		Loads an event object by a given id.
+		"""
 
 		EventDao.cur.execute("SELECT id, name from events WHERE id=" + str(eventId))
 		eventRows = EventDao.cur.fetchall()
@@ -46,4 +49,7 @@ class EventDao:
 
 	def save_event(eventObject):
 
-		return EventDao.cur
+		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\')'.format(eventObject['name']))
+
+		print(eventObject)
+
