@@ -53,3 +53,14 @@ class EventDao:
 
 		print(eventObject)
 
+	def update_event(eventObject):
+
+		# TODO update date ranges
+		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE id={1}'.format(eventObject['name']), eventObject['id'])
+
+	def delete_event(eventObject):
+
+		# TODO delete date ranges
+		EventDao.cur.execute('DELETE FROM events WHERE id={1}'.format(eventObject['id'])
+
+
