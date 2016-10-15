@@ -3,7 +3,21 @@ import datetime
 
 class ApiInputValidator:
 
+	#just letters, numbers, and spaces
 	namePattern = re.compile('[a-zA-Z\d\s]')
+
+	#just letters and numbers
+	hashPattern = re.compile('[a-zA-Z\d]')
+
+	def validateEventHash(eventHash):
+
+		errorMessages = []
+
+		if not isinstance(eventObject['name'], str):
+			errorMessages.append('Event hash must be a string')
+			
+		elif ApiInputValidator.hashPattern.match(eventHash):
+			errorMessages.append('Hash can only include numbers and letters')
 
 	def validateEvent(eventObject):
 		"""
@@ -33,6 +47,7 @@ class ApiInputValidator:
 		Returns a list of error messages if any problems are found. Returns
 		an empty list if none are discovered.
 		"""
+
 		errorMessages = []
 
 		if not isinstance(eventObject['from'], str) or not isinstance(eventObject['to'], str):
