@@ -1,6 +1,7 @@
 import json
 import psycopg2
 from classes.EventDao import EventDao
+from classes.ApiInputValidator import ApiInputValidator
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
@@ -13,10 +14,20 @@ def post_event(request):
 	This returns the event object, populated by all date range objects
 	"""
 
-	# TODO
-	# generate a unique ID/hash
-	# just save it? they will all be unqie and the DB will generate the ID for you.
-	# return the created object
+	inputErrors = ApiInputValidator.validateEvent(request.json_body)
+	
+	if not inputErrors:
+
+		# hash is valid
+		dat = EventDao.save_event(request.json_body)
+
+	else:
+		
+		# bad input
+		response = HTTPBadRequest()
+		response.body = json.dumps(inputErrors)
+		response.content_type = 'application/json'
+		return response
 
 	return Response("Post an event") 
 
@@ -30,17 +41,22 @@ def get_event(request):
 	try:
 
 		# validate
-		hashId = int(request.matchdict['hashId'])
-		data = EventDao.load_event(hashId)
-		json_data = json.dumps(data)
-		return json_data
+		hashId = request.matchdict['hashId']
+		inputErrors = ApiInputValidator.validateEventHash(hashId)
+		
+		if not inputErrors:
+			data = EventDao.load_event(hashId)
+			json_data = json.dumps(data)
+			return json_data
 
-	except ValueError:
-   		print("That's not an int!")
-   		raise HTTPBadRequest
+		else:
+			response = HTTPBadRequest()
+			response.body = json.dumps(inputErrors)
+			response.content_type = 'application/json'
+			return response
 
 	except:
-		raise
+		raise HTTPBadRequest
 
 def put_event(request):
 	"""
@@ -53,8 +69,9 @@ def put_event(request):
 	try: 
 
 		# validate url param
-		parsed_json = json.loads(request.json_body)
 		hashId = int(request.matchdict['hashId'])
+		parsed_json = json.loads(request.json_body)
+		EventDao.save_event(parsed_json)
 
 	except ValueError:
    		print("That's not an int!")
@@ -95,8 +112,8 @@ def post_date_range(request):
 
 
 	except ValueError:
-   		print("That's not an int!")
-   		raise HTTPBadRequest
+		print("That's not an int!")
+		raise HTTPBadRequest
 
 	except:
 		raise
@@ -114,15 +131,13 @@ def includeme(config):
 	config.add_renderer('eventDetails', 'pyramid.renderers.json_renderer_factory')
 
 	# creates new date and generates an id
-	config.add_view(post_event, route_name='eventBase', request_method="POST")
+	config.add_view(post_event, route_name='eventBase', request_method="POST", renderer="json")
 
 	# returns the event object + children
 	config.add_view(get_event, route_name='eventDetails', request_method="GET", renderer='json')
 
 	# updates the event (new/updated date range)
-	config.add_view(put_event, route_name='eventDetails', request_method="PUT")
+	config.add_view(put_event, route_name='eventDetails', request_method="PUT", renderer="json")
 
 	# deletes an event
 	config.add_view(delete_event, route_name='eventDetails', request_method="DELETE")
-
-
