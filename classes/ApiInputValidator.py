@@ -7,13 +7,19 @@ class ApiInputValidator:
 	namePattern = re.compile('[a-zA-Z\d\s]')
 
 	#just letters and numbers
-	hashPattern = re.compile('[a-zA-Z\d]')
+	hashPattern = re.compile('[a-zA-Z\d]+$')
 
 	def validateEventHash(eventHash):
+		"""
+		Checks the provided string to alidates it is a FNV-1a hash.
+
+		A proper FNV-1a hashcode only includes alpha numeric characters
+		without spaces.
+		"""
 
 		errorMessages = []
 
-		if not isinstance(eventObject['name'], str):
+		if not isinstance(eventHash, str):
 			errorMessages.append('Event hash must be a string')
 			
 		elif ApiInputValidator.hashPattern.match(eventHash):
