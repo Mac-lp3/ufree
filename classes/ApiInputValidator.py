@@ -44,6 +44,10 @@ class ApiInputValidator:
 		elif ApiInputValidator.namePattern.match(eventObject['name']):
 			errorMessage.append('Name must only contain letters or numbers')
 
+		elif eventObject['dateRanges']:
+			for dateRange in eventObject['dateRanges']:
+				errorMessage.append(validateDateRange(dateRange))
+
 		return errorMessages
 
 	def validateDateRange(dateRangeObject):
