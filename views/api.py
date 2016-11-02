@@ -5,6 +5,7 @@ from classes.ApiInputValidator import ApiInputValidator
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
 def post_event(request):
@@ -15,21 +16,27 @@ def post_event(request):
 	"""
 
 	inputErrors = ApiInputValidator.validateEvent(request.json_body)
+
+	try:
 	
-	if not inputErrors:
+		if not inputErrors:
 
-		# hash is valid
-		dat = EventDao.save_event(request.json_body)
+			# hash is valid - save and return
+			data = EventDao.save_event(request.json_body)
+			json_data = json.dumps(data)
+			return json_data
 
-	else:
-		
-		# bad input
-		response = HTTPBadRequest()
-		response.body = json.dumps(inputErrors)
-		response.content_type = 'application/json'
-		return response
+		else:
+			
+			# bad input
+			response = HTTPBadRequest()
+			response.body = json.dumps(inputErrors)
+			response.content_type = 'application/json'
+			return response
 
-	return Response("Post an event") 
+	except:
+		# unknown error
+		raise HTTPInternalServerError
 
 def get_event(request):
 	"""
@@ -56,7 +63,7 @@ def get_event(request):
 			return response
 
 	except:
-		raise HTTPBadRequest
+		raise HTTPInternalServerError
 
 def put_event(request):
 	"""
@@ -66,25 +73,25 @@ def put_event(request):
 	the one with the correspodning composite id.
 	"""
 
-	try: 
+	try:
 
-		# validate url param
-		hashId = int(request.matchdict['hashId'])
-		parsed_json = json.loads(request.json_body)
-		EventDao.save_event(parsed_json)
+		# validate sent object and event hash
+		inputErrors = ApiInputValidator.validateEvent(request.json_body)
+		inputErrors = inputErrors + ApiInputValidator.validateEventHash(request.json_body['eventId'])
 
-	except ValueError:
-   		print("That's not an int!")
-   		raise HTTPBadRequest
+		if not inputErrors:
+			data = EventDao.update_event(request.json_body)
+			json_data = json.dumps(data)
+			return json_data
+
+		else:
+			response = HTTPBadRequest()
+			response.body = json.dumps(inputErrors)
+			response.content_type = 'application/json'
+			return response
 
 	except:
-		raise
-
-	postData = request.json_body
-
-	return Response("Ya dang post")
-
-	return Response("Ya dang put")
+		raise HTTPInternalServerError
 
 def delete_event(request):
 	"""
