@@ -102,8 +102,6 @@ def delete_event(request):
 	# validate hash id
 	hashId = request.matchdict['hashId']
 	inputErrors = ApiInputValidator.validateEventHash(hashId)
-	print("input validation errors")
-	print(inputErrors)
 	try: 
 		if not inputErrors:
 			# TODO check that something was deleted
@@ -113,16 +111,17 @@ def delete_event(request):
 				response = Response(status=204)
 			else:
 				response = HTTPNotFound()
-				response.body = json.dumps({'errors': 'No event with given id.'})
+				response.text = json.dumps({'errors': 'No event with given id.'})
 				response.content_type = 'application/json'
 		else:
 			response = HTTPBadRequest()
-			response.body = json.dumps({'errors': inputErrors})
+			response.text = json.dumps({'errors': inputErrors})
 			response.content_type = 'application/json'
 
 		return response
 
-	except:
+	except Exception as e:
+		print(e)
 		raise HTTPInternalServerError
 
 def post_date_range(request):
