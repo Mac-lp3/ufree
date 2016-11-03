@@ -35,10 +35,10 @@ class ApiInputValidator:
 		an empty list if none are discovered.
 		"""
 
-		errorMessages[0] = ''
+		errorMessages = []
 
 		if not isinstance(eventObject['name'], str):
-			errorMessages[0] = 'Name must be a string'
+			errorMessages.append('Name must be a string')
 
 		elif len(eventObject['name']) > 30:
 			errorMessages.append('Name must be less than 30 characters')
