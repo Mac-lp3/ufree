@@ -34,8 +34,8 @@ def post_event(request):
 			response.content_type = 'application/json'
 			return response
 
-	except:
-		# unknown error
+	except Exception as e:
+		print(e)
 		raise HTTPInternalServerError
 
 def get_event(request):
@@ -48,11 +48,11 @@ def get_event(request):
 	try:
 
 		# validate
-		hashId = request.matchdict['hashId']
-		inputErrors = ApiInputValidator.validateEventHash(hashId)
+		eventId = request.matchdict['eventId']
+		inputErrors = ApiInputValidator.validateEventHash(eventId)
 
 		if not inputErrors:
-			data = EventDao.load_event(hashId)
+			data = EventDao.load_event(eventId)
 			json_data = json.dumps(data)
 			return json_data
 
@@ -62,7 +62,8 @@ def get_event(request):
 			response.content_type = 'application/json'
 			return response
 
-	except:
+	except Exception as e:
+		print(e)
 		raise HTTPInternalServerError
 
 def put_event(request):
@@ -88,7 +89,9 @@ def put_event(request):
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 			return response
-	except:
+
+	except Exception as e:
+		print(e)
 		raise HTTPInternalServerError
 
 def delete_event(request):
@@ -100,8 +103,8 @@ def delete_event(request):
 	"""
 
 	# validate hash id
-	hashId = request.matchdict['hashId']
-	inputErrors = ApiInputValidator.validateEventHash(hashId)
+	eventId = request.matchdict['eventId']
+	inputErrors = ApiInputValidator.validateEventHash(eventId)
 	try: 
 		if not inputErrors:
 			# TODO check that something was deleted
@@ -132,19 +135,35 @@ def post_date_range(request):
 	for this eventDetails.
 	"""
 
-	try: 
+	try:
 
-		# validate
-		parsed_json = json.loads(request.json_body)
-		hashId = int(request.matchdict['hashId'])
+		# validate event id and date range format
+		eventId = request.matchdict['eventId']
+		inputErrors = ApiInputValidator.validateEventHash(eventId)
+		inputErrors = inputErrors + ApiInputValidator.validateDateRange(request.json_body['dateRange'])
 
+		if not inputErrors:
+
+			# hash is valid - save and return
+			data = EventDao.add_date_range(eventId, request.json_body)
+			json_data = json.dumps(data)
+			return json_data
+
+		else:
+			
+			# bad input
+			response = HTTPBadRequest()
+			response.body = json.dumps(inputErrors)
+			response.content_type = 'application/json'
+			return response
 
 	except ValueError:
 		print("That's not an int!")
 		raise HTTPBadRequest
 
-	except:
-		raise
+	except Exception as e:
+		print(e)
+		raise HTTPInternalServerError
 
 	postData = request.json_body
 
@@ -155,8 +174,14 @@ def includeme(config):
 	config.add_route('eventBase', '/api/event')
 	config.add_renderer('eventBase', 'pyramid.renderers.json_renderer_factory')
 
-	config.add_route('eventDetails', '/api/event/{hashId}')
+	config.add_route('eventDetails', '/api/event/{eventId}')
 	config.add_renderer('eventDetails', 'pyramid.renderers.json_renderer_factory')
+
+	config.add_route('rangesBase', '/api/event/{eventId}/ranges')
+	config.add_renderer('rangesBase', 'pyramid.renderers.json_renderer_factory')
+
+	config.add_route('rangeDetails', '/api/event/{eventId}/ranges/{rangeId}')
+	config.add_renderer('rangeDetails', 'pyramid.renderers.json_renderer_factory')
 
 	# creates new date and generates an id
 	config.add_view(post_event, route_name='eventBase', request_method="POST", renderer="json")
