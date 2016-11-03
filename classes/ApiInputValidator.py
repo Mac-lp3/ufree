@@ -22,8 +22,10 @@ class ApiInputValidator:
 		if not isinstance(eventHash, str):
 			errorMessages.append('Event hash must be a string')
 			
-		elif ApiInputValidator.hashPattern.match(eventHash):
+		elif not ApiInputValidator.hashPattern.match(eventHash):
 			errorMessages.append('Hash can only include numbers and letters')
+
+		return errorMessages
 
 	def validateEvent(eventObject):
 		"""
