@@ -15,7 +15,7 @@ def post_event(request):
 	This returns the event object, populated by all date range objects
 	"""
 
-	inputErrors = ApiInputValidator.validateEvent(request.json_body)
+	inputErrors = ApiInputValidator.validate_event(request.json_body)
 
 	try:
 	
@@ -49,7 +49,7 @@ def get_event(request):
 
 		# validate
 		eventId = request.matchdict['eventId']
-		inputErrors = ApiInputValidator.validateEventHash(eventId)
+		inputErrors = ApiInputValidator.validate_event_hash(eventId)
 
 		if not inputErrors:
 			data = EventDao.load_event(eventId)
@@ -76,8 +76,8 @@ def put_event(request):
 
 	try:
 		# validate sent object and its event hash
-		inputErrors = ApiInputValidator.validateEvent(request.json_body)
-		inputErrors = inputErrors + ApiInputValidator.validateEventHash(request.json_body['eventId'])
+		inputErrors = ApiInputValidator.validate_event(request.json_body)
+		inputErrors = inputErrors + ApiInputValidator.validate_event_hash(request.json_body['eventId'])
 
 		if not inputErrors:
 			data = EventDao.update_event(request.json_body)
@@ -104,7 +104,7 @@ def delete_event(request):
 
 	# validate hash id
 	eventId = request.matchdict['eventId']
-	inputErrors = ApiInputValidator.validateEventHash(eventId)
+	inputErrors = ApiInputValidator.validate_event_hash(eventId)
 	try: 
 		if not inputErrors:
 			# TODO check that something was deleted
@@ -139,8 +139,8 @@ def post_date_range(request):
 
 		# validate event id and date range format
 		eventId = request.matchdict['eventId']
-		inputErrors = ApiInputValidator.validateEventHash(eventId)
-		inputErrors = inputErrors + ApiInputValidator.validateDateRange(request.json_body['dateRange'])
+		inputErrors = ApiInputValidator.validate_event_hash(eventId)
+		inputErrors = inputErrors + ApiInputValidator.validate_date_range(request.json_body['dateRange'])
 
 		if not inputErrors:
 
@@ -194,3 +194,6 @@ def includeme(config):
 
 	# deletes an event
 	config.add_view(delete_event, route_name='eventDetails', request_method="DELETE")
+
+	# creates a new date range
+	config.add_view(post_date_range, route_name='rangesBase', request_method="POST", renderer="json")

@@ -9,7 +9,7 @@ class ApiInputValidator:
 	#just letters and numbers
 	hashPattern = re.compile('[a-zA-Z\d]+$')
 
-	def validateEventHash(eventHash):
+	def validate_event_hash(eventHash):
 		"""
 		Checks the provided string to alidates it is a FNV-1a hash.
 
@@ -27,7 +27,7 @@ class ApiInputValidator:
 
 		return errorMessages
 
-	def validateEvent(eventObject):
+	def validate_event(eventObject):
 		"""
 		Validates a given event object.
 
@@ -52,7 +52,7 @@ class ApiInputValidator:
 
 		return errorMessages
 
-	def validateDateRange(dateRangeObject):
+	def validate_date_range(dateRangeObject):
 		"""
 		Validates a given date range object
 
