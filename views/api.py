@@ -15,19 +15,16 @@ def post_event(request):
 	This returns the event object, populated by all date range objects
 	"""
 
-	inputErrors = ApiInputValidator.validate_event(request.json_body)
-
 	try:
+		inputErrors = ApiInputValidator.validate_event(request.json_body)
 	
 		if not inputErrors:
-
 			# hash is valid - save and return
 			data = EventDao.save_event(request.json_body)
 			json_data = json.dumps(data)
 			return json_data
 
 		else:
-			
 			# bad input
 			response = HTTPBadRequest()
 			response.body = json.dumps(inputErrors)
@@ -46,7 +43,6 @@ def get_event(request):
 	"""
 
 	try:
-
 		# validate
 		eventId = request.matchdict['eventId']
 		inputErrors = ApiInputValidator.validate_event_hash(eventId)
@@ -102,20 +98,24 @@ def delete_event(request):
 	the one with the correspodning composite id.
 	"""
 
-	# validate hash id
-	eventId = request.matchdict['eventId']
-	inputErrors = ApiInputValidator.validate_event_hash(eventId)
 	try: 
+		# validate hash id
+		eventId = request.matchdict['eventId']
+		inputErrors = ApiInputValidator.validate_event_hash(eventId)
+
 		if not inputErrors:
 			# TODO check that something was deleted
 			#data = EventDao.delete_event(request.json_body)
 			data = ['value']
+
 			if data:
 				response = Response(status=204)
+
 			else:
 				response = HTTPNotFound()
 				response.text = json.dumps({'errors': 'No event with given id.'})
 				response.content_type = 'application/json'
+
 		else:
 			response = HTTPBadRequest()
 			response.text = json.dumps({'errors': inputErrors})
@@ -136,21 +136,18 @@ def post_date_range(request):
 	"""
 
 	try:
-
 		# validate event id and date range format
 		eventId = request.matchdict['eventId']
 		inputErrors = ApiInputValidator.validate_event_hash(eventId)
 		inputErrors = inputErrors + ApiInputValidator.validate_date_range(request.json_body['dateRange'])
 
 		if not inputErrors:
-
 			# hash is valid - save and return
 			data = EventDao.add_date_range(eventId, request.json_body)
 			json_data = json.dumps(data)
 			return json_data
 
 		else:
-			
 			# bad input
 			response = HTTPBadRequest()
 			response.body = json.dumps(inputErrors)
@@ -164,10 +161,6 @@ def post_date_range(request):
 	except Exception as e:
 		print(e)
 		raise HTTPInternalServerError
-
-	postData = request.json_body
-
-	return Response("Ya dang post")
 
 def includeme(config):
 
