@@ -50,7 +50,7 @@ def get_event(request):
 		# validate
 		hashId = request.matchdict['hashId']
 		inputErrors = ApiInputValidator.validateEventHash(hashId)
-		
+
 		if not inputErrors:
 			data = EventDao.load_event(hashId)
 			json_data = json.dumps(data)
@@ -74,8 +74,7 @@ def put_event(request):
 	"""
 
 	try:
-
-		# validate sent object and event hash
+		# validate sent object and its event hash
 		inputErrors = ApiInputValidator.validateEvent(request.json_body)
 		inputErrors = inputErrors + ApiInputValidator.validateEventHash(request.json_body['eventId'])
 
@@ -89,7 +88,6 @@ def put_event(request):
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 			return response
-
 	except:
 		raise HTTPInternalServerError
 
@@ -101,7 +99,31 @@ def delete_event(request):
 	the one with the correspodning composite id.
 	"""
 
-	return Response("Ya dang del")
+	# validate hash id
+	hashId = request.matchdict['hashId']
+	inputErrors = ApiInputValidator.validateEventHash(hashId)
+	print("input validation errors")
+	print(inputErrors)
+	try: 
+		if not inputErrors:
+			# TODO check that something was deleted
+			#data = EventDao.delete_event(request.json_body)
+			data = ['value']
+			if data:
+				response = Response(status=204)
+			else:
+				response = HTTPNotFound()
+				response.body = json.dumps({'errors': 'No event with given id.'})
+				response.content_type = 'application/json'
+		else:
+			response = HTTPBadRequest()
+			response.body = json.dumps({'errors': inputErrors})
+			response.content_type = 'application/json'
+
+		return response
+
+	except:
+		raise HTTPInternalServerError
 
 def post_date_range(request):
 	"""
