@@ -1,4 +1,5 @@
 import psycopg2
+import exception.DaoException
 
 class EventDao:
 
@@ -66,7 +67,7 @@ class EventDao:
 		 If successful, this function returns nothing. A corresponding exception is thrown
 		otherwise.
 		"""
-		
+
 		try:
 			EventDao.cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
 		except psycopg2.Error as e:
