@@ -129,10 +129,10 @@ def delete_event(request):
 
 def post_date_range(request):
 	"""
-	Create a date rang in this eventDetails
+	Create a new date range associated with this event
 
 	This will create a new date range with a generated composite id
-	for this eventDetails.
+	for this event.
 	"""
 
 	try:
@@ -153,10 +153,6 @@ def post_date_range(request):
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 			return response
-
-	except ValueError:
-		print("That's not an int!")
-		raise HTTPBadRequest
 
 	except Exception as e:
 		print(e)
