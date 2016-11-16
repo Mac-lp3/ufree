@@ -1,5 +1,5 @@
 import psycopg2
-import exception.DaoException
+import exception.DaoException as DaoException
 
 class EventDao:
 
@@ -72,7 +72,7 @@ class EventDao:
 			EventDao.cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
 		except psycopg2.Error as e:
 			print(e.pgerror)
-	    	raise Exception('An error occurred deleting this event. Please try again later.')
+	    	raise DaoException('An error occurred deleting this event. Please try again later.')
 
 	def add_date_range(eventId, dateRange):
 		#TODO
