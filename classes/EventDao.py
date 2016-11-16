@@ -49,6 +49,7 @@ class EventDao:
 
 	def save_event(eventObject):
 
+		# TODO hash generation
 		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\')'.format(eventObject['name']))
 
 		print(eventObject)
@@ -56,11 +57,23 @@ class EventDao:
 	def update_event(eventObject):
 
 		# TODO update date ranges
-		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE id={1}'.format(eventObject['name']), eventObject['id'])
+		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE eventid={1}'.format(eventObject['name']), eventObject['id'])
 
 	def delete_event(eventObject):
+		"""
+		Deletes the event with the given eventHash and all associated date ranges.
 
-		# TODO delete date ranges
-		EventDao.cur.execute('DELETE FROM events WHERE id={1}'.format(eventObject['id'])
+		 If successful, this function returns nothing. A corresponding exception is thrown
+		otherwise.
+		"""
+		
+		try:
+			EventDao.cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
+		except psycopg2.Error as e:
+			print(e.pgerror)
+	    	raise Exception('An error occurred deleting this event. Please try again later.')
 
+	def add_date_range(eventId, dateRange):
+		#TODO
 
+		
