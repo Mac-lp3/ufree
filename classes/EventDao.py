@@ -1,5 +1,6 @@
 import psycopg2
-import exception.DaoException as DaoException
+import classes.HashCodeUtils as HashUtils
+import classes.exception.DaoException as DaoException
 
 class EventDao:
 
@@ -51,7 +52,12 @@ class EventDao:
 	def save_event(eventObject):
 
 		# TODO hash generation
-		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\')'.format(eventObject['name']))
+		HashUtils.generate_code()
+		try:
+			EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\')'.format(eventObject['name']))
+		except psycopg2.Error as e:
+			print(e.pgerror)
+			raise DaoException('An error occurred saving this event. Please try again later.')
 
 		print(eventObject)
 
@@ -64,7 +70,7 @@ class EventDao:
 		"""
 		Deletes the event with the given eventHash and all associated date ranges.
 
-		 If successful, this function returns nothing. A corresponding exception is thrown
+		If successful, this function returns nothing. A corresponding exception is thrown
 		otherwise.
 		"""
 
@@ -72,9 +78,8 @@ class EventDao:
 			EventDao.cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
 		except psycopg2.Error as e:
 			print(e.pgerror)
-	    	raise DaoException('An error occurred deleting this event. Please try again later.')
+			raise DaoException('An error occurred deleting this event. Please try again later.')
 
 	def add_date_range(eventId, dateRange):
 		#TODO
-
-		
+		pass
