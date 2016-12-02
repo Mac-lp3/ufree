@@ -1,6 +1,7 @@
 import json
 import psycopg2
 from classes.EventDao import EventDao
+from classes.exception.DaoException import DaoException
 from classes.ApiInputValidator import ApiInputValidator
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
@@ -29,11 +30,14 @@ def post_event(request):
 			response = HTTPBadRequest()
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
-			return response
 
 	except Exception as e:
 		print(e)
-		raise HTTPInternalServerError
+		response = HTTPBadRequest()
+		response.body = json.dumps({'errors': 'An error occurred while saving this event.'})
+		response.content_type = 'application/json'
+
+	return response
 
 def get_event(request):
 	"""
@@ -56,11 +60,14 @@ def get_event(request):
 			response = HTTPBadRequest()
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
-			return response
 
 	except Exception as e:
 		print(e)
-		raise HTTPInternalServerError
+		response = HTTPBadRequest()
+		response.body = json.dumps({'errors': 'An error occurred while loading this event.'})
+		response.content_type = 'application/json'
+
+	return response
 
 def put_event(request):
 	"""
@@ -84,11 +91,14 @@ def put_event(request):
 			response = HTTPBadRequest()
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
-			return response
 
 	except Exception as e:
 		print(e)
-		raise HTTPInternalServerError
+		response = HTTPBadRequest()
+		response.body = json.dumps({'errors': 'An error occurred while updating this event.'})
+		response.content_type = 'application/json'
+
+	return response
 
 def delete_event(request):
 	"""
@@ -104,28 +114,26 @@ def delete_event(request):
 		inputErrors = ApiInputValidator.validate_event_hash(eventId)
 
 		if not inputErrors:
-			# TODO check that something was deleted
-			#data = EventDao.delete_event(request.json_body)
-			data = ['value']
-
-			if data:
-				response = Response(status=204)
-
-			else:
-				response = HTTPNotFound()
-				response.text = json.dumps({'errors': 'No event with given id.'})
-				response.content_type = 'application/json'
+			EventDao.delete_event(request.json_body)
+			response = Response(status=204)
 
 		else:
 			response = HTTPBadRequest()
 			response.text = json.dumps({'errors': inputErrors})
 			response.content_type = 'application/json'
 
-		return response
+	except DaoException as e:
+		response = HTTPNotFound()
+		response.text = json.dumps({'errors': 'No event with given id.'})
+		response.content_type = 'application/json'
 
 	except Exception as e:
 		print(e)
-		raise HTTPInternalServerError
+		response = HTTPNotFound()
+		response.text = json.dumps({'errors': 'An exception occurred deleting this event.'})
+		response.content_type = 'application/json'
+
+	return response
 
 def post_date_range(request):
 	"""
@@ -152,11 +160,14 @@ def post_date_range(request):
 			response = HTTPBadRequest()
 			response.body = json.dumps(inputErrors)
 			response.content_type = 'application/json'
-			return response
 
 	except Exception as e:
 		print(e)
-		raise HTTPInternalServerError
+		response = HTTPBadRequest()
+		response.body = json.dumps({'errors': 'An exception occurred while handeling new date range.'})
+		response.content_type = 'application/json'
+
+	return response
 
 def includeme(config):
 
