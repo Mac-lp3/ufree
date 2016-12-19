@@ -1,6 +1,6 @@
 import psycopg2
-import classes.HashCodeUtils as HashUtils
 import classes.exception.DaoException as DaoException
+from classes.HashCodeUtils import HashCodeUtils
 
 class EventDao:
 
@@ -51,10 +51,10 @@ class EventDao:
 
 	def save_event(eventObject):
 
-		# TODO hash generation
-		HashUtils.generate_code()
+		generatedId = HashCodeUtils.generate_code(eventObject['name'])
+
 		try:
-			EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\')'.format(eventObject['name']))
+			EventDao.cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
 		except psycopg2.Error as e:
 			print(e.pgerror)
 			raise DaoException('An error occurred saving this event. Please try again later.')
