@@ -28,7 +28,7 @@ def post_event(request):
 		else:
 			# bad input
 			response = HTTPBadRequest()
-			response.body = json.dumps(inputErrors)
+			response.text = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 
 	except Exception as e:
@@ -58,7 +58,7 @@ def get_event(request):
 
 		else:
 			response = HTTPBadRequest()
-			response.body = json.dumps(inputErrors)
+			response.text = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 
 	except Exception as e:
@@ -89,13 +89,13 @@ def put_event(request):
 
 		else:
 			response = HTTPBadRequest()
-			response.body = json.dumps(inputErrors)
+			response.text = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 
 	except Exception as e:
 		print(e)
 		response = HTTPBadRequest()
-		response.body = json.dumps({'errors': 'An error occurred while updating this event.'})
+		response.text = json.dumps({'errors': 'An error occurred while updating this event.'})
 		response.content_type = 'application/json'
 
 	return response
@@ -158,13 +158,13 @@ def post_date_range(request):
 		else:
 			# bad input
 			response = HTTPBadRequest()
-			response.body = json.dumps(inputErrors)
+			response.text = json.dumps(inputErrors)
 			response.content_type = 'application/json'
 
 	except Exception as e:
 		print(e)
 		response = HTTPBadRequest()
-		response.body = json.dumps({'errors': 'An exception occurred while handeling new date range.'})
+		response.text = json.dumps({'errors': 'An exception occurred while handeling new date range.'})
 		response.content_type = 'application/json'
 
 	return response
