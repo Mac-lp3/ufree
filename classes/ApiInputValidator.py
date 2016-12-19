@@ -43,12 +43,12 @@ class ApiInputValidator:
 		elif len(eventObject['name']) > 30:
 			errorMessages.append('Name must be less than 30 characters')
 
-		elif ApiInputValidator.namePattern.match(eventObject['name']):
-			errorMessage.append('Name must only contain letters or numbers')
+		elif not ApiInputValidator.namePattern.match(eventObject['name']):
+			errorMessages.append('Name must only contain letters or numbers')
 
-		elif eventObject['dateRanges']:
+		elif hasattr(eventObject, 'dateRanges'):
 			for dateRange in eventObject['dateRanges']:
-				errorMessage.append(validateDateRange(dateRange))
+				errorMessages.append(validateDateRange(dateRange))
 
 		return errorMessages
 
