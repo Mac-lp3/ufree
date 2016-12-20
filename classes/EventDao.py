@@ -11,6 +11,11 @@ class EventDao:
 		cur = {}
 		print("I am unable to connect to the database")
 
+	def event_exists(eventId):
+
+		EventDao.cur.execute("SELECT name FROM events WHERE id = {0}".format(eventId))
+		return EventDao.cur.fetchone() is not None
+
 	def load_event(eventId):
 		"""
 		Loads an event object by a given id.
@@ -54,7 +59,20 @@ class EventDao:
 		generatedId = HashCodeUtils.generate_code(eventObject['name'])
 
 		try:
-			EventDao.cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
+
+			count = 0
+			newSeed = eventObject['name'] + 'a';
+			while EventDao.event_exists(generatedId) and count < 5:
+				generatedId = HashCodeUtils.generate_code(newSeed)
+				newSeed = newSeed + 'a'
+
+			if not EventDao.event_exists(generatedId):
+				EventDao.cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
+				return EventDao.load_event(generatedId)
+				
+			else:
+				raise DaoException('Unable to generate a unique ID. Please choose a new name.')
+
 		except psycopg2.Error as e:
 			print(e.pgerror)
 			raise DaoException('An error occurred saving this event. Please try again later.')
