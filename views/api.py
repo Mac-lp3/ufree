@@ -34,7 +34,7 @@ def post_event(request):
 	except Exception as e:
 		print(e)
 		response = HTTPBadRequest()
-		response.body = json.dumps({'errors': 'An error occurred while saving this event.'})
+		response.text = json.dumps({'errors': 'An error occurred while saving this event.'})
 		response.content_type = 'application/json'
 
 	return response
@@ -64,7 +64,7 @@ def get_event(request):
 	except Exception as e:
 		print(e)
 		response = HTTPBadRequest()
-		response.body = json.dumps({'errors': 'An error occurred while loading this event.'})
+		response.text = json.dumps({'errors': 'An error occurred while loading this event.'})
 		response.content_type = 'application/json'
 
 	return response
