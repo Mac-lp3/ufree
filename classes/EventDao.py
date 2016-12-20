@@ -55,24 +55,32 @@ class EventDao:
 			print('need to do a thing here')
 
 	def save_event(eventObject):
+		"""
+		Generates a unique ID for the event and creates a new instance in the database.
+		"""
 
+		# generate an initial id based on event name
 		generatedId = HashCodeUtils.generate_code(eventObject['name'])
 
 		try:
 
+			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
 			while EventDao.event_exists(generatedId) and count < 5:
 				generatedId = HashCodeUtils.generate_code(newSeed)
 				newSeed = newSeed + 'a'
 
+			# If after 5 tries, check if the ID is unique and save if so.
 			if not EventDao.event_exists(generatedId):
 				EventDao.cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
 				return EventDao.load_event(generatedId)
-				
+
+			# Raise an exception if not.
 			else:
 				raise DaoException('Unable to generate a unique ID. Please choose a new name.')
 
+		# Catch any general exceptions
 		except psycopg2.Error as e:
 			print(e.pgerror)
 			raise DaoException('An error occurred saving this event. Please try again later.')
