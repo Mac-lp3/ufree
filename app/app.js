@@ -1,3 +1,6 @@
 'use strict';
 
-const turnover = angular.module('turnover', ['ngRoute']);
+const angular = require('angular');
+const ngRoute = require('angular-route');
+
+const ufree = angular.module('ufree', ['ngRoute']);
