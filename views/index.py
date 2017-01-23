@@ -11,3 +11,7 @@ def index(request):
 def includeme(config):
     config.add_route('index', '/')
     config.add_view(index, route_name='index')
+
+    config.add_static_view(name='js', path='../static/js')
+    config.add_static_view(name='css', path='../static/css')
+    config.add_static_view(name='app*', path='../app')
