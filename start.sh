@@ -5,4 +5,4 @@ sleep 3
 browserify app/app.js -o static/js/bundle.js
 
 source venv/bin/activate
-python main.py
+python3.5 main.py
