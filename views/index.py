@@ -4,14 +4,14 @@ from pyramid.response import Response
 here = os.path.dirname(__file__)
 
 def index(request):
-    index_html = os.path.join(here, '../app/template.html')
+    index_html = os.path.join(here, '../client/index.html')
     openFile = open(index_html)
     data = openFile.read()
     return Response(data, content_type='text/html')
 
 def partials(request):
     partial_file = request.matchdict['partial']
-    partial_html = os.path.join(here, '../app/partials/' + partial_file)
+    partial_html = os.path.join(here, '../client/partials/' + partial_file)
     openFile = open(partial_html)
     data = openFile.read()
     return Response(data, content_type='text/html')
