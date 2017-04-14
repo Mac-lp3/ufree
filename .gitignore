@@ -4,3 +4,4 @@ db-logfile
 static/js/bundle.js
 *.pyc
 **/node_modules/
+**/dist/
