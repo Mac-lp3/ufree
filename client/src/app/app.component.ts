@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
   <navbar></navbar>
   <h1>Hello {{name}}</h1>
+  <router-outlet></router-outlet>
   <ufooter></ufooter>
   `
 })
