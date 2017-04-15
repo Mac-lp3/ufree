@@ -4,8 +4,8 @@ import { rootRouterConfig } from './app.routes';
 import { BrowserModule }    from '@angular/platform-browser';
 import { NavbarComponent }  from '../decorators/navbar.component';
 import { FooterComponent }  from '../decorators/footer.component';
-import { LandingComponent }  from '../landing/landing.component';
-import { EventComponent }  from '../event/event.component';
+import { LandingComponent } from '../landing/landing.component';
+import { EventComponent }   from '../event/event.component';
 import { AppComponent }     from './app.component';
 
 @NgModule({
