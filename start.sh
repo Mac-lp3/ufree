@@ -1,8 +1,5 @@
 pg_ctl start -D /usr/local/pgsql/data -l db-logfile
-
-sleep 3
-
-browserify app/app.js -o static/js/bundle.js
+npm --prefix client/ run build
 
 source venv/bin/activate
 python3.5 main.py
