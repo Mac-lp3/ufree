@@ -18,7 +18,7 @@ def post_event(request):
 
 	try:
 		inputErrors = ApiInputValidator.validate_event(request.json_body)
-	
+
 		if not inputErrors:
 			# hash is valid - save and return
 			data = EventDao.save_event(request.json_body)
@@ -108,7 +108,7 @@ def delete_event(request):
 	the one with the correspodning composite id.
 	"""
 
-	try: 
+	try:
 		# validate hash id
 		eventId = request.matchdict['eventId']
 		inputErrors = ApiInputValidator.validate_event_hash(eventId)
@@ -171,16 +171,16 @@ def post_date_range(request):
 
 def includeme(config):
 
-	config.add_route('eventBase', '/api/event')
+	config.add_route('eventBase', '/api/events')
 	config.add_renderer('eventBase', 'pyramid.renderers.json_renderer_factory')
 
-	config.add_route('eventDetails', '/api/event/{eventId}')
+	config.add_route('eventDetails', '/api/events/{eventId}')
 	config.add_renderer('eventDetails', 'pyramid.renderers.json_renderer_factory')
 
-	config.add_route('rangesBase', '/api/event/{eventId}/ranges')
+	config.add_route('rangesBase', '/api/events/{eventId}/ranges')
 	config.add_renderer('rangesBase', 'pyramid.renderers.json_renderer_factory')
 
-	config.add_route('rangeDetails', '/api/event/{eventId}/ranges/{rangeId}')
+	config.add_route('rangeDetails', '/api/events/{eventId}/ranges/{rangeId}')
 	config.add_renderer('rangeDetails', 'pyramid.renderers.json_renderer_factory')
 
 	# creates new date and generates an id
