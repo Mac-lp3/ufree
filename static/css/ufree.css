@@ -1,9 +1,0 @@
-.landing {
-	display: flex;
-	min-height: 100vh;
-	flex-direction: column;
-}
-
-.landing-content {
-	flex: 1;
-}
