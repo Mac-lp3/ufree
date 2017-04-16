@@ -1,6 +1,6 @@
 import { Routes }           from '@angular/router';
-import { LandingComponent } from '../landing/landing.component';
-import { EventComponent }   from '../event/event.component';
+import { LandingComponent } from './landing/landing.component';
+import { EventComponent }   from './event/event.component';
 
 export const rootRouterConfig: Routes = [
   {
