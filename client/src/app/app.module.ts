@@ -11,7 +11,7 @@ import { AppComponent }     from './app.component';
 @NgModule({
   imports:      [
     BrowserModule,
-    RouterModule.forRoot(rootRouterConfig)
+    RouterModule.forRoot(rootRouterConfig, { useHash: true })
   ],
   declarations: [
     AppComponent,
