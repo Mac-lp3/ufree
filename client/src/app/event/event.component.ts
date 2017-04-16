@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DateRange } from '../dateRange/dateRange.component'
 
 @Component({
   selector: 'event',
@@ -6,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class EventComponent {
 
+}
+
+export interface Event {
+  id: string;
+  name: string;
+  creator: string;
+  dateRanges: DateRange[];
 }
