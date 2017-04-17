@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
+  host: { class: 'Site-content' },
   template: `
-  <navbar></navbar>
-  <h1>Hello {{name}}</h1>
-  <router-outlet></router-outlet>
-  <ufooter></ufooter>
+    <navbar></navbar>
+    <router-outlet></router-outlet>
+    <ufooter></ufooter>
   `
 })
-export class AppComponent { name = 'Angular'; }
+export class AppComponent { }
