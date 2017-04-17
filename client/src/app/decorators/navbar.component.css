@@ -1,0 +1,17 @@
+.navbar-container {
+  background: linear-gradient(#42b9f4, #3482a9);
+  color: white;
+  display: inline-flex;
+  font-size: 25px;
+  justify-content: flex-end;
+  width: 100vw;
+}
+
+.navbar-elements {
+  margin: 8px 0px 8px 0px;
+}
+
+.navbar-elements li {
+  display: inline;
+  text-shadow: #fff 0px 1px 0, #000 0 -1px 0;
+}
