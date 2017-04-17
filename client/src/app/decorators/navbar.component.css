@@ -1,17 +1,30 @@
+#brand {
+  align-self: center;
+  margin-right: auto;
+  margin-left: 1vw;
+}
+
 .navbar-container {
   background: linear-gradient(#42b9f4, #3482a9);
   color: white;
   display: inline-flex;
   font-size: 25px;
   justify-content: flex-end;
+  min-height: 40px;
+  text-shadow: #fff 0px 1px 0, #000 0 -1px 0;
   width: 100vw;
 }
 
 .navbar-elements {
-  margin: 8px 0px 8px 0px;
+  align-self: center;
+  margin: 0px 1vw 0px 0px;
+  padding: 0px;
 }
 
 .navbar-elements li {
   display: inline;
-  text-shadow: #fff 0px 1px 0, #000 0 -1px 0;
+}
+
+.navbar-elements li:not(:last-child) {
+  margin-right: 2vw;
 }
