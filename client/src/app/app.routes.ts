@@ -8,7 +8,7 @@ export const rootRouterConfig: Routes = [
     component: LandingComponent
   },
   {
-    path: 'events',
+    path: 'events/:id',
     component: EventComponent
   }
 ];
