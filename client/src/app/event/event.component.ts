@@ -1,6 +1,7 @@
 import { Component }      from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DateRange }      from '../dateRange/dateRange.component'
+import { EventService } from '../services/event.service'
 
 @Component({
   selector: 'event',
@@ -9,9 +10,12 @@ import { DateRange }      from '../dateRange/dateRange.component'
 export class EventComponent {
   eventId: string;
 
-  constructor(route: ActivatedRoute) {
+	constuctor(eventService: EventService, route: ActivatedRoute) {
     this.eventId = route.snapshot.params['id'];
-  }
+		eventService.getEventById(this.eventId).subscribe((event) => {
+			console.log(event);
+		});
+	};
 }
 
 export interface Event {
