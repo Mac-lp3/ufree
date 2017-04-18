@@ -1,6 +1,9 @@
 .image-box {
   width: 100vw;
   height: 75vh;
-  background: url("/assets/bw-desk.jpeg");
+  background-image: linear-gradient(
+    rgba(16, 155, 191, 0.5),
+    rgba(67,204,152, 0.5)
+  ), url("/assets/color-tablet.jpeg");
   background-size: cover;
 }

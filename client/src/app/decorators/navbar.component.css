@@ -5,13 +5,13 @@
 }
 
 .navbar-container {
-  background: linear-gradient(#42b9f4, #3482a9);
+  background-color: #1296d8;
+  font-weight: lighter;
   color: white;
   display: inline-flex;
-  font-size: 25px;
+  font-size: 40px;
   justify-content: flex-end;
-  min-height: 40px;
-  text-shadow: #fff 0px 1px 0, #000 0 -1px 0;
+  min-height: 60px;
   width: 100vw;
 }
 
