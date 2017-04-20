@@ -64,3 +64,37 @@
   justify-content: center;
   width: 75px;
 }
+
+.about-container {
+  background-color: #0f232d;;
+  display: flex;
+  font-weight: lighter;
+  width: 100vw;
+}
+
+.about-copy {
+  align-items: center;
+  color: white;
+  display: flex;
+  margin: 0px 0px 0px 50px;
+}
+
+.about-copy > div > h1 {
+  align-self: flex-start;
+  font-size: 50px;
+  font-weight: lighter;
+  margin: 10px 0px 10px 0px;
+}
+
+.about-copy > div {
+  margin: 10px 0px 10px 0px;
+  max-width: 600px;
+}
+
+.about-copy > div:not(:last-child) {
+  margin-right: 40px;
+}
+
+.about-copy > p {
+  align-self: flex-start;
+}
