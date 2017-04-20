@@ -22,7 +22,7 @@
   text-align: center;
 }
 
-.about-container {
+.how-container {
   color: #1296d8;
   display: flex;
   justify-content: center;
@@ -30,11 +30,11 @@
   width: 100vw;
 }
 
-.about-container > div:not(:last-child) {
+.how-container > div:not(:last-child) {
   border-right: 1px #1296d8 solid;
 }
 
-.about-copy {
+.how-copy {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -44,11 +44,23 @@
   width: 33vw;
 }
 
-.about-copy > div {
+.how-copy > div {
   font-size: 40px;
   margin: 0px 0px 10px 0px;
 }
 
-.about-copy > p {
+.how-copy > p {
+  padding: 0px 5px 0px 5px;
   margin: 5px 0px 0px 0px;
+}
+
+.how-step {
+  align-items: center;
+  background-color: #1296d8;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  height: 75px;
+  justify-content: center;
+  width: 75px;
 }
