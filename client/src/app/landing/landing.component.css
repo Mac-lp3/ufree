@@ -1,9 +1,23 @@
 .image-box {
-  width: 100vw;
-  height: 75vh;
+  align-items: center;
   background-image: linear-gradient(
     rgba(16, 155, 191, 0.5),
     rgba(67,204,152, 0.5)
   ), url("/assets/color-tablet.jpeg");
   background-size: cover;
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.main-text-wraper {
+  align-self: center;
+  background-color: rgba(86, 86, 86, .7);
+  color: white;
+  font-size: 70px;
+  margin-bottom: 20px;
+  padding: 0px 20px 0px 20px;
+  text-align: center;
 }
