@@ -4,6 +4,7 @@
   color: white;
   display: flex;
   font-weight: lighter;
+  flex-direction: column;
   justify-content: center;
   width: 100vw;
 }
