@@ -5,7 +5,8 @@ import { EventService } from '../services/event.service'
 
 @Component({
   selector: 'event',
-  templateUrl: 'event.component.html'
+  templateUrl: 'event.component.html',
+  styleUrls:  ['./event.component.css']
 })
 export class EventComponent {
   eventId: string;

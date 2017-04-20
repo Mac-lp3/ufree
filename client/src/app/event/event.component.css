@@ -1,0 +1,15 @@
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
+.week-row {
+  display: flex;
+}
+
+.day-box {
+  background-color: gray;
+  width:1vw;
+  height: 1vh;
+}
