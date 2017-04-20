@@ -21,3 +21,34 @@
   padding: 0px 20px 0px 20px;
   text-align: center;
 }
+
+.about-container {
+  color: #1296d8;
+  display: flex;
+  justify-content: center;
+  margin: 30px 0px 30px 0px;
+  width: 100vw;
+}
+
+.about-container > div:not(:last-child) {
+  border-right: 1px #1296d8 solid;
+}
+
+.about-copy {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 0px 5px 0px;
+  text-align: center;
+  width: 33vw;
+}
+
+.about-copy > div {
+  font-size: 40px;
+  margin: 0px 0px 10px 0px;
+}
+
+.about-copy > p {
+  margin: 5px 0px 0px 0px;
+}
