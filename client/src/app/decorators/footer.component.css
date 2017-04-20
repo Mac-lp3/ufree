@@ -1,0 +1,13 @@
+.footer-content {
+  align-items: center;
+  background-color: #1296d8;
+  color: white;
+  display: flex;
+  font-weight: lighter;
+  justify-content: center;
+  width: 100vw;
+}
+
+.footer-copy {
+
+}
