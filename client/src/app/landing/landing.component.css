@@ -81,20 +81,21 @@
 
 .about-copy > div > h1 {
   align-self: flex-start;
-  font-size: 50px;
+  font-size: 70px;
   font-weight: lighter;
   margin: 10px 0px 10px 0px;
 }
 
 .about-copy > div {
   margin: 10px 0px 10px 0px;
-  max-width: 600px;
+  max-width: 620px;
 }
 
 .about-copy > div:not(:last-child) {
   margin-right: 40px;
 }
 
-.about-copy > p {
+.about-copy > div > p {
   align-self: flex-start;
+  font-size: 20px;
 }
