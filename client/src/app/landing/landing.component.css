@@ -22,6 +22,21 @@
   text-align: center;
 }
 
+.start-button {
+  align-self: center;
+  background-color: #1296d8;
+  color: white;
+  font-size: 45px;
+  height: 75px;
+  line-height: 75px;
+  text-align: center;
+  width: 300px;
+}
+
+.start-button:hover {
+  background-color: #0f232d;
+}
+
 .how-container {
   color: #1296d8;
   display: flex;
@@ -66,7 +81,7 @@
 }
 
 .about-container {
-  background-color: #0f232d;;
+  background-color: #0f232d;
   display: flex;
   font-weight: lighter;
   width: 100vw;
