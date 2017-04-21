@@ -91,26 +91,27 @@
   align-items: center;
   color: white;
   display: flex;
-  margin: 0px 0px 0px 50px;
-}
-
-.about-copy > div > h1 {
-  align-self: flex-start;
-  font-size: 70px;
-  font-weight: lighter;
-  margin: 10px 0px 10px 0px;
+  flex-direction: column;
+  height: 380px;
+  justify-content: space-around;
+  margin: 0px 20px;
 }
 
 .about-copy > div {
-  margin: 10px 0px 10px 0px;
-  max-width: 620px;
+  align-items: center;
+  display: flex;
 }
 
-.about-copy > div:not(:last-child) {
-  margin-right: 40px;
+.about-copy > div > h1 {
+  font-size: 70px;
+  font-weight: lighter;
+  margin: 0px;
 }
 
-.about-copy > div > p {
-  align-self: flex-start;
+.about-copy > div > div {
+  align-items: center;
+  display: flex;
+  flex-shrink: 1000000;
   font-size: 20px;
+  margin-left: 30px;
 }
