@@ -12,3 +12,11 @@ body {
 .Site-content {
   flex: 1;
 }
+
+.button-link {
+  color: inherit;
+  text-decoration: inherit;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
