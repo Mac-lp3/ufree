@@ -5,6 +5,7 @@ import { EventService } from '../services/event.service'
 
 @Component({
   selector: 'event',
+  host: { class: 'Site-content' },
   templateUrl: 'event.component.html',
   styleUrls:  ['./event.component.css']
 })
