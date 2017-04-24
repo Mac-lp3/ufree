@@ -13,9 +13,22 @@
 }
 
 .day-box {
-  background-color: blue;
-  width:150px;
-  height: 150px;
+  background-color: #1296d8;
+  height: 125px;
+  opacity: .8;
+  width:125px;
+}
+
+.out-of-month {
+  opacity: .3;
+}
+
+.tentative {
+  background-color: #fff34f;
+}
+
+.not-free {
+  background-color: #ff5623;
 }
 
 .week-row > .day-box:not(:last-child) {
