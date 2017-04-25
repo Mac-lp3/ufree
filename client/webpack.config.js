@@ -37,6 +37,7 @@ const webpackConfig = {
           'angular2-router-loader'
         ]
       },
+      { test: /\.sass$/, exclude: /node_modules/, loaders: ['raw-loader', 'sass-loader'] },
       { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'] },
       { test: /\.html$/, loader: 'raw-loader' },
       { test: /\.jpeg$/, loader: 'file' }
