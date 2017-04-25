@@ -20,43 +20,7 @@
     </div>
   </div>
   <div class="calendar">
-    <div class="week-row">
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-    </div>
-    <div class="week-row">
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-    </div>
-    <div class="week-row">
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-    </div>
-    <div class="week-row">
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-    </div>
-    <div class="week-row">
+    <div *ngFor="let item of createRange(5);" class="week-row">
       <div class="day-box"></div>
       <div class="day-box"></div>
       <div class="day-box"></div>

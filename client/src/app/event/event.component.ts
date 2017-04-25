@@ -18,6 +18,14 @@ export class EventComponent {
 			console.log(event);
 		});
 	};
+
+  createRange(number) {
+    var items: number[] = [];
+    for(var i = 0; i < number; ++i){
+      items.push(i);
+    }
+    return items;
+  };
 }
 
 export interface Event {
