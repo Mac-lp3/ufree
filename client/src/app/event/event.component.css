@@ -1,11 +1,39 @@
 .calendar {
-  margin: 5px auto;
+  margin: 5px 5px;
 }
 
 .calendar-container {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   width: 100vw;
+}
+
+.day-options {
+  background-color: #0f232d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 25px;
+  height: 250px;
+  justify-content: space-between;
+  margin: 5px 0px;
+  width: 200px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.option-color {
+  background-color: white;
+  height: 20px;
+  width: 20px;
+}
+
+.option-label {
+  margin-right: auto;
 }
 
 .week-row {
@@ -14,9 +42,11 @@
 
 .day-box {
   background-color: #1296d8;
-  height: 125px;
+  height: 9vw;
+  max-height: 120px;
+  max-width: 120px;
   opacity: .8;
-  width:125px;
+  width:9vw;
 }
 
 .day-box:hover {
