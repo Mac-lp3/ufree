@@ -7,7 +7,7 @@ import { EventService } from '../services/event.service'
   selector: 'event',
   host: { class: 'Site-content' },
   templateUrl: 'event.component.html',
-  styleUrls:  ['./event.component.css']
+  styleUrls:  ['./event.component.sass']
 })
 export class EventComponent {
   eventId: string;
