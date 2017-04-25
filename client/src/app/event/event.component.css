@@ -19,6 +19,10 @@
   width:125px;
 }
 
+.day-box:hover {
+  opacity: .6;
+}
+
 .out-of-month {
   opacity: .3;
 }
