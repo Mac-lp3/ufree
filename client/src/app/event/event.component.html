@@ -20,14 +20,14 @@
     </div>
   </div>
   <div class="calendar">
-    <div *ngFor="let item of createRange(5);" class="week-row">
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
-      <div class="day-box"></div>
+    <div *ngFor="let item of createRange(5); let i = index;" class="week-row">
+      <div id="{{'day' + ((i*7) + 1)}}" class="day-box"></div>
+      <div id="{{'day' + ((i*7) + 2)}}" class="day-box"></div>
+      <div id="{{'day' + ((i*7) + 3)}}" class="day-box"></div>
+      <div id="{{'day' + ((i*7) + 4)}}" class="day-box"></div>
+      <div id="{{'day' + ((i*7) + 5)}}" class="day-box"></div>
+      <div id="{{'day' + ((i*7) + 6)}}" class="day-box"></div>
+      <div id="{{'day' + ((i*7) + 7)}}" class="day-box"></div>
     </div>
   </div>
 </div>
