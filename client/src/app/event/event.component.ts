@@ -11,6 +11,7 @@ import { EventService } from '../services/event.service'
 })
 export class EventComponent {
   eventId: string;
+  selectedOption: number;
 
 	constuctor(eventService: EventService, route: ActivatedRoute) {
     this.eventId = route.snapshot.params['id'];
@@ -25,6 +26,10 @@ export class EventComponent {
       items.push(i);
     }
     return items;
+  };
+
+  applyToDateBox(id) {
+
   };
 }
 
