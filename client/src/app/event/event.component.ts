@@ -11,7 +11,8 @@ import { EventService } from '../services/event.service'
 })
 export class EventComponent {
   eventId: string;
-  selectedOption: number;
+  selectedOption: number = 1;
+  dayArray: Day[];
 
 	constuctor(eventService: EventService, route: ActivatedRoute) {
     this.eventId = route.snapshot.params['id'];
@@ -28,9 +29,18 @@ export class EventComponent {
     return items;
   };
 
-  applyToDateBox(id) {
-
+  setOption(value) {
+    console.log('Cliqued ' + value);
+    if (value <= 3 && value >= 0) {
+      this.selectedOption = value;
+    }
   };
+}
+
+export interface Day {
+  red: number;
+  yellow: number;
+  blue: number;
 }
 
 export interface Event {
