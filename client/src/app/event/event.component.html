@@ -21,13 +21,8 @@
   </div>
   <div class="calendar">
     <div *ngFor="let item of createRange(5); let i = index;" class="week-row">
-      <div id="{{'day' + ((i*7) + 1)}}" class="day-box"></div>
-      <div id="{{'day' + ((i*7) + 2)}}" class="day-box"></div>
-      <div id="{{'day' + ((i*7) + 3)}}" class="day-box"></div>
-      <div id="{{'day' + ((i*7) + 4)}}" class="day-box"></div>
-      <div id="{{'day' + ((i*7) + 5)}}" class="day-box"></div>
-      <div id="{{'day' + ((i*7) + 6)}}" class="day-box"></div>
-      <div id="{{'day' + ((i*7) + 7)}}" class="day-box"></div>
+      <div *ngFor="let thing of createRange(7); let j = index;" class="day-box"
+        id="{{'day' + ((i*7) + (j))}}"></div>
     </div>
   </div>
 </div>
