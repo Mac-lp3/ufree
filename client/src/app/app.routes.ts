@@ -10,5 +10,8 @@ export const rootRouterConfig: Routes = [
   {
     path: 'events/:id',
     component: EventComponent
-  }
+  },
+  { path: 'events',
+    redirectTo: ''
+  },
 ];
