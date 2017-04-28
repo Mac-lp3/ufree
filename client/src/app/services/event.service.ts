@@ -5,8 +5,8 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class EventService {
-  baseUrl: string
-  postHeaders: Headers
+  baseUrl: string;
+  postHeaders: Headers;
 
   constructor(private http: Http) {
     this.baseUrl = 'localhost:4000/events/';
@@ -27,7 +27,7 @@ export class EventService {
     let url = this.baseUrl + id;
 
     return this.http.get(url).map((res) => {
-      res.json()
+      return res.json().data || { };
     });
   }
 
@@ -35,7 +35,7 @@ export class EventService {
     let url = this.baseUrl;
 
     return this.http.post(url, event, {headers: this.postHeaders}).map((res) => {
-      res.json()
+      return res.json().data || { };
     });
   }
 }
