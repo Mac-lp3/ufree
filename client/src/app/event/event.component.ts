@@ -11,11 +11,12 @@ import { EventService } from '../services/event.service'
 })
 export class EventComponent {
   eventId: string;
-  selectedOption: number = 1;
+  selectedOption: number;
   dayArray: Day[];
 
 	constuctor(eventService: EventService, route: ActivatedRoute) {
     this.eventId = route.snapshot.params['id'];
+    this.selectedOption = 3;
 		eventService.getEventById(this.eventId).subscribe((event) => {
 			console.log(event);
 		});
