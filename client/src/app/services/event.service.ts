@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 export class EventService {
   baseUrl: string;
   postHeaders: Headers;
-
+  
   constructor(private http: Http) {
     this.baseUrl = 'localhost:4000/events/';
     this.postHeaders = new Headers({

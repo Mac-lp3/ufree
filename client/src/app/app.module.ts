@@ -6,6 +6,7 @@ import { NavbarComponent }  from './decorators/navbar.component';
 import { FooterComponent }  from './decorators/footer.component';
 import { LandingComponent } from './landing/landing.component';
 import { EventComponent }   from './event/event.component';
+import { EventService }   from './services/event.service';
 import { AppComponent }     from './app.component';
 import { HttpModule } from '@angular/http';
 
@@ -23,6 +24,7 @@ import { HttpModule } from '@angular/http';
     LandingComponent,
     EventComponent
   ],
-  bootstrap:    [ AppComponent ]
+  providers: [EventService],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -6,8 +6,7 @@ import { EventService } from '../services/event.service'
   selector: 'landing',
   host: { class: 'Site-content' },
   templateUrl: 'landing.component.html',
-  styleUrls:  ['./landing.component.sass'],
-  providers: [EventService]
+  styleUrls:  ['./landing.component.sass']
 })
 export class LandingComponent {
 
