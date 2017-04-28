@@ -7,10 +7,13 @@ import { FooterComponent }  from './decorators/footer.component';
 import { LandingComponent } from './landing/landing.component';
 import { EventComponent }   from './event/event.component';
 import { AppComponent }     from './app.component';
+import { HttpModule } from '@angular/http';
+
 
 @NgModule({
   imports:      [
     BrowserModule,
+    HttpModule,
     RouterModule.forRoot(rootRouterConfig, { useHash: true })
   ],
   declarations: [
