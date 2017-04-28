@@ -7,19 +7,18 @@ import { EventService } from '../services/event.service'
   selector: 'event',
   host: { class: 'Site-content' },
   templateUrl: 'event.component.html',
-  styleUrls:  ['./event.component.sass']
+  styleUrls:  ['./event.component.sass'],
+  providers: [EventService]
 })
 export class EventComponent {
   eventId: string;
   selectedOption: number;
   dayArray: Day[];
 
-	constuctor(eventService: EventService, route: ActivatedRoute) {
-    this.eventId = route.snapshot.params['id'];
+	constructor(private _eventService: EventService, private _route: ActivatedRoute) {
+    this.eventId = _route.snapshot.params['id'];
     this.selectedOption = 3;
-		eventService.getEventById(this.eventId).subscribe((event) => {
-			console.log(event);
-		});
+		_eventService.getEventById(this.eventId).map(this.extractMonthData);
 	};
 
   createRange(number) {
@@ -35,6 +34,13 @@ export class EventComponent {
     if (value <= 3 && value >= 0) {
       this.selectedOption = value;
     }
+  };
+
+  extractMonthData (event: any, error) {
+    console.log(event);
+    event.attendies.forEach((attendee) => {
+
+    });
   };
 }
 
