@@ -10,12 +10,5 @@ export const rootRouterConfig: Routes = [
   {
     path: 'events/:id',
     component: EventComponent
-  },
-  {
-    path: 'events', component: EventComponent, children: [
-      {
-        path: ':id', component: EventComponent
-      }
-    ]
   }
 ];
