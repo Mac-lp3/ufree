@@ -2,19 +2,23 @@
 </div>
 <div class="calendar-container">
   <div class="day-options">
-    <div class="option" (click)="setOption(3)">
+    <div class="option" (click)="setOption(3)"
+      [ngClass]="{'option-selected': selectedOption === 3}">
       <div class="option-label">Free</div>
       <div class="option-color"></div>
     </div>
-    <div class="option" (click)="setOption(2)">
+    <div class="option" (click)="setOption(2)"
+      [ngClass]="{'option-selected': selectedOption === 2}">
       <div class="option-label">Maybe</div>
       <div class="option-color"></div>
     </div>
-    <div class="option" (click)="setOption(1)">
+    <div class="option" (click)="setOption(1)"
+      [ngClass]="{'option-selected': selectedOption === 1}">
       <div class="option-label">No Way</div>
       <div class="option-color"></div>
     </div>
-    <div class="option" (click)="setOption(0)">
+    <div class="option" (click)="setOption(0)"
+      [ngClass]="{'option-selected': selectedOption === 0}">
       <div class="option-label">Clear</div>
       <div class="option-color"></div>
     </div>
