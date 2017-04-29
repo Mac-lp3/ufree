@@ -17,7 +17,12 @@ export class EventComponent {
 	constructor(private _eventService: EventService, private _route: ActivatedRoute) {
     this.eventId = _route.snapshot.params['id'];
     this.selectedOption = 3;
-		_eventService.getEventById(this.eventId).map(this.extractMonthData);
+    _eventService.getEventById(this.eventId).subscribe(
+      this.extractMonthData,
+      err => {
+        console.log(err)
+      }
+    );
 	};
 
   createRange(number) {
@@ -35,8 +40,8 @@ export class EventComponent {
     }
   };
 
-  extractMonthData (event: any, error) {
-    console.log(event);
+  extractMonthData (event: any) {
+    console.log('extracting ' + event);
     event.attendies.forEach((attendee) => {
 
     });
