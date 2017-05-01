@@ -43,7 +43,14 @@ def start_server ():
 @task(description='''
     Starts the database, builds client-side code, and starts the server
 ''')
-def start_stack ():
+def build_and_start ():
     start_db()
     build_client()
+    start_server()
+
+@task(description='''
+    Starts the database and server
+''')
+def start ():
+    start_db()
     start_server()
