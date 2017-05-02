@@ -6,7 +6,7 @@ use_plugin("python.core")
 
 def start_db ():
     proc = subprocess.Popen(
-        ['pg_ctl', 'start', '-D', '/usr/local/pgsql/data', '-l', 'db-logfile'],
+        ['pg_ctl', 'start', '-D', './database', '-l', 'db-logfile'],
         stdin=subprocess.PIPE
     )
     print(proc.communicate())
