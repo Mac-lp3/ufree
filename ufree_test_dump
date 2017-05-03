@@ -10,14 +10,14 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -30,22 +30,32 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: dateranges; Type: TABLE; Schema: public; Owner: Home; Tablespace: 
+-- Name: availability; Type: TABLE; Schema: public; Owner: Home; Tablespace:
 --
 
-CREATE TABLE dateranges (
+CREATE TABLE availability (
     id integer NOT NULL,
-    creator character varying(28),
-    fromdate date,
-    todate date,
-    eventid integer NOT NULL
+    attendee_id integer NOT NULL,
+    event_id integer NOT NULL,
+    year date,
+    january string,
+    february string,
+    march string,
+    april string,
+    may string,
+    june string,
+    july string,
+    august string,
+    september string,
+    october string,
+    november string,
+    december string
 );
 
-
-ALTER TABLE public.dateranges OWNER TO "Home";
+ALTER TABLE public.availability OWNER TO "Home";
 
 --
--- Name: dateranges_eventid_seq; Type: SEQUENCE; Schema: public; Owner: Home
+-- Name: availability_eventid_seq; Type: SEQUENCE; Schema: public; Owner: Home
 --
 
 CREATE SEQUENCE dateranges_eventid_seq
@@ -87,7 +97,7 @@ ALTER SEQUENCE dateranges_id_seq OWNED BY dateranges.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: Home; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: Home; Tablespace:
 --
 
 CREATE TABLE events (
@@ -179,7 +189,7 @@ SELECT pg_catalog.setval('events_id_seq', 4, true);
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: Home; Tablespace: 
+-- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: Home; Tablespace:
 --
 
 ALTER TABLE ONLY events
@@ -207,4 +217,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
