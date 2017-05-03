@@ -34,7 +34,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE availability (
-    id integer NOT NULL,
+    id integer SERIAL NOT NULL PRIMARY KEY,
     attendee_id integer NOT NULL,
     event_id integer NOT NULL,
     year date,
