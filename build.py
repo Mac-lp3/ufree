@@ -1,6 +1,4 @@
 from pybuilder.core import use_plugin, task
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from psycopg2 import connect
 import subprocess
 import sys
 import os
