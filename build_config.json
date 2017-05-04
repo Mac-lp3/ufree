@@ -1,8 +1,8 @@
 {
-    "postgres":{
+    "database":{
         "host": "localhost",
         "port": 5433,
-        "user": "postgres",
-        "passwd": ""
+        "user": "user",
+        "password": "password"
     }
 }
