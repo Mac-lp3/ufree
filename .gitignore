@@ -1,6 +1,5 @@
 /venv
 .DS_Store
-build_config.json
 db-logfile
 static/js/bundle.js
 *.pyc
