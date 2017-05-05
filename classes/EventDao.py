@@ -1,3 +1,4 @@
+import os
 import psycopg2
 import classes.exception.DaoException as DaoException
 from classes.HashCodeUtils import HashCodeUtils
@@ -5,7 +6,8 @@ from classes.HashCodeUtils import HashCodeUtils
 class EventDao:
 
 	try:
-		conn = psycopg2.connect("dbname='ufree'")
+		db_conn_str = 'dbname=' + os.environ['DB_NAME']
+		conn = psycopg2.connect(db_conn_str)
 		cur = conn.cursor()
 	except:
 		cur = {}
