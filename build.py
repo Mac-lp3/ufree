@@ -117,8 +117,10 @@ def start_app_server ():
     print('starting the application server...')
     main_path = os.path.join(dir_path, 'main.py')
     print('starting ' + main_path)
-    proc = subprocess.Popen(
+    os.system('python ' + main_path)
+    subprocess.call(
         ['python', main_path],
+        shell=True,
         stdin=subprocess.PIPE
     )
     print(proc.communicate())
