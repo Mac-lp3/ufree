@@ -7,17 +7,27 @@ import json
 use_plugin('python.core')
 use_plugin('python.frosted')
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-
 config = {}
-with open('build_config.json') as json_data_file:
-    config = json.load(json_data_file)
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def check_db_exists ():
     # check if ufree database exists
-    arg_array = ['psql', '-U', config['postgres']['user'], 'ufree', '-W', config['postgres']['passwd']]
-    if not config['postgres']['passwd']:
-        arg_array = ['psql', '-U', config['postgres']['user'], 'ufree']
+    if not config['database']['password']:
+        arg_array = [
+            'psql',
+            '-U',
+            config['database']['user'],
+            os.environ['DB_NAME']
+        ]
+    else:
+        arg_array = [
+            'psql',
+            '-U',
+            config['database']['user'],
+            os.environ['DB_NAME'],
+            '-W',
+            config['database']['password']
+        ]
 
     db_exist = subprocess.Popen(
         arg_array,
@@ -28,12 +38,12 @@ def check_db_exists ():
     print(out, err)
 
     # check output for 'does not exist...' string
-    check_string = b'FATAL:  database \"ufree\" does not exist'
+    check_string = str.encode('FATAL:  database \"' + os.environ['DB_NAME'] + '\" does not exist')
     if check_string in out or check_string in err:
         # initialize cluster if found
-        print('ufree database not found. creating...')
+        print('Database not found. creating...')
         create_db = subprocess.Popen(
-            ['createdb', '-U', config['postgres']['user'], 'ufree'],
+            ['createdb', '-U', config['database']['user'], os.environ['DB_NAME']],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
@@ -63,10 +73,10 @@ def check_db_cluster ():
         if create_db.returncode > 0:
             sys.exit()
 
-def start_db ():
+def start_db_server ():
     print('Starting database...')
     check_db_cluster()
-    port_arg = '\"-p ' + str(config['postgres']['port']) + '\"'
+    port_arg = '\"-p ' + str(config['database']['port']) + '\"'
     print('using port: ' + port_arg)
     start_db = subprocess.Popen([
         'pg_ctl',
@@ -81,7 +91,6 @@ def start_db ():
     print(start_db.communicate())
     if start_db.returncode > 0:
         sys.exit()
-    check_db_exists()
 
 def stop_db ():
     proc = subprocess.Popen(
@@ -93,15 +102,19 @@ def stop_db ():
         sys.exit()
 
 def build_client ():
+    prefix = os.path.join(dir_path, 'client')
+    print(os.environ['PATH'])
     proc = subprocess.Popen(
-        ['npm', '--prefix', 'client/', 'run', 'build'],
-        stdin=subprocess.PIPE
+        ['npm', '--prefix', prefix, 'run', 'build'],
+        shell=True,
+        stdout=subprocess.PIPE
     )
     print(proc.communicate())
     if proc.returncode > 0:
         sys.exit()
 
-def start_server ():
+def start_app_server ():
+    print('starting the application server...')
     main_path = os.path.join(dir_path, 'main.py')
     print('starting ' + main_path)
     proc = subprocess.Popen(
@@ -112,17 +125,40 @@ def start_server ():
     if proc.returncode > 0:
         sys.exit()
 
-@task(description='''
-    Starts the database, builds client-side code, and starts the server
-''')
-def build_and_start ():
-    start_db()
-    build_client()
-    start_server()
+def load_config ():
+    global config
+    if os.environ['ENV'] != 'production':
+        with open('build_config_dev.json') as json_data_file:
+            config = json.load(json_data_file)
+    else:
+        with open('build_config_prod.json') as json_data_file:
+            config = json.load(json_data_file)
 
 @task(description='''
-    Starts the database and server
+    Compiles client-side code
+''')
+def build ():
+    print('Building client side code...')
+    build_client()
+
+@task(description='''
+    Starts the database and app server in production mode
 ''')
 def start ():
-    start_db()
-    start_server()
+    os.environ['ENV'] = 'production'
+    os.environ['DB_NAME'] = 'ufree'
+    load_config()
+    start_db_server()
+    check_db_exists()
+    start_app_server()
+
+@task(description='''
+    Starts the database and app server in development mode
+''')
+def start_dev ():
+    os.environ['ENV'] = 'development'
+    os.environ['DB_NAME'] = 'ufree_dev'
+    load_config()
+    start_db_server()
+    check_db_exists()
+    start_app_server()
