@@ -11,22 +11,22 @@ class EventDao:
 		cur = conn.cursor()
 	except:
 		cur = {}
-		print("I am unable to connect to the database")
+		print('I am unable to connect to the database')
 
 	def event_exists(eventId):
 
-		EventDao.cur.execute("SELECT name FROM events WHERE id = {0}".format(eventId))
+		EventDao.cur.execute('SELECT name FROM events WHERE id = {0}'.format(eventId))
 		return EventDao.cur.fetchone() is not None
 
 	def load_event(eventId):
-		"""
+		'''
 		Loads an event object by a given id.
-		"""
+		'''
 
-		EventDao.cur.execute("SELECT id, name from events WHERE id=" + str(eventId))
+		EventDao.cur.execute('SELECT id, name from events WHERE id=' + str(eventId))
 		eventRows = EventDao.cur.fetchall()
 
-		EventDao.cur.execute("SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=" + str(eventId))
+		EventDao.cur.execute('SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=' + str(eventId))
 		dateRangeRows = EventDao.cur.fetchall()
 
 		if (len(eventRows) == 1):
@@ -57,9 +57,9 @@ class EventDao:
 			print('need to do a thing here')
 
 	def save_event(eventObject):
-		"""
+		'''
 		Generates a unique ID for the event and creates a new instance in the database.
-		"""
+		'''
 
 		# generate an initial id based on event name
 		generatedId = HashCodeUtils.generate_code(eventObject['name'])
@@ -95,12 +95,12 @@ class EventDao:
 		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE eventid={1}'.format(eventObject['name']), eventObject['id'])
 
 	def delete_event(eventObject):
-		"""
+		'''
 		Deletes the event with the given eventHash and all associated date ranges.
 
 		If successful, this function returns nothing. A corresponding exception is thrown
 		otherwise.
-		"""
+		'''
 
 		try:
 			EventDao.cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
