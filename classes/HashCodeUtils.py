@@ -1,3 +1,4 @@
+import re
 import hashlib
 
 class HashCodeUtils:
@@ -23,7 +24,13 @@ class HashCodeUtils:
 		if not isinstance(hashcode, str):
 			errorMessages.append('Event hash must be a string')
 
-		elif not self.hashPattern.match(hashcode):
+		if not HashCodeUtils.hashPattern.match(hashcode):
 			errorMessages.append('Hash can only include numbers and letters')
+
+		if len(hashcode) < 32:
+			errorMessages.append('Hash is less than 32 characters')
+
+		if len(hashcode) > 32:
+			errorMessages.append('Hash is greater than 32 characters')
 
 		return errorMessages
