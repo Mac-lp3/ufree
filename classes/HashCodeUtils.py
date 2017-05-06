@@ -1,15 +1,29 @@
+import hashlib
+
 class HashCodeUtils:
 
-	def generate_code(seed):
-		'''
-		Generates a new 64 bit FNV-1a hash with the provided seed.
-		'''
+	hashPattern = re.compile('[a-zA-Z\d]+$')
 
-		hval = 0x811c9dc5
-		fnv_32_prime = 0x01000193
-		uint32_max = 2 ** 32
-		for s in seed:
-			hval = hval ^ ord(s)
-			hval = (hval * fnv_32_prime) % uint32_max
+	def generate_code (seed):
+		'''
+		Generates a new 64 bit MD5 hash code with the provided seed.
+		'''
+		m = hashlib.md5()
+		m.update(seed.encode('utf-8'))
+		val = m.hexdigest()
 
-		return hval
+		return val
+
+	def validate_hash (hashcode):
+		'''
+		Validates the given hash is in expected format
+		'''
+		errorMessages = []
+
+		if not isinstance(hashcode, str):
+			errorMessages.append('Event hash must be a string')
+
+		elif not self.hashPattern.match(hashcode):
+			errorMessages.append('Hash can only include numbers and letters')
+
+		return errorMessages
