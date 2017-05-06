@@ -11,47 +11,41 @@ class ApiInputValidator:
 	hashPattern = re.compile('[a-zA-Z\d]+$')
 
 	def validate_event_hash(eventHash):
-		"""
-		Checks the provided string to alidates it is a FNV-1a hash.
+		'''
+		Checks the provided string is an acceptable MD5 hash.
 
-		A proper FNV-1a hashcode only includes alpha numeric characters
-		without spaces.
-		"""
+		Returns a list of error messages or an empty list if none found.
+		'''
 
 		return HashCodeUtils.validate_hash(eventHash)
 
 	def validate_event(eventObject):
-		"""
-		Validates a given event object.
+		'''
+		Validates each field of the event object.
 
-		Returns a list of error messages if any problems are found. Returns
-		an empty list if none are discovered.
-		"""
+		Returns a list of error messages or an empty list if none found.
+		'''
 
 		errorMessages = []
 
 		if not isinstance(eventObject['name'], str):
 			errorMessages.append('Name must be a string')
 
-		elif len(eventObject['name']) > 30:
+		if len(eventObject['name']) > 30:
 			errorMessages.append('Name must be less than 30 characters')
 
-		elif not ApiInputValidator.namePattern.match(eventObject['name']):
+		if not ApiInputValidator.namePattern.match(eventObject['name']):
 			errorMessages.append('Name must only contain letters or numbers')
-
-		elif hasattr(eventObject, 'dateRanges'):
-			for dateRange in eventObject['dateRanges']:
-				errorMessages.append(validateDateRange(dateRange))
 
 		return errorMessages
 
 	def validate_date_range(dateRangeObject):
-		"""
+		'''
 		Validates a given date range object
 
 		Returns a list of error messages if any problems are found. Returns
 		an empty list if none are discovered.
-		"""
+		'''
 
 		errorMessages = []
 
