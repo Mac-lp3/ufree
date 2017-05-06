@@ -7,15 +7,6 @@ class ApiInputValidator:
 	#just letters, numbers, and spaces
 	namePattern = re.compile('[a-zA-Z\d\s]')
 
-	def validate_event_hash(eventHash):
-		'''
-		Checks the provided string is an acceptable MD5 hash.
-
-		Returns a list of error messages or an empty list if none found.
-		'''
-
-		return HashCodeUtils.validate_hash(eventHash)
-
 	def validate_event(eventObject):
 		'''
 		Validates each field of the event object.
