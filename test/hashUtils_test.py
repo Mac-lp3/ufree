@@ -1,9 +1,13 @@
+import os
 import unittest
-from classes.HashCodeUtils import HashCodeUtils
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+fts = os.path.join(dir_path, '..\classes\HashCodeUtils.py')
+exec(open(fts).read())
 
 class HashCodeUtilsTest(unittest.TestCase):
 
-	def test_hash_method(self): 
+	def test_hash_method(self):
 		seedToUse = 'Tom\'s cool hang out thing!'
 
 		print('Using seed: ' + seedToUse)
