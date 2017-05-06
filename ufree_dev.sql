@@ -1,5 +1,5 @@
 CREATE TABLE availability (
-    id integer SERIAL NOT NULL PRIMARY KEY,
+    id SERIAL NOT NULL PRIMARY KEY,
     attendee_id integer NOT NULL,
     event_id varchar NOT NULL,
     year date,
@@ -18,14 +18,14 @@ CREATE TABLE availability (
 );
 
 CREATE TABLE attendee (
-  id integer SERIAL NOT NULL PRIMARY KEY,
+  id SERIAL NOT NULL PRIMARY KEY,
   name varchar(15) NOT NULL,
   event_id varchar NOT NULL,
   joined_date date,
   email varchar(50)
-)
+);
 
-CREATE TABLE events (
+CREATE TABLE event (
     id varchar NOT NULL,
     name varchar(20) NOT NULL,
     creator_id integer NOT NULL,
