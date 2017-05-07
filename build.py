@@ -136,16 +136,21 @@ def load_config ():
         with open('build_config_prod.json') as json_data_file:
             config = json.load(json_data_file)
 
-@task(description='''
-    Compiles client-side code
-''')
+@task(description='Uses Nose to run all unit tests')
+def test ():
+    proc = subprocess.Popen(
+        ['nosetests'],
+        shell=True,
+        stdout=subprocess.PIPE
+    )
+    print(proc.communicate())
+
+@task(description='Compiles client-side code')
 def build ():
     print('Building client side code...')
     build_client()
 
-@task(description='''
-    Starts the database and app server in production mode
-''')
+@task(description='Starts the database and app server in production mode')
 def start ():
     os.environ['ENV'] = 'production'
     os.environ['DB_NAME'] = 'ufree'
@@ -154,9 +159,7 @@ def start ():
     check_db_exists()
     start_app_server()
 
-@task(description='''
-    Starts the database and app server in development mode
-''')
+@task(description='Starts the database and app server in development mode')
 def start_dev ():
     os.environ['ENV'] = 'development'
     os.environ['DB_NAME'] = 'ufree_dev'
