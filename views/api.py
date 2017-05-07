@@ -1,6 +1,6 @@
 import os
 
-if os.environ['ENV'] != 'production':
+if os.environ['ENV'] == 'test':
 	from test.classes.EventDao import EventDao
 	from test.classes.Psycopg2 import psycopg2
 else:
