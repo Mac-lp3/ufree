@@ -4,6 +4,18 @@ from classes.HashCodeUtils import HashCodeUtils
 
 class psycopg2:
     def connect (str):
-        return {
-            'name': 'omg'
-        }
+        return new Connection()
+
+class Connection:
+    def cursor ():
+        return new Cursor()
+
+class Cursor:
+    def execute (string):
+        print('mocking ' + string)
+
+    def fetchone ():
+        print('fetching one...')
+
+    def fetchall ():
+        print('fetching all...')
