@@ -12,6 +12,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def check_db_exists ():
     # check if ufree database exists
+    print('Checking DB for required tables...')
     if not config['database']['password']:
         arg_array = [
             'psql',
@@ -29,8 +30,10 @@ def check_db_exists ():
             config['database']['password']
         ]
 
+    print(arg_array)
     db_exist = subprocess.Popen(
         arg_array,
+        shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
@@ -44,6 +47,7 @@ def check_db_exists ():
         print('Database not found. creating...')
         create_db = subprocess.Popen(
             ['createdb', '-U', config['database']['user'], os.environ['DB_NAME']],
+            shell=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )
@@ -87,7 +91,9 @@ def start_db_server ():
         '-l',
         './db-logfile',
         'start'
-    ], stdin=subprocess.PIPE)
+    ],
+    shell=True,
+    stdin=subprocess.PIPE)
     print(start_db.communicate())
     if start_db.returncode > 0:
         sys.exit()
