@@ -10,19 +10,31 @@ class ApiInputValidatorTest(unittest.TestCase):
     goodEvent = {
         'id': 'kjhafu24kjsdncvhj23an3n32k1io213',
         'name': 'This is a good name',
-        'creator': 'Mikey Big $ C'
+        'creator': 'Mikey Big C'
     }
 
     starNameEvent = {
         'id': 'kjhafu24kjsdncvhj23an3n32k1io213',
         'name': '* This is a bad name',
-        'creator': 'Mikey Big $ C'
+        'creator': 'Mikey Big C'
     }
 
     closeNameEvent = {
         'id': 'kjhafu24kjsdncvhj23an3n32k1io213',
         'name': ') This is a bad name',
-        'creator': 'Mikey Big $ C'
+        'creator': 'Mikey Big C'
+    }
+
+    starCreatorEvent = {
+        'id': 'kjhafu24kjsdncvhj23an3n32k1io213',
+        'name': 'This is a good name',
+        'creator': 'Mikey Big * C'
+    }
+
+    closeCreatorEvent = {
+        'id': 'kjhafu24kjsdncvhj23an3n32k1io213',
+        'name': 'This is a good name',
+        'creator': ') Mikey Big C'
     }
 
     def test_event_validation (self):
@@ -30,6 +42,12 @@ class ApiInputValidatorTest(unittest.TestCase):
         self.assertEqual(len(test_messages), 1)
 
         test_messages = ApiInputValidator.validate_event(self.closeNameEvent)
+        self.assertEqual(len(test_messages), 1)
+
+        test_messages = ApiInputValidator.validate_event(self.starCreatorEvent)
+        self.assertEqual(len(test_messages), 1)
+
+        test_messages = ApiInputValidator.validate_event(self.closeCreatorEvent)
         self.assertEqual(len(test_messages), 1)
 
         test_messages = ApiInputValidator.validate_event(self.goodEvent)
