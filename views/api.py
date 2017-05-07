@@ -1,6 +1,13 @@
+import os
+
+if os.environ['ENV'] != 'production':
+	from test.classes.EventDao import EventDao
+	from test.classes.Psycopg2 import psycopg2
+else:
+	from classes.EventDao import EventDao
+	import psycopg2
+
 import json
-import psycopg2
-from classes.EventDao import EventDao
 from classes.exception.DaoException import DaoException
 from classes.ApiInputValidator import ApiInputValidator
 from pyramid.response import Response
