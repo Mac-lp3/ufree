@@ -4,7 +4,10 @@ import datetime
 class ApiInputValidator:
 
 	#just letters, numbers, and spaces
-	namePattern = re.compile('[a-zA-Z\d\s]')
+	event_name_pattern = re.compile('[-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/]')
+	event_name_length = 50
+	event_creator_pattern = re.compile('[-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/]')
+	event_creator_length = 25
 
 	def validate_event(eventObject):
 		'''
@@ -13,15 +16,32 @@ class ApiInputValidator:
 		Returns a list of error messages or an empty list if none found.
 		'''
 
-		errorMessages = []
+		error_messages = []
 
+		# Validate name field
 		if not isinstance(eventObject['name'], str):
-			errorMessages.append('Name must be a string')
+			error_messages.append('Name must be a string')
 
-		if len(eventObject['name']) > 30:
-			errorMessages.append('Name must be less than 30 characters')
+		if len(eventObject['name']) > ApiInputValidator.event_name_length:
+			message = 'Name must be less than {0} characters'.format(
+				ApiInputValidator.event_name_length
+			)
+			error_messages.append()
 
-		if not ApiInputValidator.namePattern.match(eventObject['name']):
-			errorMessages.append('Name must only contain letters or numbers')
+		if re.search(ApiInputValidator.event_name_pattern , eventObject['name']):
+			error_messages.append('Name must only contain letters or numbers')
 
-		return errorMessages
+		# Validate creator field
+		if not isinstance(eventObject['creator'], str):
+			error_messages.append('Creator must be a string')
+
+		if len(eventObject['creator']) > ApiInputValidator.event_creator_length:
+			message = 'Creator must be less than {0} characters'.format(
+				ApiInputValidator.event_creator_length
+			)
+			error_messages.append(message)
+
+		if re.search(ApiInputValidator.event_creator_pattern, eventObject['creator']):
+			error_messages.append('Creator must only contain letters or numbers')
+
+		return error_messages
