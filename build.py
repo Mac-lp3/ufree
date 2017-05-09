@@ -144,8 +144,9 @@ def load_config ():
 
 @task(description='Uses Nose to run all unit tests')
 def test ():
+    os.environ['ENV'] = 'test'
     proc = subprocess.Popen(
-        ['nosetests'],
+        ['nosetests', '-v'],
         shell=True,
         stdout=subprocess.PIPE
     )
