@@ -4,11 +4,11 @@ from classes.HashCodeUtils import HashCodeUtils
 
 class psycopg2:
     def connect (str):
-        return new Connection()
+        return Connection()
 
 class Connection:
     def cursor ():
-        return new Cursor()
+        return Cursor()
 
 class Cursor:
     def execute (string):
