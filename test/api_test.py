@@ -11,3 +11,6 @@ class ApiTest(unittest.TestCase):
         print(get_event)
         resp = get_event({'eventId': '123123123123123'})
         print('The resp', resp)
+
+if __name__ == '__main__':
+	unittest.main()
