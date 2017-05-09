@@ -17,11 +17,11 @@ from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
 def post_event(request):
-	"""
+	'''
 	Get data for a specific event by ID.
 
 	This returns the event object, populated by all date range objects
-	"""
+	'''
 
 	try:
 		inputErrors = ApiInputValidator.validate_event(request.json_body)
@@ -30,7 +30,7 @@ def post_event(request):
 			# hash is valid - save and return
 			data = EventDao.save_event(request.json_body)
 			json_data = json.dumps(data)
-			return json_data
+			response = json_data
 
 		else:
 			# bad input
@@ -47,12 +47,12 @@ def post_event(request):
 	return response
 
 def get_event(request):
-	"""
+	'''
 	Get data for a specific event by ID.
 
 	This returns the event object, populated by all date range objects
-	"""
-
+	'''
+	response = {}
 	try:
 		# validate
 		eventId = request.matchdict['eventId']
@@ -61,7 +61,7 @@ def get_event(request):
 		if not inputErrors:
 			data = EventDao.load_event(eventId)
 			json_data = json.dumps(data)
-			return json_data
+			response = json_data
 
 		else:
 			response = HTTPBadRequest()
@@ -77,12 +77,12 @@ def get_event(request):
 	return response
 
 def put_event(request):
-	"""
+	'''
 	Update an existing date rang in this eventDetails
 
 	If this eventDetails has existing date ranges, this will update
 	the one with the correspodning composite id.
-	"""
+	'''
 
 	try:
 		# validate sent object and its event hash
@@ -92,7 +92,7 @@ def put_event(request):
 		if not inputErrors:
 			data = EventDao.update_event(request.json_body)
 			json_data = json.dumps(data)
-			return json_data
+			response = json_data
 
 		else:
 			response = HTTPBadRequest()
@@ -108,12 +108,12 @@ def put_event(request):
 	return response
 
 def delete_event(request):
-	"""
+	'''
 	Delete an existing date rang in this eventDetails
 
 	If this eventDetails has existing date ranges, this will delete
 	the one with the correspodning composite id.
-	"""
+	'''
 
 	try:
 		# validate hash id
@@ -143,12 +143,12 @@ def delete_event(request):
 	return response
 
 def post_date_range(request):
-	"""
+	'''
 	Create a new date range associated with this event
 
 	This will create a new date range with a generated composite id
 	for this event.
-	"""
+	'''
 
 	try:
 		# validate event id and date range format
@@ -160,7 +160,7 @@ def post_date_range(request):
 			# hash is valid - save and return
 			data = EventDao.add_date_range(eventId, request.json_body)
 			json_data = json.dumps(data)
-			return json_data
+			response = json_data
 
 		else:
 			# bad input
