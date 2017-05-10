@@ -10,6 +10,7 @@ else:
 import json
 from classes.exception.DaoException import DaoException
 from classes.ApiInputValidator import ApiInputValidator
+from classes.HashCodeUtils import HashCodeUtils
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
@@ -56,7 +57,7 @@ def get_event(request):
 	try:
 		# validate
 		eventId = request.matchdict['eventId']
-		inputErrors = ApiInputValidator.validate_event_hash(eventId)
+		inputErrors = HashCodeUtils.validate_hash(eventId)
 
 		if not inputErrors:
 			data = EventDao.load_event(eventId)
