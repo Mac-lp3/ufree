@@ -1,13 +1,7 @@
 import os
-
-if os.environ['ENV'] == 'test':
-	from test.classes.EventDao import EventDao
-	from test.classes.Psycopg2 import psycopg2
-else:
-	from classes.EventDao import EventDao
-	import psycopg2
-
 import json
+import inspect
+import importlib
 from classes.exception.DaoException import DaoException
 from classes.ApiInputValidator import ApiInputValidator
 from classes.HashCodeUtils import HashCodeUtils
@@ -16,6 +10,20 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
+
+try:
+	if os.environ['ENV'] == 'test':
+		temp = importlib.import_module('test.classes.EventDao')
+		EventDao = temp.EventDao()
+		temp = importlib.import_module('test.classes.Psycopg2')
+		psycopg2 = temp.psycopg2()
+	else:
+		temp = __import__('classes.EventDao', fromlist=['ufree.classes'])
+		EventDao = temp.EventDao()
+		temp = __import__('psycopg2')
+		psycopg2 = temp.psycopg2()
+except ImportError:
+	print(ImportError)
 
 def post_event(request):
 	'''
