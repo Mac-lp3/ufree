@@ -1,5 +1,6 @@
 import os
 import unittest
+from pyramid import testing
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 fts = os.path.join(dir_path, '..\\views\\api.py')
@@ -10,20 +11,37 @@ class ApiTest(unittest.TestCase):
     __short_id = '123123123123123'
     __long_id = '123123123123123adsasdasdasdasj12jkas'
     __bad_char_id = 'sdkjhdsfakjh3232ksjdn$sdlk1dsw12'
+    __good_id = 'asd234fgh234asd123dfg123dfg23dfg'
 
-    def get_event_test (self):
+    def get_event_fail_test (self):
         # test bad id - too short
-        resp = get_event({'eventId': self.__short_id})
+        req = MockRequest(self.__short_id)
+        resp = get_event(req)
         self.assertEqual(type(resp), HTTPBadRequest)
 
         # test bad id - too long
-        resp = get_event({'eventId': self.__long_id})
+        req = MockRequest(self.__long_id)
+        resp = get_event(req)
         self.assertEqual(type(resp), HTTPBadRequest)
 
         # test bad id - too incorrect characters
-        resp = get_event({'eventId': self.__bad_char_id})
+        req = MockRequest(self.__bad_char_id)
+        resp = get_event(req)
         self.assertEqual(type(resp), HTTPBadRequest)
 
+    def get_event_success_test (self):
+        # test bad id - too short
+        req = MockRequest(self.__good_id)
+        resp = get_event(req)
+        print('the resp', resp)
+        self.assertEqual(1, HTTPBadRequest)
+
+class MockRequest():
+
+    matchdict = {}
+
+    def __init__ (self, id):
+        self.matchdict = {'eventId': id}
 
 if __name__ == '__main__':
 	unittest.main()
