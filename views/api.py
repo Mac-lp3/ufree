@@ -15,13 +15,12 @@ try:
 	if os.environ['ENV'] == 'test':
 		temp = importlib.import_module('test.classes.EventDao')
 		EventDao = temp.EventDao()
-		temp = importlib.import_module('test.classes.Psycopg2')
-		psycopg2 = temp.psycopg2()
+		psycopg2 = importlib.import_module('test.classes.Psycopg2')
 	else:
-		temp = __import__('classes.EventDao', fromlist=['ufree.classes'])
+		temp = importlib.import_module('classes.EventDao')
 		EventDao = temp.EventDao()
-		temp = __import__('psycopg2')
-		psycopg2 = temp.psycopg2()
+		psycopg2 = __import__('psycopg2')
+
 except ImportError:
 	print(ImportError)
 
