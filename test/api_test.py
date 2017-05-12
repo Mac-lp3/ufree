@@ -1,10 +1,8 @@
 import os
 import unittest
+from views.api import get_event
 from pyramid import testing
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
-fts = os.path.join(dir_path, '..\\views\\api.py')
-exec(open(fts).read())
+from pyramid.httpexceptions import HTTPBadRequest
 
 class ApiTest(unittest.TestCase):
 
