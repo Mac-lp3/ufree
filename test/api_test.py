@@ -17,9 +17,20 @@ class ApiTest(unittest.TestCase):
     # test event names
     __numeric_name = 1337
 
+    # test creator names
+    __good_creator = 'Tommy T'
+
     def post_event_fail_test (self):
         #test bad event name - not string
-        req = MockRequest(self.__short_id)
+        post_body = {
+            'name': self.__numeric_name,
+            'creator': self.__good_creator
+        }
+        req = MockRequest(body=post_body)
+        resp = api.post_event(req)
+        print(dir(resp))
+        print(resp.json_body)
+        self.assertEqual(1, resp)
 
 
     def get_event_fail_test (self):
@@ -63,8 +74,9 @@ class MockRequest():
     matchdict = {}
     json_body = {}
 
-    def __init__ (self, id, body={}):
-        self.matchdict = {'eventId': id}
+    def __init__ (self, id={}, body={}):
+        if id:
+            self.matchdict = {'eventId': id}
         if body:
             json_body = body
 
