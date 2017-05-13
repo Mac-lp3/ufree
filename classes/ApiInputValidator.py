@@ -4,12 +4,12 @@ import datetime
 class ApiInputValidator:
 
 	#just letters, numbers, and spaces
-	event_name_pattern = re.compile('[-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/]')
-	event_name_length = 50
-	event_creator_pattern = re.compile('[-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/]')
-	event_creator_length = 25
+	__event_name_pattern = {}
+	__event_name_length = 50
+	__event_creator_pattern = {}
+	__event_creator_length = 25
 
-	def validate_event(eventObject):
+	def validate_event(self, eventObject):
 		'''
 		Validates each field of the event object.
 
@@ -23,13 +23,13 @@ class ApiInputValidator:
 			if not isinstance(eventObject['name'], str):
 				error_messages.append('Name must be a string')
 
-			if len(eventObject['name']) > ApiInputValidator.event_name_length:
+			if len(eventObject['name']) > self.__event_name_length:
 				message = 'Name must be less than {0} characters'.format(
-					ApiInputValidator.event_name_length
+					self.__event_name_length
 				)
 				error_messages.append()
 
-			if re.search(ApiInputValidator.event_name_pattern , eventObject['name']):
+			if re.search(self.__event_name_pattern , eventObject['name']):
 				error_messages.append('Name must only contain letters or numbers')
 		else:
 			error_messages.append('Name is blank. A value for name is required')
@@ -39,13 +39,13 @@ class ApiInputValidator:
 			if not isinstance(eventObject['creator'], str):
 				error_messages.append('Creator must be a string')
 
-			if len(eventObject['creator']) > ApiInputValidator.event_creator_length:
+			if len(eventObject['creator']) > self.__event_creator_length:
 				message = 'Creator must be less than {0} characters'.format(
-					ApiInputValidator.event_creator_length
+					self.__event_creator_length
 				)
 				error_messages.append(message)
 
-			if re.search(ApiInputValidator.event_creator_pattern, eventObject['creator']):
+			if re.search(self.__event_creator_pattern, eventObject['creator']):
 				error_messages.append('Creator must only contain letters or numbers')
 		else:
 			error_messages.append('Creator is blank. A value for creator is required')
