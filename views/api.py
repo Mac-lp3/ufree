@@ -12,6 +12,7 @@ from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
 try:
+	ApiInputValidator = ApiInputValidator()
 	if os.environ['ENV'] == 'test':
 		temp = importlib.import_module('test.classes.EventDao')
 		EventDao = temp.EventDao()
