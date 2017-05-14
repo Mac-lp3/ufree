@@ -29,11 +29,12 @@ class ApiInputValidator:
 				)
 				error_messages.append(message)
 
-			elif re.search(self.__event_name_pattern, eventObject['name']):
-				error_messages.append('Name must only contain letters or numbers')
-
 			else:
-				pass
+				test = re.search(self.__event_creator_pattern, eventObject['name'])
+				if test == None or test.string != eventObject['name']:
+					error_messages.append(
+						'Name must only contain letters, numbers, spaces, or dashes'
+					)
 		else:
 			error_messages.append('Name is blank. A value for name is required')
 
@@ -49,13 +50,12 @@ class ApiInputValidator:
 				)
 				error_messages.append(message)
 
-			elif re.search(self.__event_creator_pattern, eventObject['creator']):
-				error_messages.append(
-					'Creator must only contain letters, numbers, spaces, or dashes'
-				)
-
 			else:
-				pass
+				test = re.search(self.__event_creator_pattern, eventObject['creator'])
+				if test == None or test.string != eventObject['creator']:
+					error_messages.append(
+						'Creator must only contain letters, numbers, spaces, or dashes'
+					)
 		else:
 			error_messages.append('Creator is blank. A value for creator is required')
 
