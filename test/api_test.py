@@ -15,23 +15,49 @@ class ApiTest(unittest.TestCase):
     __good_id = 'qwe1fd23qwe123qwe123qwe123asd345'
 
     # test event names
-    __numeric_name = 1337
+    __bad_name = ') DROP TABLE \'USERS\''
+    __good_name = 'A good name for the event'
 
     # test creator names
+    __bad_creator = ') DROP TABLE \'USERS\''
     __good_creator = 'Tommy T'
 
     def post_event_fail_test (self):
-        #test bad event name - not string
+        #test bad event name
         post_body = {
-            'name': self.__numeric_name,
+            'name': self.__bad_name,
             'creator': self.__good_creator
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
-        print(dir(resp))
-        print(resp.json_body)
-        self.assertEqual(1, resp)
+        self.assertEqual(type(resp), HTTPBadRequest)
+        self.assertTrue('Name must only contain letters, numbers, spaces, or dashes' in resp.json_body)
 
+        #test bad creator
+        post_body = {
+            'name': self.__good_name,
+            'creator': self.__bad_creator
+        }
+        req = MockRequest(body=post_body)
+        resp = api.post_event(req)
+        print(resp.json_body)
+        self.assertEqual(type(resp), HTTPBadRequest)
+        self.assertTrue('Creator must only contain letters, numbers, spaces, or dashes' in resp.json_body)
+
+        # test DB exception
+        os.environ['TEST_DB_FAIL'] = 'True'
+        post_body = {
+            'name': self.__good_name,
+            'creator': self.__good_creator
+        }
+        req = MockRequest(body=post_body)
+        resp = api.post_event(req)
+        self.assertEqual(type(resp), HTTPBadRequest)
+        self.assertEqual(
+            'An error occurred while saving this event.',
+            resp.json_body['errors']
+        )
+        os.environ['TEST_DB_FAIL'] = 'False'
 
     def get_event_fail_test (self):
         # test bad id - too short
@@ -78,7 +104,7 @@ class MockRequest():
         if id:
             self.matchdict = {'eventId': id}
         if body:
-            json_body = body
+            self.json_body = body
 
 if __name__ == '__main__':
 	unittest.main()
