@@ -33,25 +33,25 @@ class EventDao:
             print('id not found')
             raise DaoException('Event wasn\'t in there')
 
-    def save_event(eventObject):
+    def save_event(self, eventObject):
         print('Calling save')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
         generatedId = HashCodeUtils.generate_code(eventObject['name'])
-        EventDao.__mock_event_ids.push(generatedId)
-        return load_event(generatedId)
+        self.__mock_event_ids.append(generatedId)
+        return self.load_event(generatedId)
 
-    def update_event(eventObject):
+    def update_event(self, eventObject):
         print('Calling update')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
         return load_event(eventObject['id'])
 
-    def delete_event(eventObject):
+    def delete_event(self, eventObject):
         print('Calling delete')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
         if eventObject['id'] in EventDao.mock_event_ids:
-            EventDao.mock_event_ids.remove(eventObject['id'])
+            self.mock_event_ids.remove(eventObject['id'])
         else:
             raise DaoException('Event wasn\'t in there')
