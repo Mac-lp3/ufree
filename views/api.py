@@ -12,7 +12,6 @@ from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
 try:
-	ApiInputValidator = ApiInputValidator()
 	if os.environ['ENV'] == 'test':
 		temp = importlib.import_module('test.classes.EventDao')
 		EventDao = temp.EventDao()
@@ -21,9 +20,10 @@ try:
 		temp = importlib.import_module('classes.EventDao')
 		EventDao = temp.EventDao()
 		psycopg2 = __import__('psycopg2')
-
 except ImportError:
 	print(ImportError)
+
+inputValidator = ApiInputValidator()
 
 def post_event(request):
 	'''
@@ -33,7 +33,7 @@ def post_event(request):
 	'''
 
 	try:
-		inputErrors = ApiInputValidator.validate_event(request.json_body)
+		inputErrors = inputValidator.validate_event(request.json_body)
 
 		if not inputErrors:
 			# hash is valid - save and return
@@ -95,8 +95,8 @@ def put_event(request):
 
 	try:
 		# validate sent object and its event hash
-		inputErrors = ApiInputValidator.validate_event(request.json_body)
-		inputErrors = inputErrors + ApiInputValidator.validate_event_hash(request.json_body['eventId'])
+		inputErrors = inputValidator.validate_event(request.json_body)
+		inputErrors = inputErrors + inputValidator.validate_event_hash(request.json_body['eventId'])
 
 		if not inputErrors:
 			data = EventDao.update_event(request.json_body)
@@ -127,7 +127,7 @@ def delete_event(request):
 	try:
 		# validate hash id
 		eventId = request.matchdict['eventId']
-		inputErrors = ApiInputValidator.validate_event_hash(eventId)
+		inputErrors = inputValidator.validate_event_hash(eventId)
 
 		if not inputErrors:
 			EventDao.delete_event(request.json_body)
@@ -162,8 +162,8 @@ def post_date_range(request):
 	try:
 		# validate event id and date range format
 		eventId = request.matchdict['eventId']
-		inputErrors = ApiInputValidator.validate_event_hash(eventId)
-		inputErrors = inputErrors + ApiInputValidator.validate_date_range(request.json_body['dateRange'])
+		inputErrors = inputValidator.validate_event_hash(eventId)
+		inputErrors = inputErrors + inputValidator.validate_date_range(request.json_body['dateRange'])
 
 		if not inputErrors:
 			# hash is valid - save and return
