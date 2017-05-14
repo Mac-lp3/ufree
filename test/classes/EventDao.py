@@ -11,6 +11,8 @@ class EventDao:
 
     def event_exists (eventId):
         print('Calling exists??')
+        if os.environ['TEST_DB_FAIL'] == 'True':
+            raise DaoException('General exception')
         if eventId in EventDao.__mock_event_ids:
             return True
         else:
@@ -18,6 +20,8 @@ class EventDao:
 
     def load_event (self, eventId):
         print('Calling load')
+        if os.environ['TEST_DB_FAIL'] == 'True':
+            raise DaoException('General exception')
         if eventId in self.__mock_event_ids:
             print('id found in list')
             return {
@@ -31,16 +35,22 @@ class EventDao:
 
     def save_event(eventObject):
         print('Calling save')
+        if os.environ['TEST_DB_FAIL'] == 'True':
+            raise DaoException('General exception')
         generatedId = HashCodeUtils.generate_code(eventObject['name'])
         EventDao.__mock_event_ids.push(generatedId)
         return load_event(generatedId)
 
     def update_event(eventObject):
         print('Calling update')
+        if os.environ['TEST_DB_FAIL'] == 'True':
+            raise DaoException('General exception')
         return load_event(eventObject['id'])
 
     def delete_event(eventObject):
         print('Calling delete')
+        if os.environ['TEST_DB_FAIL'] == 'True':
+            raise DaoException('General exception')
         if eventObject['id'] in EventDao.mock_event_ids:
             EventDao.mock_event_ids.remove(eventObject['id'])
         else:
