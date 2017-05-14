@@ -4,9 +4,9 @@ import datetime
 class ApiInputValidator:
 
 	#just letters, numbers, and spaces
-	__event_name_pattern = {}
+	__event_name_pattern = r'^[\w\d\s-]+$'
 	__event_name_length = 50
-	__event_creator_pattern = {}
+	__event_creator_pattern = r'^[\w\d\s-]+$'
 	__event_creator_length = 25
 
 	def validate_event(self, eventObject):
@@ -21,7 +21,6 @@ class ApiInputValidator:
 		# Validate name field
 		if 'name' in eventObject:
 			if not isinstance(eventObject['name'], str):
-				print('n instance check')
 				error_messages.append('Name must be a string')
 
 			elif len(eventObject['name']) > self.__event_name_length:
@@ -40,21 +39,23 @@ class ApiInputValidator:
 
 		# Validate creator field
 		if 'creator' in eventObject:
-			print('in c')
+
 			if not isinstance(eventObject['creator'], str):
-				print('in c instance')
 				error_messages.append('Creator must be a string')
 
-			if len(eventObject['creator']) > self.__event_creator_length:
-				print('in c len')
+			elif len(eventObject['creator']) > self.__event_creator_length:
 				message = 'Creator must be less than {0} characters'.format(
 					self.__event_creator_length
 				)
 				error_messages.append(message)
 
-			if re.search(self.__event_creator_pattern, eventObject['creator']):
-				print('in c regex')
-				error_messages.append('Creator must only contain letters or numbers')
+			elif re.search(self.__event_creator_pattern, eventObject['creator']):
+				error_messages.append(
+					'Creator must only contain letters, numbers, spaces, or dashes'
+				)
+
+			else:
+				pass
 		else:
 			error_messages.append('Creator is blank. A value for creator is required')
 
