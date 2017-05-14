@@ -59,6 +59,18 @@ class ApiTest(unittest.TestCase):
         )
         os.environ['TEST_DB_FAIL'] = 'False'
 
+    def post_event_success_test (self):
+        post_body = {
+            'name': self.__good_name,
+            'creator': self.__good_creator
+        }
+        req = MockRequest(body=post_body)
+        resp = api.post_event(req)
+        jbod = json.loads(resp)
+        self.assertNotEqual(resp, HTTPBadRequest)
+        self.assertEqual(jbod['name'], 'A mock event')
+        self.assertEqual(jbod['creator'], 'Tony T')
+
     def get_event_fail_test (self):
         # test bad id - too short
         req = MockRequest(self.__short_id)
