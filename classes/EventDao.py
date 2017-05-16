@@ -1,7 +1,13 @@
 import os
-import psycopg2
 import classes.exception.DaoException as DaoException
 from classes.HashCodeUtils import HashCodeUtils
+try:
+	if os.environ['ENV'] == 'test':
+		psycopg2 = importlib.import_module('test.classes.Psycopg2')
+	else:
+		psycopg2 = __import__('psycopg2')
+except ImportError:
+	print(ImportError)
 
 class EventDao:
 
