@@ -1,21 +1,14 @@
 import os
 import classes.exception.DaoException as DaoException
+from test.classes.Connection import Connection
 from classes.HashCodeUtils import HashCodeUtils
 
 class psycopg2:
-    def connect (str):
-        return Connection()
 
-class Connection:
-    def cursor ():
-        return Cursor()
+    def __init__ (self):
+        print('Mock Psycopg2 Initialized')
 
-class Cursor:
-    def execute (string):
-        print('mocking ' + string)
-
-    def fetchone ():
-        print('fetching one...')
-
-    def fetchall ():
-        print('fetching all...')
+    def connect (self, str):
+        print('connecting to', str)
+        c = Connection(str)
+        return c
