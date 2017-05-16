@@ -15,11 +15,9 @@ try:
 	if os.environ['ENV'] == 'test':
 		temp = importlib.import_module('test.classes.EventDao')
 		EventDao = temp.EventDao()
-		psycopg2 = importlib.import_module('test.classes.Psycopg2')
 	else:
 		temp = importlib.import_module('classes.EventDao')
 		EventDao = temp.EventDao()
-		psycopg2 = __import__('psycopg2')
 except ImportError:
 	print(ImportError)
 
