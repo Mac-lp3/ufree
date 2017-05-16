@@ -145,6 +145,7 @@ def load_config ():
 @task(description='Uses Nose to run all unit tests')
 def test ():
     os.environ['ENV'] = 'test'
+    os.environ['DB_NAME'] = 'ufree_test'
     os.environ['TEST_DB_FAIL'] = 'False'
     proc = subprocess.Popen(
         ['nosetests', '-v'],
