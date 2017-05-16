@@ -1,34 +1,36 @@
 import os
+import sys
 import importlib
 import classes.exception.DaoException as DaoException
 from classes.HashCodeUtils import HashCodeUtils
 
+psycopg2 = {}
+
+try:
+	if os.environ['ENV'] == 'test':
+		temp = importlib.import_module('test.classes.Psycopg2')
+		psycopg2 = temp.psycopg2()
+	else:
+		psycopg2 = __import__('psycopg2')
+except ImportError:
+	print(ImportError)
+
 class EventDao:
 
 	__cur = {}
-	__psycopg2 = {}
 
 	def __init__ (self):
 		try:
-			psycopg2 = {}
-			if os.environ['ENV'] == 'test':
-				temp = importlib.import_module('test.classes.Psycopg2')
-				self.__psycopg2 = temp.psycopg2()
-			else:
-				self.__psycopg2 = __import__('psycopg2')
-				
 			db_conn_str = 'dbname=' + os.environ['DB_NAME']
-			conn = self.__psycopg2.connect(db_conn_str)
+			conn = psycopg2.connect(db_conn_str)
 			self.__cur = conn.cursor()
 		except ImportError:
 			print(ImportError)
 		except:
+			print(sys.exc_info())
 			print('I am unable to connect to the database')
 
 	def event_exists(self, eventId):
-		conn = self.__psycopg2.connect('asds')
-		self.__cur = conn.cursor()
-		print(self.__cur)
 		self.__cur.execute('SELECT name FROM events WHERE id = {0}'.format(eventId))
 		return self.__cur.fetchone() is not None
 
