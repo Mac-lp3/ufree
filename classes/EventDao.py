@@ -31,18 +31,22 @@ class EventDao:
 			print('I am unable to connect to the database')
 
 	def event_exists(self, eventId):
-		self.__cur.execute('SELECT name FROM events WHERE id = {0}'.format(eventId))
-		return self.__cur.fetchone() is not None
+		try:
+			self.__cur.execute('SELECT name FROM events WHERE id = {0}'.format(eventId))
+			return self.__cur.fetchone() is not None
+		except:
+			print(sys.exc_info())
+			raise DaoException('Unknown error when querying the database')
 
-	def load_event(eventId):
+	def load_event(self,eventId):
 		'''
 		Loads an event object by a given id.
 		'''
 
-		EventDao.cur.execute('SELECT id, name from events WHERE id=' + str(eventId))
-		eventRows = EventDao.cur.fetchall()
+		self.__cur.execute('SELECT id, name from events WHERE id=' + str(eventId))
+		eventRows = self.__cur.fetchall()
 
-		EventDao.cur.execute('SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=' + str(eventId))
+		self.__cur.execute('SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=' + str(eventId))
 		dateRangeRows = EventDao.cur.fetchall()
 
 		if (len(eventRows) == 1):
@@ -72,7 +76,7 @@ class EventDao:
 			# raise HTTPNotFound
 			print('need to do a thing here')
 
-	def save_event(eventObject):
+	def save_event(self, eventObject):
 		'''
 		Generates a unique ID for the event and creates a new instance in the database.
 		'''
@@ -85,13 +89,13 @@ class EventDao:
 			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
-			while EventDao.event_exists(generatedId) and count < 5:
+			while self.event_exists(generatedId) and count < 5:
 				generatedId = HashCodeUtils.generate_code(newSeed)
 				newSeed = newSeed + 'a'
 
 			# If after 5 tries, check if the ID is unique and save if so.
-			if not EventDao.event_exists(generatedId):
-				EventDao.cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
+			if not self.event_exists(generatedId):
+				self.__cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
 				return EventDao.load_event(generatedId)
 
 			# Raise an exception if not.
@@ -105,10 +109,10 @@ class EventDao:
 
 		print(eventObject)
 
-	def update_event(eventObject):
+	def update_event(self, eventObject):
 
 		# TODO update date ranges
-		EventDao.cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE eventid={1}'.format(eventObject['name']), eventObject['id'])
+		self.__cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE eventid={1}'.format(eventObject['name']), eventObject['id'])
 
 	def delete_event(eventObject):
 		'''
@@ -119,11 +123,11 @@ class EventDao:
 		'''
 
 		try:
-			EventDao.cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
+			self.__cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
 		except psycopg2.Error as e:
 			print(e.pgerror)
 			raise DaoException('An error occurred deleting this event. Please try again later.')
 
-	def add_date_range(eventId, dateRange):
+	def add_date_range(self, eventId, dateRange):
 		#TODO
 		pass
