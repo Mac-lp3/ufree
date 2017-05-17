@@ -1,7 +1,7 @@
 import os
 import sys
 import importlib
-import classes.exception.DaoException as DaoException
+from classes.exception.DaoException import DaoException
 from classes.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
