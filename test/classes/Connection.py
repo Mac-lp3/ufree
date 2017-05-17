@@ -9,5 +9,4 @@ class Connection:
 
     def cursor (self):
         c = Cursor()
-        print('got cursor', c)
         return c
