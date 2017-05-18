@@ -26,3 +26,11 @@ class Cursor:
             print('Mocking an exception...')
             raise Exception('some exception')
         print('fetching all...')
+        col = []
+        col.append('123123123123')
+        col.append('Kenny K\'s thing')
+        col.append('kennyId')
+        col.append('20200101')
+        row = []
+        row.append(col)
+        return row
