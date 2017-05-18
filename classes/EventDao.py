@@ -38,44 +38,33 @@ class EventDao:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when searching for event')
 
-	def load_event(self,eventId):
+	def load_event(self, eventId):
 		'''
 		Loads an event object by a given id.
 		'''
+		eventRows = {}
 		try:
-			self.__cur.execute('SELECT id, name from events WHERE id=' + str(eventId))
+			self.__cur.execute(
+				'SELECT id, name, creator_id, created_date from events WHERE id={event_id}'
+				.format(event_id=str(eventId))
+			)
 			eventRows = self.__cur.fetchall()
 
-			self.__cur.execute('SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=' + str(eventId))
-			dateRangeRows = EventDao.cur.fetchall()
-
-			if (len(eventRows) == 1):
-				# Single record found.
-				# built the return object
-				dateRangeData = []
-				for dateRange in dateRangeRows:
-					dateRangeData.append({
-						'id': dateRange[0],
-						'creator': dateRange[1],
-						'fromDate': dateRange[2],
-						'toDate': dateRange[3]
-					})
-
-				data = {}
-				data['id'] = eventRows[0][0]
-				data['name'] = eventRows[0][1]
-				data['dateRanges'] = dateRangeData
-				return data
-
-			elif (len(eventRows) > 1):
-				print('need to do a thing here')
-
-			else:
-				# ID doesn't exist
-				# raise HTTPNotFound
-				print('need to do a thing here')
 		except Exception as e:
 			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading event')
+
+		if (len(eventRows) == 1):
+			# ID is primary key. Should only ever get 1 or 0
+			data = {}
+			data['id'] = eventRows[0][0]
+			data['name'] = eventRows[0][1]
+			data['creator_id'] = eventRows[0][2]
+			data['created_date'] = eventRows[0][3]
+			return data
+		else:
+			# not found
+			print('Given ID was not found', eventId)
 			raise DaoException('Unknown error when loading event')
 
 	def save_event(self, eventObject):
