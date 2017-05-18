@@ -34,47 +34,49 @@ class EventDao:
 		try:
 			self.__cur.execute('SELECT name FROM events WHERE id = {0}'.format(eventId))
 			return self.__cur.fetchone() is not None
-		except:
-			print(sys.exc_info())
-			raise DaoException('Unknown error when querying the database')
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when searching for event')
 
 	def load_event(self,eventId):
 		'''
 		Loads an event object by a given id.
 		'''
+		try:
+			self.__cur.execute('SELECT id, name from events WHERE id=' + str(eventId))
+			eventRows = self.__cur.fetchall()
 
-		self.__cur.execute('SELECT id, name from events WHERE id=' + str(eventId))
-		eventRows = self.__cur.fetchall()
+			self.__cur.execute('SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=' + str(eventId))
+			dateRangeRows = EventDao.cur.fetchall()
 
-		self.__cur.execute('SELECT id, creator, fromdate, todate from dateRanges WHERE eventid=' + str(eventId))
-		dateRangeRows = EventDao.cur.fetchall()
+			if (len(eventRows) == 1):
+				# Single record found.
+				# built the return object
+				dateRangeData = []
+				for dateRange in dateRangeRows:
+					dateRangeData.append({
+						'id': dateRange[0],
+						'creator': dateRange[1],
+						'fromDate': dateRange[2],
+						'toDate': dateRange[3]
+					})
 
-		if (len(eventRows) == 1):
+				data = {}
+				data['id'] = eventRows[0][0]
+				data['name'] = eventRows[0][1]
+				data['dateRanges'] = dateRangeData
+				return data
 
-			# Single record found.
-			# built the return object
-			dateRangeData = []
-			for dateRange in dateRangeRows:
-				dateRangeData.append({
-					'id': dateRange[0],
-					'creator': dateRange[1],
-					'fromDate': dateRange[2],
-					'toDate': dateRange[3]
-				})
+			elif (len(eventRows) > 1):
+				print('need to do a thing here')
 
-			data = {}
-			data['id'] = eventRows[0][0]
-			data['name'] = eventRows[0][1]
-			data['dateRanges'] = dateRangeData
-			return data
-
-		elif (len(eventRows) > 1):
-			print('need to do a thing here')
-
-		else:
-			# ID doesn't exist
-			# raise HTTPNotFound
-			print('need to do a thing here')
+			else:
+				# ID doesn't exist
+				# raise HTTPNotFound
+				print('need to do a thing here')
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading event')
 
 	def save_event(self, eventObject):
 		'''
