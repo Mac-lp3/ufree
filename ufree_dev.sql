@@ -24,8 +24,14 @@ CREATE TABLE attendee (
 );
 
 CREATE TABLE event (
-    id varchar NOT NULL,
-    name varchar(20) NOT NULL,
-    creator_id integer NOT NULL,
-    created_date date
+  id varchar NOT NULL,
+  name varchar(20) NOT NULL,
+  creator_id integer NOT NULL,
+  created_date date
+);
+
+CREATE TABLE event_attendee (
+  id SERIAL NOT NULL PRIMARY KEY,
+  event_id INTEGER REFERENCES event (id),
+  attendee_id INTEGER REFERENCES attendee (id),
 );
