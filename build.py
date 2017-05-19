@@ -1,4 +1,4 @@
-from pybuilder.core import use_plugin, task
+from pybuilder.core import use_plugin, task, init
 import subprocess
 import sys
 import os
@@ -10,7 +10,14 @@ use_plugin('python.frosted')
 config = {}
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+__spot = ''
+
 def check_db_exists ():
+
+    @init
+    def initialize(project):
+        __spot = project.get_property(t)
+
     # check if ufree database exists
     print('Checking DB for required tables...')
     if not config['database']['password']:
@@ -141,6 +148,18 @@ def load_config ():
     else:
         with open('build_config_prod.json') as json_data_file:
             config = json.load(json_data_file)
+
+@task(description='pyb -P t="eventDao_test.py"')
+def spot (project):
+    os.environ['ENV'] = 'test'
+    os.environ['DB_NAME'] = 'ufree_test'
+    os.environ['TEST_DB_FAIL'] = 'False'
+    proc = subprocess.Popen(
+        ['nosetests', '-v', '--tests=test\\{0}'.format(__spot)],
+        shell=True,
+        stdout=subprocess.PIPE
+    )
+    print(proc.communicate())
 
 @task(description='Uses Nose to run all unit tests')
 def test ():
