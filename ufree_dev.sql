@@ -20,8 +20,6 @@ CREATE TABLE availability (
 CREATE TABLE attendee (
   id SERIAL NOT NULL PRIMARY KEY,
   name varchar(15) NOT NULL,
-  event_id varchar NOT NULL,
-  joined_date date,
   email varchar(50)
 );
 
