@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+from classes.AttendeeDao import AttendeeDao
 from classes.exception.DaoException import DaoException
 from classes.HashCodeUtils import HashCodeUtils
 
@@ -32,7 +33,7 @@ class EventDao:
 
 	def event_exists(self, eventId):
 		try:
-			self.__cur.execute('SELECT name FROM events WHERE id = {0}'.format(eventId))
+			self.__cur.execute('SELECT name FROM event WHERE id = {0}'.format(eventId))
 			return self.__cur.fetchone() is not None
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -45,8 +46,8 @@ class EventDao:
 		eventRows = {}
 		try:
 			self.__cur.execute(
-				'SELECT id, name, creator_id, created_date from events WHERE id={event_id}'
-				.format(event_id=str(eventId))
+				'SELECT id, name, creator_id, created_date from event WHERE id={0}'
+				.format(eventId)
 			)
 			eventRows = self.__cur.fetchall()
 
@@ -70,6 +71,10 @@ class EventDao:
 	def save_event(self, eventObject):
 		'''
 		Generates a unique ID for the event and creates a new instance in the database.
+
+		An attendee can be in multiple events. Creator ID is stored as a cookie.
+		When joining an event, a creator ID is either generated and saved, or it
+		is retrieved from the cookies.
 		'''
 
 		# generate an initial id based on event name
@@ -79,30 +84,59 @@ class EventDao:
 			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
-			while self.event_exists(generatedId) and count < 5:
+			while not self.event_exists(generatedId) and count < 5:
 				generatedId = HashCodeUtils.generate_code(newSeed)
 				newSeed = newSeed + 'a'
+				count += 1
 
 			# If after 5 tries, check if the ID is unique and save if so.
 			if not self.event_exists(generatedId):
+				# Check if a creator_id was provided...
+				creatorId = ''
+				if 'creator_id' not in eventObject or eventObject['creator_id'] is None:
+					# create a new atendee if not
+					self.__cur.execute(
+						'INSERT INTO atendee (name) VALUES ({0})'.format(
+							eventObject['creator']
+						)
+					)
+					# ... and store the ID
+					creatorId = cur.fetchone()[0][0]
+				else:
+					# use the one provided if it exists
+					creatorId = eventObject['creator_id']
+
+				# save the event
 				self.__cur.execute(
-					'INSERT INTO events (id, name, creator_id, created_date)'
+					'INSERT INTO event (id, name, creator_id, created_date)'
 					' VALUES ({0}, \'{1}\', {2}, \'{3}\')'.format(
 						generatedId,
 						eventObject['name'],
-						eventObject['creator_id'],
+						creatorId,
 						datetime.datetime.now().strftime("%Y%m%d")
 					)
 				)
+
+				# update the join table
+				self.__cur.execute(
+					'INSERT INTO event_attendee (event_id, creator_id)'
+					' VALUES ({0}, {1})'.format(
+						generatedId,
+						creatorId
+					)
+				)
+
 				return self.load_event(generatedId)
 
 			# Raise an exception if not.
 			else:
 				raise DaoException('Unable to generate a unique ID. Please choose a new name.')
 
-		# Catch any general exceptions
-		except psycopg2.Error as e:
-			print(e.pgerror)
+		# Throw any DaoExceptions. Catch anything else.
+		except DaoException as e:
+			raise e
+		except Exception as e:
+			print(str(e))
 			raise DaoException('An error occurred saving this event. Please try again later.')
 
 		print(eventObject)
