@@ -1,6 +1,7 @@
 import os
 import json
 import unittest
+import builtins
 import views.api as api
 from pyramid import testing
 from pyramid.httpexceptions import HTTPBadRequest
@@ -45,19 +46,20 @@ class ApiTest(unittest.TestCase):
         self.assertTrue('Creator must only contain letters, numbers, spaces, or dashes' in resp.json_body)
 
         # test DB exception
-        os.environ['TEST_DB_FAIL'] = 'True'
+        builtins.db_fail = 'True'
         post_body = {
             'name': self.__good_name,
             'creator': self.__good_creator
         }
         req = MockRequest(body=post_body)
-        resp = api.post_event(req)
-        self.assertEqual(type(resp), HTTPBadRequest)
-        self.assertEqual(
-            'An error occurred while saving this event.',
-            resp.json_body['errors']
-        )
-        os.environ['TEST_DB_FAIL'] = 'False'
+        try:
+            resp = api.post_event(req)
+        except Exception as e:
+            self.assertEqual(type(e), HTTPBadRequest)
+            self.assertEqual(
+                'An error occurred while saving this event.', str(e)
+            )
+        builtins.db_fail = 'False'
 
     def post_event_success_test (self):
         post_body = {
