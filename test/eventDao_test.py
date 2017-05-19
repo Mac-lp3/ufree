@@ -1,7 +1,7 @@
 import os
 import unittest
 import builtins
-from classes.EventDao import EventDao
+from classes.dao.EventDao import EventDao
 from classes.exception.DaoException import DaoException
 
 class EventDaoTest(unittest.TestCase):
@@ -40,6 +40,7 @@ class EventDaoTest(unittest.TestCase):
 
     def save_event_test (self):
         # test normal functionality
+        #builtins.event_exist_fails = 'True'
         val = self.__dao.save_event({
             'name': 'Some cool thing',
             'creator': 'Mikey Big C'

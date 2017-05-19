@@ -16,7 +16,7 @@ try:
 		temp = importlib.import_module('test.classes.EventDao')
 		EventDao = temp.EventDao()
 	else:
-		temp = importlib.import_module('classes.EventDao')
+		temp = importlib.import_module('classes.dao.EventDao')
 		EventDao = temp.EventDao()
 except ImportError:
 	print(ImportError)

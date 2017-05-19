@@ -1,7 +1,6 @@
 import os
 import sys
 import importlib
-from classes.AttendeeDao import AttendeeDao
 from classes.exception.DaoException import DaoException
 from classes.HashCodeUtils import HashCodeUtils
 
