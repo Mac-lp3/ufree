@@ -1,10 +1,11 @@
 import os
 import unittest
 import hashlib
+from classes.util.HashCodeUtils import HashCodeUtils
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-fts = os.path.join(dir_path, '..\classes\HashCodeUtils.py')
-exec(open(fts).read())
+# dir_path = os.path.dirname(os.path.realpath(__file__))
+# fts = os.path.join(dir_path, '..\classes\util\HashCodeUtils.py')
+# exec(open(fts).read())
 
 class HashCodeUtilsTest(unittest.TestCase):
 

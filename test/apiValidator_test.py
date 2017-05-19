@@ -1,6 +1,6 @@
 import os
 import unittest
-from classes.ApiInputValidator import ApiInputValidator
+from classes.util.ApiInputValidator import ApiInputValidator
 
 class ApiInputValidatorTest(unittest.TestCase):
 

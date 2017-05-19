@@ -2,7 +2,6 @@ import os
 import sys
 import importlib
 from classes.exception.DaoException import DaoException
-from classes.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
 

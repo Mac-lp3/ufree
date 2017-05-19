@@ -3,8 +3,8 @@ import json
 import inspect
 import importlib
 from classes.exception.DaoException import DaoException
-from classes.ApiInputValidator import ApiInputValidator
-from classes.HashCodeUtils import HashCodeUtils
+from classes.util.ApiInputValidator import ApiInputValidator
+from classes.util.HashCodeUtils import HashCodeUtils
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
