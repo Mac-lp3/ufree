@@ -76,7 +76,6 @@ class EventDao:
 		generatedId = HashCodeUtils.generate_code(eventObject['name'])
 
 		try:
-
 			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
@@ -86,8 +85,16 @@ class EventDao:
 
 			# If after 5 tries, check if the ID is unique and save if so.
 			if not self.event_exists(generatedId):
-				self.__cur.execute('INSERT INTO events (id, name) VALUES ({0}, \'{1}\')'.format(generatedId, eventObject['name']))
-				return EventDao.load_event(generatedId)
+				self.__cur.execute(
+					'INSERT INTO events (id, name, creator_id, created_date)'
+					' VALUES ({0}, \'{1}\', {2}, \'{3}\')'.format(
+						generatedId,
+						eventObject['name'],
+						eventObject['creator_id'],
+						datetime.datetime.now().strftime("%Y%m%d")
+					)
+				)
+				return self.load_event(generatedId)
 
 			# Raise an exception if not.
 			else:
