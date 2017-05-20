@@ -40,11 +40,14 @@ class EventDaoTest(unittest.TestCase):
 
     def save_event_test (self):
         # test normal functionality
-        #builtins.event_exist_fails = 'True'
+        builtins.return_pattern = [{'id': 'idk'}, None, None, [['abcd1234']]]
         val = self.__dao.save_event({
             'name': 'Some cool thing',
             'creator': 'Mikey Big C'
         })
+        self.assertTrue('id' in val)
+        self.assertTrue('name' in val)
+        self.assertTrue('creator_id' in val)
 
 if __name__ == '__main__':
 	unittest.main()
