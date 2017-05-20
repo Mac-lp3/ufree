@@ -6,7 +6,6 @@ from classes.util.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
 
-
 if os.environ['ENV'] == 'test':
 	temp = importlib.import_module('test.classes.Psycopg2')
 	psycopg2 = temp.psycopg2()
@@ -81,7 +80,7 @@ class EventDao:
 			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
-			while not self.event_exists(generatedId) and count < 5:
+			while self.event_exists(generatedId) and count < 5:
 				generatedId = HashCodeUtils.generate_code(newSeed)
 				newSeed = newSeed + 'a'
 				count += 1
@@ -98,7 +97,7 @@ class EventDao:
 						)
 					)
 					# ... and store the ID
-					creatorId = cur.fetchone()[0][0]
+					creatorId = self.__cur.fetchone()[0][0]
 				else:
 					# use the one provided if it exists
 					creatorId = eventObject['creator_id']
