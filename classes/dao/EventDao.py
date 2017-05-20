@@ -6,14 +6,12 @@ from classes.util.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
 
-try:
-	if os.environ['ENV'] == 'test':
-		temp = importlib.import_module('test.classes.Psycopg2')
-		psycopg2 = temp.psycopg2()
-	else:
-		psycopg2 = __import__('psycopg2')
-except ImportError:
-	print(ImportError)
+
+if os.environ['ENV'] == 'test':
+	temp = importlib.import_module('test.classes.Psycopg2')
+	psycopg2 = temp.psycopg2()
+else:
+	psycopg2 = __import__('psycopg2')
 
 class EventDao:
 

@@ -11,15 +11,12 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
 
-try:
-	if os.environ['ENV'] == 'test':
-		temp = importlib.import_module('test.classes.EventDao')
-		EventDao = temp.EventDao()
-	else:
-		temp = importlib.import_module('classes.dao.EventDao')
-		EventDao = temp.EventDao()
-except ImportError:
-	print(ImportError)
+if os.environ['ENV'] == 'test':
+	temp = importlib.import_module('test.classes.EventDao')
+	EventDao = temp.EventDao()
+else:
+	temp = importlib.import_module('classes.dao.EventDao')
+	EventDao = temp.EventDao()
 
 inputValidator = ApiInputValidator()
 
