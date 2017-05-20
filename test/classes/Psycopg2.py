@@ -1,7 +1,5 @@
 import os
-import classes.exception.DaoException as DaoException
 from test.classes.Connection import Connection
-from classes.HashCodeUtils import HashCodeUtils
 
 class psycopg2:
 
