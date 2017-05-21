@@ -7,6 +7,7 @@ from classes.dao.AttendeeDao import AttendeeDao
 from classes.util.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
+AttendeeDao = AttendeeDao()
 
 if os.environ['ENV'] == 'test':
 	temp = importlib.import_module('test.classes.Psycopg2')
@@ -92,33 +93,30 @@ class EventDao:
 				# Check if a creator_id was provided...
 				creatorId = ''
 				if 'creator_id' not in eventObject or eventObject['creator_id'] is None:
-					# create a new atendee if not
-					self.__cur.execute(
-						'INSERT INTO atendee (name) VALUES ({0})'.format(
-							eventObject['creator']
-						)
-					)
-					# ... and store the ID
-					creatorId = self.__cur.fetchone()[0][0]
+					# create a new attendee if not
+					ctr = AttendeeDao.save_attendee({
+						'name': eventObject['creator']
+					})
+					creatorId = ctr['id']
 				else:
 					# use the one provided if it exists
 					creatorId = eventObject['creator_id']
 
 				# save the event
 				self.__cur.execute(
-					'INSERT INTO event (id, name, creator_id, created_date)'
-					' VALUES ({0}, \'{1}\', {2}, \'{3}\')'.format(
+					'INSERT INTO event (id, name, creator_id, created_date) '
+					'VALUES (\'{0}\', \'{1}\', {2}, \'{3}\')'.format(
 						generatedId,
 						eventObject['name'],
 						creatorId,
-						datetime.datetime.now().strftime("%Y%m%d")
+						datetime.datetime.now().strftime('%Y%m%d')
 					)
 				)
 
 				# update the join table
 				self.__cur.execute(
-					'INSERT INTO event_attendee (event_id, creator_id)'
-					' VALUES ({0}, {1})'.format(
+					'INSERT INTO event_attendee (event_id, creator_id) '
+					'VALUES (\'{0}\', {1})'.format(
 						generatedId,
 						creatorId
 					)
@@ -128,21 +126,25 @@ class EventDao:
 
 			# Raise an exception if not.
 			else:
-				raise DaoException('Unable to generate a unique ID. Please choose a new name.')
+				raise DaoException(
+					'Unable to generate a unique ID. Please choose a new name.'
+				)
 
 		# Throw any DaoExceptions. Catch anything else.
 		except DaoException as e:
 			raise e
 		except Exception as e:
 			print(str(e))
-			raise DaoException('An error occurred saving this event. Please try again later.')
+			raise DaoException(
+				'An error occurred saving this event. Please try again later.'
+			)
 
 		print(eventObject)
 
 	def update_event(self, eventObject):
 		self.__cur.execute(
-			'INSERT INTO events (name) VALUES (\'{0}\')'
-			' WHERE event_id={1}'.format(
+			'INSERT INTO event (name) VALUES (\'{0}\') '
+			'WHERE id={1}'.format(
 				eventObject['name'],
 				eventObject['id']
 			)
