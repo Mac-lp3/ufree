@@ -49,5 +49,16 @@ class EventDaoTest(unittest.TestCase):
         self.assertTrue('name' in val)
         self.assertTrue('creator_id' in val)
 
+        # test unable to generate unique id
+        builtins.return_pattern = None
+        try:
+            self.__dao.save_event({
+                'name': 'Some cool thing',
+                'creator': 'Mikey Big C'
+            })
+        except Exception as e:
+            self.assertTrue(isinstance(e, DaoException))
+
+
 if __name__ == '__main__':
 	unittest.main()
