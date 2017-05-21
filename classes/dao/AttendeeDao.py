@@ -31,18 +31,74 @@ class AttendeeDao:
 
 	def save_attendee (self, attendee):
 		self.__cur.execute(
-			'INSERT INTO atendee (name) VALUES ({0})'.format(
-				attendee['creator']
+			'INSERT INTO attendee (name) VALUES ({0})'.format(
+				attendee['name']
 			)
 		)
-		return self.__cur.fetchone()
+		at = self.__cur.fetchall()
+		return self.load_attendee(at[0][0])
+
+	def update_attendee (self, attendee):
+		self.__cur.execute(
+			'INSERT INTO attendee (name, email) VALUES (\'{0}\', \'{1}\') '
+			'WHERE id={2}'.format(
+				eventObject['name'],
+				eventObject['email'],
+				eventObject['id']
+			)
+		)
+
+	def load_attendee (self, attendee_id):
+		attendeeRows = {}
+		try:
+			self.__cur.execute(
+				'SELECT id, name, email from attendee WHERE id={0}'
+				.format(attendee_id)
+			)
+			attendeeRows = self.__cur.fetchall()
+
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading attendee')
+
+		if (len(attendeeRows) == 1):
+			# ID is primary key. Should only ever get 1 or 0
+			data = {}
+			data['id'] = attendeeRows[0][0]
+			data['name'] = attendeeRows[0][1]
+			data['email'] = attendeeRows[0][2]
+			return data
+		else:
+			# not found
+			print('Given id was not found', attendee['id'])
+			raise DaoException('Attendee with this ID not found.')
 
 	def attendee_exists (self, attendee_id):
 		try:
 			self.__cur.execute(
-				'SELECT id name email FROM attendee WHERE id = {0}'.format(attendee_id)
+				'SELECT id name email FROM attendee WHERE id = {0}'.format(
+					attendee_id
+				)
 			)
 			return self.__cur.fetchone() is not None
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when searching for attendee')
+
+	def delete_attendee (self, attendee):
+		try:
+			# delete the attenddee
+			self.__cur.execute(
+				'DELETE FROM attendee WHERE id={0}'.format(attendee['id'])
+			)
+			# delete event_attendee entries
+			self.__cur.execute(
+				'DELETE FROM event_attendee WHERE attendee_id={0}'.format(
+					attendee['id']
+				)
+			)
+		except Exception as e:
+			print(str(e))
+			raise DaoException(
+				'An error occurred deleting this event. Please try again later.'
+			)
