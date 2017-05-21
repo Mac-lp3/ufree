@@ -139,24 +139,34 @@ class EventDao:
 		print(eventObject)
 
 	def update_event(self, eventObject):
+		self.__cur.execute(
+			'INSERT INTO events (name) VALUES (\'{0}\')'
+			' WHERE event_id={1}'.format(
+				eventObject['name'],
+				eventObject['id']
+			)
+		)
 
-		# TODO update date ranges
-		self.__cur.execute('INSERT INTO events (name) VALUES (\'{0}\') WHERE eventid={1}'.format(eventObject['name']), eventObject['id'])
-
-	def delete_event(eventObject):
+	def delete_event(self, eventObject):
 		'''
-		Deletes the event with the given eventHash and all associated date ranges.
+		Deletes the event with the given id.
 
-		If successful, this function returns nothing. A corresponding exception is thrown
-		otherwise.
+		If successful, this function returns nothing. THrows exception otherise.
 		'''
 
 		try:
-			self.__cur.execute('DELETE FROM events WHERE id={0}'.format(eventObject['id']))
-		except psycopg2.Error as e:
-			print(e.pgerror)
-			raise DaoException('An error occurred deleting this event. Please try again later.')
-
-	def add_date_range(self, eventId, dateRange):
-		#TODO
-		pass
+			# delete the event
+			self.__cur.execute(
+				'DELETE FROM event WHERE event_id={0}'.format(eventObject['id'])
+			)
+			# delete event_attendee entries
+			self.__cur.execute(
+				'DELETE FROM event_attendee WHERE event_id={0}'.format(
+					eventObject['id']
+				)
+			)
+		except Exception` as e:
+			print(str(e))
+			raise DaoException(
+				'An error occurred deleting this event. Please try again later.'
+			)
