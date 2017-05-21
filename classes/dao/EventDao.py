@@ -3,6 +3,7 @@ import sys
 import importlib
 import datetime
 from classes.exception.DaoException import DaoException
+from classes.dao.AttendeeDao import AttendeeDao
 from classes.util.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
@@ -157,7 +158,7 @@ class EventDao:
 		try:
 			# delete the event
 			self.__cur.execute(
-				'DELETE FROM event WHERE event_id={0}'.format(eventObject['id'])
+				'DELETE FROM event WHERE eid={0}'.format(eventObject['id'])
 			)
 			# delete event_attendee entries
 			self.__cur.execute(
@@ -165,7 +166,7 @@ class EventDao:
 					eventObject['id']
 				)
 			)
-		except Exception` as e:
+		except Exception as e:
 			print(str(e))
 			raise DaoException(
 				'An error occurred deleting this event. Please try again later.'
