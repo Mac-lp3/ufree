@@ -40,7 +40,7 @@ class EventDaoTest(unittest.TestCase):
 
     def save_event_test (self):
         # test normal functionality
-        builtins.return_pattern = [{'id': 'idk'}, None, None, [['abcd1234']]]
+        builtins.return_pattern = [['name'], None, None, ['idk', 'some name', 'some@email.com'], None, [['abcd1234']]]
         val = self.__dao.save_event({
             'name': 'Some cool thing',
             'creator': 'Mikey Big C'
@@ -50,7 +50,7 @@ class EventDaoTest(unittest.TestCase):
         self.assertTrue('creator_id' in val)
 
         # test unable to generate unique id
-        builtins.return_pattern = None
+        builtins.return_pattern = [None, ['name'], ['name'], ['idk', 'some name', 'some@email.com'], None, [['abcd1234']]]
         try:
             self.__dao.save_event({
                 'name': 'Some cool thing',

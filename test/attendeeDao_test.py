@@ -13,6 +13,9 @@ class AttendeeDaoTest(unittest.TestCase):
 	def load_attendee_test (self):
 		# test normal functionality
 		builtins.db_fail = 'False'
+		builtins.return_pattern = [
+			['idk', 'some name', 'some@email.com'],
+		]
 		val = self.__dao.load_attendee('some id')
 		self.assertTrue('id' in val)
 		self.assertTrue('name' in val)
@@ -28,10 +31,8 @@ class AttendeeDaoTest(unittest.TestCase):
 	def save_attendee_test (self):
 		# test normal functionality
 		builtins.return_pattern = [
-			['abcd1234'],
 			['idk', 'some name', 'some@email.com'],
-			['abcd1234'],
-			['idk', 'some name', 'some@email.com'],
+			['idk', 'some name', 'some@email.com']
 		]
 		val = self.__dao.save_attendee({
 			'name': 'Some cool thing',
