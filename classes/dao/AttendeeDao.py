@@ -37,7 +37,12 @@ class AttendeeDao:
 				)
 			)
 			at = self.__cur.fetchone()
-			return self.load_attendee(at[0])
+			data = {
+				'id': at[0],
+				'name': at[1],
+				'email': at[2]
+			}
+			return data
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading attendee')
