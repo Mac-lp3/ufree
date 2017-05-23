@@ -30,13 +30,17 @@ class AttendeeDao:
 			print('I am unable to connect to the database')
 
 	def save_attendee (self, attendee):
-		self.__cur.execute(
-			'INSERT INTO attendee (name) VALUES ({0})'.format(
-				attendee['name']
+		try:
+			self.__cur.execute(
+				'INSERT INTO attendee (name) VALUES ({0})'.format(
+					attendee['name']
+				)
 			)
-		)
-		at = self.__cur.fetchall()
-		return self.load_attendee(at[0][0])
+			at = self.__cur.fetchone()
+			return self.load_attendee(at[0])
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading attendee')
 
 	def update_attendee (self, attendee):
 		self.__cur.execute(
@@ -55,18 +59,18 @@ class AttendeeDao:
 				'SELECT id, name, email from attendee WHERE id={0}'
 				.format(attendee_id)
 			)
-			attendeeRows = self.__cur.fetchall()
+			attendeeRows = self.__cur.fetchone()
 
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading attendee')
 
-		if (len(attendeeRows) == 1):
+		if (attendeeRows is not None):
 			# ID is primary key. Should only ever get 1 or 0
 			data = {}
-			data['id'] = attendeeRows[0][0]
-			data['name'] = attendeeRows[0][1]
-			data['email'] = attendeeRows[0][2]
+			data['id'] = attendeeRows[0]
+			data['name'] = attendeeRows[1]
+			data['email'] = attendeeRows[2]
 			return data
 		else:
 			# not found
