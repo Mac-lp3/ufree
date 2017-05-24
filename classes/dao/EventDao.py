@@ -3,11 +3,9 @@ import sys
 import importlib
 import datetime
 from classes.exception.DaoException import DaoException
-from classes.dao.AttendeeDao import AttendeeDao
 from classes.util.HashCodeUtils import HashCodeUtils
 
 psycopg2 = {}
-AttendeeDao = AttendeeDao()
 
 if os.environ['ENV'] == 'test':
 	temp = importlib.import_module('test.classes.Psycopg2')
@@ -76,10 +74,10 @@ class EventDao:
 		is retrieved from the cookies.
 		'''
 
-		# generate an initial id based on event name
-		generatedId = HashCodeUtils.generate_code(eventObject['name'])
-
 		try:
+			# generate an initial id based on event name
+			generatedId = HashCodeUtils.generate_code(eventObject['name'])
+
 			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
@@ -88,32 +86,20 @@ class EventDao:
 				newSeed = newSeed + 'a'
 				count += 1
 
-			# If after 5 tries, check if the ID is unique and save if so.
+			# after 5 tries, check if id is still taken...
 			if not self.event_exists(generatedId):
-				# Check if a creator_id was provided...
-				creatorId = ''
-				if 'creator_id' not in eventObject or eventObject['creator_id'] is None:
-					# create a new attendee if not
-					ctr = AttendeeDao.save_attendee({
-						'name': eventObject['creator']
-					})
-					creatorId = ctr['id']
-				else:
-					# use the one provided if it exists
-					creatorId = eventObject['creator_id']
-
-				# save the event
+				# ... save if id is unique
 				self.__cur.execute(
 					'INSERT INTO event (id, name, creator_id, created_date) '
 					'VALUES (\'{0}\', \'{1}\', {2}, \'{3}\')'.format(
-						generatedId,
+						eventObject['creator_id'],
 						eventObject['name'],
 						creatorId,
 						datetime.datetime.now().strftime('%Y%m%d')
 					)
 				)
 
-				# update the join table
+				# ... and update the event_attendee join table
 				self.__cur.execute(
 					'INSERT INTO event_attendee (event_id, creator_id) '
 					'VALUES (\'{0}\', {1})'.format(
@@ -124,7 +110,7 @@ class EventDao:
 
 				return self.load_event(generatedId)
 
-			# Raise an exception if not.
+			# ... raise an exception if not
 			else:
 				raise DaoException(
 					'Unable to generate a unique ID. Please choose a new name.'
