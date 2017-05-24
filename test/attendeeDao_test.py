@@ -10,6 +10,20 @@ class AttendeeDaoTest(unittest.TestCase):
 		builtins.db_fail = os.environ['TEST_DB_FAIL']
 		self.__dao = AttendeeDao()
 
+	def delete_attendee_test (self):
+		self.__dao.delete_attendee({
+			'id': 'asdb1234',
+			'name': 'idklol'
+		})
+		builtins.db_fail = 'True'
+		try:
+			self.__dao.delete_attendee({
+				'id': 'asdb1234',
+				'name': 'idklol'
+			})
+		except Exception as e:
+			self.assertTrue(isinstance(e, DaoException))
+
 	def update_attendee_test (self):
 		# test normal behavior
 		val = self.__dao.update_attendee({

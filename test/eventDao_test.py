@@ -10,6 +10,22 @@ class EventDaoTest(unittest.TestCase):
 		builtins.db_fail = os.environ['TEST_DB_FAIL']
 		self.__dao = EventDao()
 
+	def delete_event_test (self):
+		self.__dao.delete_event({
+			'id': 'asdb1234',
+			'name': 'idklol',
+			'creator': 'someguy'
+		})
+		builtins.db_fail = 'True'
+		try:
+			self.__dao.delete_event({
+				'id': 'asdb1234',
+				'name': 'idklol',
+				'creator': 'someguy'
+			})
+		except Exception as e:
+			self.assertTrue(isinstance(e, DaoException))
+
 	def update_event_test (self):
 		# test normal behavior
 		val = self.__dao.update_event({
