@@ -165,7 +165,7 @@ class EventDao:
 		try:
 			# delete the event
 			self.__cur.execute(
-				'DELETE FROM event WHERE eid={0}'.format(eventObject['id'])
+				'DELETE FROM event WHERE id={0}'.format(eventObject['id'])
 			)
 			# delete event_attendee entries
 			self.__cur.execute(
