@@ -10,6 +10,38 @@ class AttendeeDaoTest(unittest.TestCase):
 		builtins.db_fail = os.environ['TEST_DB_FAIL']
 		self.__dao = AttendeeDao()
 
+	def update_attendee_test (self):
+		# test normal behavior
+		val = self.__dao.update_attendee({
+			'id': 'abcd',
+			'name': 'idklol',
+			'email': 'lol@idk.gov'
+		})
+		self.assertTrue(val is not None)
+
+		# test exception handling
+		builtins.db_fail = 'True'
+		try:
+			val = self.__dao.update_attendee({
+				'id': 'abcd',
+				'name': 'idklol',
+				'email': 'lol@idk.gov'
+			})
+		except Exception as e:
+			self.assertTrue(isinstance(e, DaoException))
+
+	def attendee_exists_test (self):
+		# test normal functionality
+		val = self.__dao.attendee_exists('some id')
+		self.assertTrue(val)
+
+		# test exception handling
+		builtins.db_fail = 'True'
+		try:
+			val = self.__dao.attendee_exists('some id')
+		except Exception as e:
+			self.assertTrue(isinstance(e, DaoException))
+
 	def load_attendee_test (self):
 		# test normal functionality
 		builtins.db_fail = 'False'
