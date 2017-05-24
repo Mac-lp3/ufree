@@ -48,14 +48,18 @@ class AttendeeDao:
 			raise DaoException('Unknown error when loading attendee')
 
 	def update_attendee (self, attendee):
-		self.__cur.execute(
-			'INSERT INTO attendee (name, email) VALUES (\'{0}\', \'{1}\') '
-			'WHERE id={2}'.format(
-				eventObject['name'],
-				eventObject['email'],
-				eventObject['id']
+		try:
+			self.__cur.execute(
+				'INSERT INTO attendee (name, email) VALUES (\'{0}\', \'{1}\') '
+				'WHERE id={2}'.format(
+					eventObject['name'],
+					eventObject['email'],
+					eventObject['id']
+				)
 			)
-		)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading attendee')
 
 	def load_attendee (self, attendee_id):
 		attendeeRows = {}
@@ -107,7 +111,7 @@ class AttendeeDao:
 				)
 			)
 		except Exception as e:
-			print(str(e))
+			print(e, sys.exc_info())
 			raise DaoException(
 				'An error occurred deleting this event. Please try again later.'
 			)

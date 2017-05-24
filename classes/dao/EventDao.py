@@ -134,7 +134,7 @@ class EventDao:
 		except DaoException as e:
 			raise e
 		except Exception as e:
-			print(str(e))
+			print(e, sys.exc_info())
 			raise DaoException(
 				'An error occurred saving this event. Please try again later.'
 			)
@@ -142,13 +142,17 @@ class EventDao:
 		print(eventObject)
 
 	def update_event(self, eventObject):
-		self.__cur.execute(
-			'INSERT INTO event (name) VALUES (\'{0}\') '
-			'WHERE id={1}'.format(
-				eventObject['name'],
-				eventObject['id']
+		try:
+			self.__cur.execute(
+				'INSERT INTO event (name) VALUES (\'{0}\') '
+				'WHERE id={1}'.format(
+					eventObject['name'],
+					eventObject['id']
+				)
 			)
-		)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error while updating event')
 
 	def delete_event(self, eventObject):
 		'''
@@ -169,7 +173,7 @@ class EventDao:
 				)
 			)
 		except Exception as e:
-			print(str(e))
+			print(e, sys.exc_info())
 			raise DaoException(
 				'An error occurred deleting this event. Please try again later.'
 			)
