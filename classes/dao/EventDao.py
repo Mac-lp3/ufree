@@ -150,6 +150,7 @@ class EventDao:
 					eventObject['id']
 				)
 			)
+			return self.__curr.fetchone()
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error while updating event')
