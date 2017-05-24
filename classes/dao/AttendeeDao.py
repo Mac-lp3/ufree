@@ -52,12 +52,12 @@ class AttendeeDao:
 			self.__cur.execute(
 				'INSERT INTO attendee (name, email) VALUES (\'{0}\', \'{1}\') '
 				'WHERE id={2}'.format(
-					eventObject['name'],
-					eventObject['email'],
-					eventObject['id']
+					attendee['name'],
+					attendee['email'],
+					attendee['id']
 				)
 			)
-			return self.__curr.fetchone()
+			return self.__cur.fetchone()
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading attendee')
