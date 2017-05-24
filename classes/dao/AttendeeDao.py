@@ -114,5 +114,5 @@ class AttendeeDao:
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException(
-				'An error occurred deleting this event. Please try again later.'
+				'An error occurred deleting attendee. Please try again later.'
 			)
