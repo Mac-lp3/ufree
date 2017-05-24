@@ -10,6 +10,8 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
+from classes.exception.ServiceException import ServiceException
+from classes.service.EventService import EventService
 
 if os.environ['ENV'] == 'test':
 	temp = importlib.import_module('test.classes.EventDao')
@@ -19,6 +21,7 @@ else:
 	EventDao = temp.EventDao()
 
 inputValidator = ApiInputValidator()
+__app_service = EventService()
 
 def post_event(request):
 	'''
@@ -28,24 +31,10 @@ def post_event(request):
 	'''
 
 	try:
-		inputErrors = inputValidator.validate_event(request.json_body)
-
-		if not inputErrors:
-			# hash is valid - save and return
-			data = EventDao.save_event(request.json_body)
-			json_data = json.dumps(data)
-			response = json_data
-
-		else:
-			# bad input
-			response = HTTPBadRequest()
-			response.text = json.dumps(inputErrors)
-			response.content_type = 'application/json'
-
-	except Exception as e:
-		print(e)
+		response = __app_service.create_event(request.json_body)
+	except ServiceException as e:
 		response = HTTPBadRequest()
-		response.text = json.dumps({'errors': 'An error occurred while saving this event.'})
+		response.text = e.get_payload()
 		response.content_type = 'application/json'
 
 	return response
