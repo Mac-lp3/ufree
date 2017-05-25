@@ -37,10 +37,10 @@ class EventService:
 			inputErrors = inputValidator.validate_event(req_body)
 
 			if not inputErrors:
-				creator_id = ''
 				# check if creator id was provided...
+				creator_id = ''
 				if 'creator_id' not in req_body or req_body['creator_id'] is None:
-					# ...create a new attendee record if not
+					# ... create a new attendee record if not
 					ctr = self.__attendee_dao.save_attendee({
 						'name': eventObject['creator']
 					})
@@ -49,35 +49,71 @@ class EventService:
 					# ... or use the one provided
 					creator_id = eventObject['creator_id']
 
+				# set the creator_id and save the event
 				req_body['creator_id'] = creator_id
 				data = self.__event_dao.save_event(req_body)
+
+				# build the response body
 				json_data = json.dumps(data)
 				response_body = json_data
 
 			else:
 				response_body = json.dumps(inputErrors)
-		except DaoException as e:
+		except (DaoException, ValidationException) as e:
 			raise ServiceException(e.message)
 
 		except Exception as e:
 			print(e, sys.exc_info())
-			response_body = json.dumps({
-				'error': 'An error occurred while creating this event.'
-			})
+			raise ServiceException('An error occurred while creating this event.')
 
 		return response_body
 
 	def delete_event (self, req_body):
-		pass
+		try:
+			inputErrors = inputValidator.validate_event(req_body)
+			self.__event_dao.delete_event(req_body)
+		except (DaoException, ValidationException) as e:
+			raise ServiceException(e.message)
 
-	def add_event_attendee (self, req_body):
-		pass
+	def add_event_attendee (self, req_body, event_id):
+		try:
+			inputErrors = inputValidator.validate_event(req_body)
+			self.__attendee_dao.join_event(req_body, event_id)
+		except (DaoException, ValidationException) as e:
+			raise ServiceException(e.message)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while joining this event.'
+			)
 
-	def update_event_attendee (self, req_body):
-		pass
+	def update_attendee (self, req_body):
+		response_body = {}
+		try:
+			inputErrors = inputValidator.validate_attendee(req_body)
+			data = self.__attendee_dao.update_attendee(req_body)
+			json_data = json.dumps(data)
+			response_body = json_data
+		except (DaoException, ValidationException) as e:
+			raise ServiceException(e.message)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while updating your info.'
+			)
+		return response_body
 
-	def delete_event_attendee (self, req_body):
-		pass
+	def delete_event_attendee (self, req_body, event_id):
+		try:
+			inputErrors = inputValidator.validate_event(req_body)
+			self.__event_dao.leave_event(req_body, event_id)
+		except (DaoException, ValidationException) as e:
+			raise ServiceException(e.message)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while leaving this info.'
+			)
 
 	def update_attendee_availability (self, req_body):
 		pass
