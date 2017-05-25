@@ -29,6 +29,21 @@ class AttendeeDao:
 			print(sys.exc_info())
 			print('I am unable to connect to the database')
 
+	def join_event (self, attendee, event_id):
+		try:
+			self.__cur.execute(
+				'INSERT INTO event_attendee (event_id, creator_id) '
+				'VALUES (\'{0}\', {1})'.format(
+					event_id,
+					attendee['id']
+				)
+			)
+		except Exception as e:
+			print(e, sys.exc_info(), attendee, event_id)
+			raise DaoException(
+				'Unknown error when adding attendee to event'
+			)
+
 	def save_attendee (self, attendee):
 		try:
 			self.__cur.execute(
@@ -45,7 +60,9 @@ class AttendeeDao:
 			return data
 		except Exception as e:
 			print(e, sys.exc_info())
-			raise DaoException('Unknown error when loading attendee')
+			raise DaoException(
+				'Unknown error while saving attendee'
+			)
 
 	def update_attendee (self, attendee):
 		try:
