@@ -4,10 +4,9 @@ import json
 import inspect
 import importlib
 from classes.util.HashCodeUtils import HashCodeUtils
-from classes.exception.DaoException import DaoException
 from classes.util.ApiInputValidator import ApiInputValidator
 from classes.exception.ServiceException import ServiceException
-from classes.exception.ValidationException import ValidationException
+from classes.exception.BaseAppException import BaseAppException
 
 class EventService:
 
@@ -59,7 +58,7 @@ class EventService:
 
 			else:
 				response_body = json.dumps(inputErrors)
-		except (DaoException, ValidationException) as e:
+		except BaseAppException as e:
 			raise ServiceException(e.message)
 
 		except Exception as e:
@@ -72,14 +71,14 @@ class EventService:
 		try:
 			inputErrors = inputValidator.validate_event(req_body)
 			self.__event_dao.delete_event(req_body)
-		except (DaoException, ValidationException) as e:
+		except BaseAppException as e:
 			raise ServiceException(e.message)
 
 	def add_event_attendee (self, req_body, event_id):
 		try:
 			inputErrors = inputValidator.validate_event(req_body)
 			self.__attendee_dao.join_event(req_body, event_id)
-		except (DaoException, ValidationException) as e:
+		except BaseAppException as e:
 			raise ServiceException(e.message)
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -94,7 +93,7 @@ class EventService:
 			data = self.__attendee_dao.update_attendee(req_body)
 			json_data = json.dumps(data)
 			response_body = json_data
-		except (DaoException, ValidationException) as e:
+		except BaseAppException as e:
 			raise ServiceException(e.message)
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -107,7 +106,7 @@ class EventService:
 		try:
 			inputErrors = inputValidator.validate_event(req_body)
 			self.__event_dao.leave_event(req_body, event_id)
-		except (DaoException, ValidationException) as e:
+		except BaseAppException as e:
 			raise ServiceException(e.message)
 		except Exception as e:
 			print(e, sys.exc_info())
