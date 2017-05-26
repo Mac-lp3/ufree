@@ -17,6 +17,12 @@ CREATE TABLE availability (
     december varchar(31)
 );
 
+CREATE TABLE attendee_availability (
+  id SERIAL NOT NULL PRIMARY KEY,
+  availability_id INTEGER REFERENCES availability (id),
+  attendee_id INTEGER REFERENCES attendee (id),
+)
+
 CREATE TABLE attendee (
   id SERIAL NOT NULL PRIMARY KEY,
   name varchar(15) NOT NULL,

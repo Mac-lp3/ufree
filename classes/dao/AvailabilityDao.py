@@ -50,8 +50,65 @@ class AvailbilityDao:
 		'''
 		pass
 
-	def create_availability(self):
+	def save_availability(self, availability):
 		'''
 		adds entry to the join table. adds a row of 0s for this user/event
 		'''
-		pass
+		try:
+			self.__cur.execute(
+				'INSERT INTO attendee_availability (event_id, creator_id) '
+				'VALUES (\'{0}\', {1})'.format(
+					generatedId,
+					creatorId
+				)
+			)
+
+			self.__cur.execute(
+				'INSERT INTO availability ('
+				'attendee_id, event_id, year, january, february, march, '
+				'april, may, june, july, august, september, october, '
+				'november, december) VALUES ({0}, \'{1}\', {2}, \'{3}\', '
+				'\'{4}\', \'{5}\', \'{6}\', \'{7}\', \'{8}\', \'{9}\', \'{10}\', '
+				'\'{11}\', \'{12}\', \'{13}\', \'{14}\')'.format(
+					availability['attendee_id'],
+					availability['event_id'],
+					availability['year'],
+					availability['january'],
+					availability['february'],
+					availability['march'],
+					availability['april'],
+					availability['may'],
+					availability['june'],
+					availability['july'],
+					availability['august'],
+					availability['september'],
+					availability['october'],
+					availability['november'],
+					availability['december']
+				)
+			)
+			at = self.__cur.fetchone()
+			data = {
+				'id': at[0],
+				'attendee_id': at[1],
+				'event_id': at[2],
+				'year': at[3],
+				'january': at[4],
+				'february': at[5],
+				'march': at[6],
+				'april': at[7],
+				'may': at[8],
+				'june': at[9],
+				'july': at[10],
+				'august': at[11],
+				'september': at[12],
+				'october': at[13],
+				'november': at[14],
+				'december': at[15]
+			}
+			return data
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException(
+				'Unknown error while saving availability'
+			)
