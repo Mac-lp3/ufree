@@ -1,8 +1,12 @@
+import json
+
 class BaseAppException(Exception):
 
-	def __init__ (self, message):
+	def __init__ (self, payload):
 		super()
-		self.message = message
+		self.payload = payload
 
 	def get_payload (self):
-		return self.message
+		return json.dumps({
+			'errors': self.payload
+		})
