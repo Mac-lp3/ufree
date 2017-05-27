@@ -38,11 +38,63 @@ class AvailbilityDao:
         '''
         pass
 
-    def update_availability (self):
+    def update_availability (self, availability):
         '''
         Updates this users availability for this event
         '''
-        pass
+        try:
+
+            self.__cur.execute(
+                'INSERT INTO availability ('
+                january, february, march, '
+                'april, may, june, july, august, september, october, '
+                'november, december) VALUES (\'{0}\', \'{1}\', \'{2}\', \'{3}\', '
+                '\'{4}\', \'{5}\', \'{6}\', \'{7}\', \'{8}\', \'{9}\', \'{10}\', '
+                '\'{11}\') WHERE id={12}'.format(
+                    availability['january'],
+                    availability['february'],
+                    availability['march'],
+                    availability['april'],
+                    availability['may'],
+                    availability['june'],
+                    availability['july'],
+                    availability['august'],
+                    availability['september'],
+                    availability['october'],
+                    availability['november'],
+                    availability['december'],
+                    availability['id']
+                )
+            )
+
+            at = self.__cur.fetchone()
+
+            data = {
+                'id': at[0],
+                'attendee_id': at[1],
+                'event_id': at[2],
+                'year': at[3],
+                'january': at[4],
+                'february': at[5],
+                'march': at[6],
+                'april': at[7],
+                'may': at[8],
+                'june': at[9],
+                'july': at[10],
+                'august': at[11],
+                'september': at[12],
+                'october': at[13],
+                'november': at[14],
+                'december': at[15]
+            }
+
+            return data
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while updaing availability'
+            )
 
     def delete_availability (self, availability_id, attendee_id='', event_id=''):
         '''
@@ -86,6 +138,7 @@ class AvailbilityDao:
         '''
         adds entry to the join table. adds a row of 0s for this user/event
         '''
+        # TODO year check for multiple vailaibility
 
         try:
 
