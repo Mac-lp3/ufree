@@ -54,20 +54,14 @@ class AvailbilityDao:
 		'''
 		adds entry to the join table. adds a row of 0s for this user/event
 		'''
+
 		try:
-			self.__cur.execute(
-				'INSERT INTO attendee_availability (event_id, creator_id) '
-				'VALUES (\'{0}\', {1})'.format(
-					generatedId,
-					creatorId
-				)
-			)
 
 			self.__cur.execute(
 				'INSERT INTO availability ('
 				'attendee_id, event_id, year, january, february, march, '
 				'april, may, june, july, august, september, october, '
-				'november, december) VALUES ({0}, \'{1}\', {2}, \'{3}\', '
+				'november, december) VALUES ({0}, \'{1}\', \'{2}\', \'{3}\', '
 				'\'{4}\', \'{5}\', \'{6}\', \'{7}\', \'{8}\', \'{9}\', \'{10}\', '
 				'\'{11}\', \'{12}\', \'{13}\', \'{14}\')'.format(
 					availability['attendee_id'],
@@ -87,7 +81,9 @@ class AvailbilityDao:
 					availability['december']
 				)
 			)
+
 			at = self.__cur.fetchone()
+
 			data = {
 				'id': at[0],
 				'attendee_id': at[1],
@@ -106,7 +102,9 @@ class AvailbilityDao:
 				'november': at[14],
 				'december': at[15]
 			}
+
 			return data
+
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException(
