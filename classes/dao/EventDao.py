@@ -92,9 +92,9 @@ class EventDao:
 				self.__cur.execute(
 					'INSERT INTO event (id, name, creator_id, created_date) '
 					'VALUES (\'{0}\', \'{1}\', {2}, \'{3}\')'.format(
-						eventObject['creator_id'],
+						generatedId,
 						eventObject['name'],
-						creatorId,
+						eventObject['creator_id'],
 						datetime.datetime.now().strftime('%Y%m%d')
 					)
 				)
@@ -104,7 +104,7 @@ class EventDao:
 					'INSERT INTO event_attendee (event_id, creator_id) '
 					'VALUES (\'{0}\', {1})'.format(
 						generatedId,
-						creatorId
+						eventObject['creator_id']
 					)
 				)
 
