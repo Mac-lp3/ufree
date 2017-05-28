@@ -12,6 +12,7 @@ class EventService:
 
 	def __init__ (self):
 		# init DAOs based on environment
+		self.__inputValidator = ApiInputValidator()
 		if os.environ['ENV'] == 'test':
 			temp = importlib.import_module('test.classes.EventDao')
 			self.__event_dao = temp.EventDao()
@@ -33,7 +34,7 @@ class EventService:
 
 		response_body = {}
 		try:
-			inputErrors = inputValidator.validate_event(req_body)
+			inputErrors = self.__inputValidator.validate_event(req_body)
 
 			if not inputErrors:
 				# check if creator id was provided...
@@ -41,12 +42,12 @@ class EventService:
 				if 'creator_id' not in req_body or req_body['creator_id'] is None:
 					# ... create a new attendee record if not
 					ctr = self.__attendee_dao.save_attendee({
-						'name': eventObject['creator']
+						'name': req_body['creator']
 					})
 					creator_id = ctr['id']
 				else:
 					# ... or use the one provided
-					creator_id = eventObject['creator_id']
+					creator_id = req_body['creator_id']
 
 				# set the creator_id and save the event
 				req_body['creator_id'] = creator_id
@@ -69,14 +70,14 @@ class EventService:
 
 	def delete_event (self, req_body):
 		try:
-			inputErrors = inputValidator.validate_event(req_body)
+			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__event_dao.delete_event(req_body)
 		except BaseAppException as e:
 			raise ServiceException(e.message)
 
 	def add_event_attendee (self, req_body, event_id):
 		try:
-			inputErrors = inputValidator.validate_event(req_body)
+			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__attendee_dao.join_event(req_body, event_id)
 		except BaseAppException as e:
 			raise ServiceException(e.message)
@@ -89,7 +90,7 @@ class EventService:
 	def update_attendee (self, req_body):
 		response_body = {}
 		try:
-			inputErrors = inputValidator.validate_attendee(req_body)
+			inputErrors = self.__inputValidator.validate_attendee(req_body)
 			data = self.__attendee_dao.update_attendee(req_body)
 			json_data = json.dumps(data)
 			response_body = json_data
@@ -104,7 +105,7 @@ class EventService:
 
 	def delete_event_attendee (self, req_body, event_id):
 		try:
-			inputErrors = inputValidator.validate_event(req_body)
+			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__event_dao.leave_event(req_body, event_id)
 		except BaseAppException as e:
 			raise ServiceException(e.message)
