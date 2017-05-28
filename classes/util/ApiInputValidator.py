@@ -1,5 +1,6 @@
 import re
 import datetime
+from classes.exception.ValidationException import ValidationException
 
 class ApiInputValidator:
 
@@ -59,4 +60,7 @@ class ApiInputValidator:
 		else:
 			error_messages.append('Creator is blank. A value for creator is required')
 
-		return error_messages
+		if error_messages:
+			raise ValidationException(error_messages)
+
+		return None
