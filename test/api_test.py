@@ -32,7 +32,10 @@ class ApiTest(unittest.TestCase):
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
         self.assertEqual(type(resp), HTTPBadRequest)
-        self.assertTrue('Name must only contain letters, numbers, spaces, or dashes' in resp.json_body)
+        e_list = resp.json_body['errors']
+        self.assertTrue(
+            'Name must only contain letters, numbers, spaces, or dashes' in e_list
+        )
 
         #test bad creator
         post_body = {
@@ -41,9 +44,11 @@ class ApiTest(unittest.TestCase):
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
-        print(resp.json_body)
         self.assertEqual(type(resp), HTTPBadRequest)
-        self.assertTrue('Creator must only contain letters, numbers, spaces, or dashes' in resp.json_body)
+        e_list = resp.json_body['errors']
+        self.assertTrue(
+            'Creator must only contain letters, numbers, spaces, or dashes' in e_list
+        )
 
         # test DB exception
         builtins.db_fail = 'True'

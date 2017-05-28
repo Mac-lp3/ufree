@@ -1,4 +1,5 @@
 import os
+import json
 import unittest
 from classes.util.ApiInputValidator import ApiInputValidator
 
@@ -37,22 +38,37 @@ class ApiInputValidatorTest(unittest.TestCase):
     __inputValidator = ApiInputValidator()
 
     def test_event_fail_validation (self):
-        test_messages = self.__inputValidator.validate_event(self.__starNameEvent)
-        self.assertEqual(len(test_messages), 1)
+        try:
+            test_messages = self.__inputValidator.validate_event(self.__starNameEvent)
+        except Exception as e:
+            payload = e.get_payload()
+            jsonPayload = json.loads(payload)
+            self.assertEqual(len(jsonPayload['errors']), 1)
 
-        test_messages = self.__inputValidator.validate_event(self.__closeNameEvent)
-        self.assertEqual(len(test_messages), 1)
+        try:
+            test_messages = self.__inputValidator.validate_event(self.__closeNameEvent)
+        except Exception as e:
+            payload = e.get_payload()
+            jsonPayload = json.loads(payload)
+            self.assertEqual(len(jsonPayload['errors']), 1)
 
-        test_messages = self.__inputValidator.validate_event(self.__starCreatorEvent)
-        self.assertEqual(len(test_messages), 1)
+        try:
+            test_messages = self.__inputValidator.validate_event(self.__starCreatorEvent)
+        except Exception as e:
+            payload = e.get_payload()
+            jsonPayload = json.loads(payload)
+            self.assertEqual(len(jsonPayload['errors']), 1)
 
-        test_messages = self.__inputValidator.validate_event(self.__closeCreatorEvent)
-        self.assertEqual(len(test_messages), 1)
+        try:
+            test_messages = self.__inputValidator.validate_event(self.__closeCreatorEvent)
+        except Exception as e:
+            payload = e.get_payload()
+            jsonPayload = json.loads(payload)
+            self.assertEqual(len(jsonPayload['errors']), 1)
 
     def test_event_pass_validation (self):
         test_messages = self.__inputValidator.validate_event(self.__goodEvent)
-        print(test_messages)
-        self.assertEqual(len(test_messages), 0)
+        self.assertEqual(test_messages, None)
 
 if __name__ == '__main__':
 	unittest.main()

@@ -84,7 +84,7 @@ class EventDaoTest(unittest.TestCase):
 		]
 		val = self.__dao.save_event({
 			'name': 'Some cool thing',
-			'creator': 'Mikey Big C'
+			'creator_id': 'lololo'
 		})
 		self.assertTrue('id' in val)
 		self.assertTrue('name' in val)
