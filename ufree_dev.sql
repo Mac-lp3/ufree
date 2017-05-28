@@ -3,18 +3,18 @@ CREATE TABLE availability (
     attendee_id integer NOT NULL,
     event_id varchar NOT NULL,
     year date,
-    january varchar(31),
-    february varchar(29),
-    march varchar(31),
-    april varchar(30),
-    may varchar(31),
-    june varchar(30),
-    july varchar(31),
-    august varchar(31),
-    september varchar(30),
-    october varchar(31),
-    november varchar(30),
-    december varchar(31)
+    january varchar(31) DEFAULT '0000000000000000000000000000000',
+    february varchar(29) DEFAULT '00000000000000000000000000000',
+    march varchar(31) DEFAULT '0000000000000000000000000000000',
+    april varchar(30) DEFAULT '000000000000000000000000000000',
+    may varchar(31) DEFAULT '0000000000000000000000000000000',
+    june varchar(30) DEFAULT '000000000000000000000000000000',
+    july varchar(31) DEFAULT '0000000000000000000000000000000',
+    august varchar(31) DEFAULT '0000000000000000000000000000000',
+    september varchar(30) DEFAULT '000000000000000000000000000000',
+    october varchar(31) DEFAULT '0000000000000000000000000000000',
+    november varchar(30) DEFAULT '000000000000000000000000000000',
+    december varchar(31) DEFAULT '0000000000000000000000000000000'
 );
 
 CREATE TABLE attendee (
