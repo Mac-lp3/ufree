@@ -60,7 +60,7 @@ class EventService:
 			else:
 				response_body = json.dumps(inputErrors)
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(e.messages)
 
 		except Exception as e:
 			print(e, sys.exc_info())
