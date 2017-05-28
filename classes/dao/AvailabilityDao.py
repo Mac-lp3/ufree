@@ -26,24 +26,76 @@ class AvailbilityDao:
             print(sys.exc_info())
             print('I am unable to connect to the database')
 
-    def get_event_availability (self):
-        '''
-        compiles list of all availablity for this event
-        '''
-        pass
-
-    def get_attendee_availability (self):
+    def get_availability (self, attendee_id='', event_id=''):
         '''
         gets this users availability
         '''
-        pass
+        try:
+
+            if attendee_id:
+                if event_id:
+                    self.__cur.execute(
+                        'SELECT id, attendee_id, event_id, year, january, '
+                        'february, march, april, may, june, july, august, '
+                        'september, october, november, december FROM '
+                        'availability WHERE attendee_id={0} AND event_id=\'{1}\''
+                        .format(
+                            availability['attendee_id'],
+                            availability['event_id']
+                        )
+                    )
+                else:
+                    self.__cur.execute(
+                        'SELECT id, attendee_id, event_id, year, january, february, '
+                        'march, april, may, june, july, august, september, october, '
+                        'november, december FROM availability WHERE attendee_id='.format(
+                            availability['attendee_id']
+                        )
+                    )
+            else:
+                self.__cur.execute(
+                    'SELECT id, attendee_id, event_id, year, january, '
+                    'february, march, april, may, june, july, august, '
+                    'september, october, november, december FROM '
+                    'availability WHERE event_id={0}'.format(
+                        availability['event_id']
+                    )
+                )
+
+            at = self.__cur.fetchone()
+
+            data = {
+                'id': at[0],
+                'attendee_id': at[1],
+                'event_id': at[2],
+                'year': at[3],
+                'january': at[4],
+                'february': at[5],
+                'march': at[6],
+                'april': at[7],
+                'may': at[8],
+                'june': at[9],
+                'july': at[10],
+                'august': at[11],
+                'september': at[12],
+                'october': at[13],
+                'november': at[14],
+                'december': at[15]
+            }
+
+            return data
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while saving availability'
+            )
 
     def update_availability (self, availability):
         '''
         Updates this users availability for this event
         '''
         try:
-
             self.__cur.execute(
                 'INSERT INTO availability ('
                 january, february, march, '
@@ -141,7 +193,6 @@ class AvailbilityDao:
         # TODO year check for multiple vailaibility
 
         try:
-
             self.__cur.execute(
                 'INSERT INTO availability ('
                 'attendee_id, event_id, year, january, february, march, '
