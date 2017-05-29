@@ -13,7 +13,7 @@ if os.environ['ENV'] == 'test':
 else:
     psycopg2 = __import__('psycopg2')
 
-class AvailbilityDao:
+class AvailabilityDao:
 
     def __init__ (self):
         try:
@@ -31,7 +31,6 @@ class AvailbilityDao:
         gets this users availability
         '''
         try:
-
             if attendee_id:
                 if event_id:
                     self.__cur.execute(
@@ -40,8 +39,8 @@ class AvailbilityDao:
                         'september, october, november, december FROM '
                         'availability WHERE attendee_id={0} AND event_id=\'{1}\''
                         .format(
-                            availability['attendee_id'],
-                            availability['event_id']
+                            attendee_id,
+                            event_id
                         )
                     )
                 else:
@@ -50,7 +49,7 @@ class AvailbilityDao:
                         'february, march, april, may, june, july, august, '
                         'september, october, november, december FROM '
                         'availability WHERE attendee_id={0}'.format(
-                            availability['attendee_id']
+                            attendee_id
                         )
                     )
             else:
@@ -59,7 +58,7 @@ class AvailbilityDao:
                     'february, march, april, may, june, july, august, '
                     'september, october, november, december FROM '
                     'availability WHERE event_id={0}'.format(
-                        availability['event_id']
+                        event_id
                     )
                 )
 
@@ -99,7 +98,7 @@ class AvailbilityDao:
         try:
             self.__cur.execute(
                 'INSERT INTO availability ('
-                january, february, march, '
+                'january, february, march, '
                 'april, may, june, july, august, september, october, '
                 'november, december) VALUES (\'{0}\', \'{1}\', \'{2}\', \'{3}\', '
                 '\'{4}\', \'{5}\', \'{6}\', \'{7}\', \'{8}\', \'{9}\', \'{10}\', '
@@ -169,7 +168,7 @@ class AvailbilityDao:
                             attendee_id
                         )
                     )
-            elif event_id
+            elif event_id:
                 self.__cur.execute(
                         'DELETE FROM availability WHERE event_id={0}'.format(
                             event_id
