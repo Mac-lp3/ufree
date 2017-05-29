@@ -148,12 +148,18 @@ class AvailabilityDao:
                 'Unknown error while updaing availability'
             )
 
-    def delete_availability (self, availability_id, attendee_id='', event_id=''):
+    def delete_availability (self, availability_id='', attendee_id='', event_id=''):
         '''
         removes this users availability from the event.
         '''
         try:
-            if attendee_id:
+            if availability_id:
+                self.__cur.execute(
+                    'DELETE FROM availability WHERE id={0}'.format(
+                        availability_id
+                    )
+                )
+            elif attendee_id:
                 if event_id:
                     self.__cur.execute(
                         'DELETE FROM availability WHERE attendee_id={0} '
@@ -174,12 +180,6 @@ class AvailabilityDao:
                             event_id
                         )
                     )
-            else:
-                self.__cur.execute(
-                    'DELETE FROM availability WHERE id={0}'.format(
-                        availability_id
-                    )
-                )
         except Exception as e:
             print(e, sys.exc_info())
             raise DaoException(
