@@ -186,11 +186,10 @@ class AvailabilityDao:
                 'Unknown error while deleting availability'
             )
 
-    def save_availability(self, availability):
+    def create_availability(self, availability):
         '''
         adds entry to the join table. adds a row of 0s for this user/event
         '''
-        # TODO year check for multiple vailaibility
 
         try:
             self.__cur.execute(
@@ -245,4 +244,21 @@ class AvailabilityDao:
             print(e, sys.exc_info())
             raise DaoException(
                 'Unknown error while saving availability'
+            )
+
+    def availability_exists (self, event_id, attendee_id, year):
+        try:
+            self.__cur.execute(
+                'SELECT * FROM availability WHERE event_id=\'{0}\' AND '
+                'attendee_id={1} AND year=\'{2}\''.format(
+                    event_id,
+                    attendee_id,
+                    year
+                )
+            )
+            return self.__cur.fetchone() is not None
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while checking if availability exists'
             )
