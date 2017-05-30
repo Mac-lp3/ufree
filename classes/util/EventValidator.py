@@ -2,7 +2,7 @@ import re
 import datetime
 from classes.exception.ValidationException import ValidationException
 
-class ApiInputValidator:
+class EventValidator:
 
 	#just letters, numbers, and spaces
 	__event_name_pattern = r'^[\w\d\s-]+$'
