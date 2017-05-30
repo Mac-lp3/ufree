@@ -46,7 +46,25 @@ class AvailabilityDaoTest(unittest.TestCase):
             'december'
         ]
 
+    def create_availability_test (self):
+        # test normal behavior
+        builtins.return_pattern = [self.return_row]
+        obj = self.__dao.create_availability(self.availability_object)
+        self.assertTrue('id' in obj)
+        self.assertTrue('february' in obj)
+        self.assertTrue('august' in obj)
+        self.assertTrue('december' in obj)
+
+        # test exception handeling
+        builtins.db_fail = 'True'
+        try:
+            val = self.__dao.create_availability(self.availability_object)
+        except Exception as e:
+            self.assertTrue(isinstance(e, DaoException))
+        builtins.db_fail = 'False'
+
     def delete_availability_test (self):
+        # test normal bevavior
         try:
             self.__dao.delete_availability()
             self.__dao.delete_availability(availability_id=1234)
@@ -58,6 +76,20 @@ class AvailabilityDaoTest(unittest.TestCase):
             self.assertTrue(True)
         except Exception as e:
             self.assertTrue(False)
+
+        # test exception handling
+        builtins.db_fail = 'True'
+        try:
+            self.__dao.delete_availability()
+            self.__dao.delete_availability(availability_id=1234)
+            self.__dao.delete_availability(event_id='jkh234kjlh1234')
+            self.__dao.delete_availability(attendee_id=2341)
+            self.__dao.delete_availability(
+                attendee_id=2341, event_id='jkh234kjlh1234'
+            )
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertEqual(type(e), DaoException)
 
     def update_availability_test (self):
         # test normal behavior
