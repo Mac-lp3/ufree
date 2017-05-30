@@ -1,9 +1,9 @@
 import os
 import json
 import unittest
-from classes.util.ApiInputValidator import ApiInputValidator
+from classes.util.EventValidator import EventValidator
 
-class ApiInputValidatorTest(unittest.TestCase):
+class EventValidatorTest(unittest.TestCase):
 
     __goodEvent = {
         'id': 'kjhafu24kjsdncvhj23an3n32k1io213',
@@ -35,7 +35,7 @@ class ApiInputValidatorTest(unittest.TestCase):
         'creator': ') Mikey Big C'
     }
 
-    __inputValidator = ApiInputValidator()
+    __inputValidator = EventValidator()
 
     def test_event_fail_validation (self):
         try:

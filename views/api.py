@@ -3,7 +3,7 @@ import json
 import inspect
 import importlib
 from classes.exception.DaoException import DaoException
-from classes.util.ApiInputValidator import ApiInputValidator
+from classes.util.EventValidator import EventValidator
 from classes.util.HashCodeUtils import HashCodeUtils
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
@@ -20,7 +20,7 @@ else:
 	temp = importlib.import_module('classes.dao.EventDao')
 	EventDao = temp.EventDao()
 
-inputValidator = ApiInputValidator()
+inputValidator = EventValidator()
 __app_service = EventService()
 
 def post_event(request):

@@ -4,7 +4,7 @@ import json
 import inspect
 import importlib
 from classes.util.HashCodeUtils import HashCodeUtils
-from classes.util.ApiInputValidator import ApiInputValidator
+from classes.util.EventValidator import EventValidator
 from classes.exception.ServiceException import ServiceException
 from classes.exception.BaseAppException import BaseAppException
 
@@ -12,7 +12,7 @@ class EventService:
 
 	def __init__ (self):
 		# init DAOs based on environment
-		self.__inputValidator = ApiInputValidator()
+		self.__inputValidator = EventValidator()
 		if os.environ['ENV'] == 'test':
 			temp = importlib.import_module('test.classes.EventDao')
 			self.__event_dao = temp.EventDao()
@@ -31,7 +31,9 @@ class EventService:
 		Validates the request object, extracts all required information, and
 		builds the event and associated objects.
 		'''
-
+		# TODO proper request validation,
+		# TODO request body design
+		# TODO year mechanism.
 		response_body = {}
 		try:
 			inputErrors = self.__inputValidator.validate_event(req_body)
