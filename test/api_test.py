@@ -27,8 +27,11 @@ class ApiTest(unittest.TestCase):
         #test bad event name
         builtins.db_fail = 'False'
         post_body = {
-            'name': self.__bad_name,
-            'creator': self.__good_creator
+            'user_id': 'lasoaslasdo',
+            'payload': {
+                'name': self.__bad_name,
+                'creator': self.__good_creator
+            }
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
@@ -40,8 +43,11 @@ class ApiTest(unittest.TestCase):
 
         #test bad creator
         post_body = {
-            'name': self.__good_name,
-            'creator': self.__bad_creator
+            'user_id': 'lasoaslasdo',
+            'payload': {
+                'name': self.__good_name,
+                'creator': self.__bad_creator
+            }
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
@@ -54,8 +60,11 @@ class ApiTest(unittest.TestCase):
         # test DB exception
         builtins.db_fail = 'True'
         post_body = {
-            'name': self.__good_name,
-            'creator': self.__good_creator
+            'user_id': 'lasoaslasdo',
+            'payload': {
+                'name': self.__good_name,
+                'creator': self.__good_creator
+            }
         }
         req = MockRequest(body=post_body)
         try:
@@ -70,8 +79,11 @@ class ApiTest(unittest.TestCase):
     def post_event_success_test (self):
         builtins.db_fail = 'False'
         post_body = {
-            'name': self.__good_name,
-            'creator': self.__good_creator
+            'user_id': 'hwehweh',
+            'payload': {
+                'name': self.__good_name,
+                'creator': self.__good_creator
+            }
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
