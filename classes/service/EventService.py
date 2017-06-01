@@ -31,29 +31,18 @@ class EventService:
 		Validates the request object, extracts all required information, and
 		builds the event and associated objects.
 		'''
-		# TODO proper request validation,
-		# TODO request body design
 		# TODO year mechanism.
 		response_body = {}
 		try:
-			inputErrors = self.__inputValidator.validate_event(req_body)
+			event_payload = req_body['payload']
+			inputErrors = self.__inputValidator.validate_event(event_payload)
 
 			if not inputErrors:
-				# check if creator id was provided...
-				creator_id = ''
-				if 'creator_id' not in req_body or req_body['creator_id'] is None:
-					# ... create a new attendee record if not
-					ctr = self.__attendee_dao.save_attendee({
-						'name': req_body['creator']
-					})
-					creator_id = ctr['id']
-				else:
-					# ... or use the one provided
-					creator_id = req_body['creator_id']
+				creator_id = req_body['user_id']
 
 				# set the creator_id and save the event
 				req_body['creator_id'] = creator_id
-				data = self.__event_dao.save_event(req_body)
+				data = self.__event_dao.save_event(event_payload)
 
 				# build the response body
 				json_data = json.dumps(data)
