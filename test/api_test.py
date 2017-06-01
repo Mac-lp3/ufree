@@ -25,6 +25,7 @@ class ApiTest(unittest.TestCase):
 
     def post_event_fail_test (self):
         #test bad event name
+        builtins.db_fail = 'False'
         post_body = {
             'name': self.__bad_name,
             'creator': self.__good_creator
@@ -67,6 +68,7 @@ class ApiTest(unittest.TestCase):
         builtins.db_fail = 'False'
 
     def post_event_success_test (self):
+        builtins.db_fail = 'False'
         post_body = {
             'name': self.__good_name,
             'creator': self.__good_creator
@@ -108,6 +110,7 @@ class ApiTest(unittest.TestCase):
 
     def get_event_success_test (self):
         # test bad id - too short
+        builtins.db_fail = 'False'
         req = MockRequest(self.__good_id)
         resp = api.get_event(req)
         jbod = json.loads(resp)
