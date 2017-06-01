@@ -3,6 +3,7 @@ import subprocess
 import sys
 import os
 import json
+import builtins
 
 use_plugin('python.core')
 use_plugin('python.frosted')
@@ -166,6 +167,7 @@ def test ():
     os.environ['ENV'] = 'test'
     os.environ['DB_NAME'] = 'ufree_test'
     os.environ['TEST_DB_FAIL'] = 'False'
+    builtins.db_fail = 'False'
     proc = subprocess.Popen(
         ['nosetests', '-v'],
         shell=True,
