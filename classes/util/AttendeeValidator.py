@@ -25,7 +25,7 @@ class AttendeeValidator:
 
         return None
 
-    def validate_attendee_name (name):
+    def validate_attendee_name (self, name):
         error_messages = []
         if 'name' in attendee:
             if not isinstance(attendee['name'], str):
@@ -49,7 +49,7 @@ class AttendeeValidator:
         if error_messages:
             raise ValidationException(error_messages)
 
-    def validate_attendee_id (id):
+    def validate_attendee_id (self, id):
         error_messages = []
         # Validate ID field
         if 'id' in attendee:
