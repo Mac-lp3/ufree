@@ -8,5 +8,5 @@ class UserFilter:
     def set_user_id (self, req_body):
         if builtins.db_fail == 'True':
             raise ValidationException('mock exception')
-        req_body['id'] = 'heyheyhey'
+        req_body['user_id'] = 'heyheyhey'
         return req_body
