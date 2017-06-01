@@ -28,6 +28,7 @@ def UserFilter():
             )
 
         # create a new user with the provided name
+        self.__inputValidator.validate_attendee_name(attendee_name)
         att = self.__attendee_dao.save_attendee({
             'name': attendee_name
         })
