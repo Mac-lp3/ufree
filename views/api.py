@@ -10,15 +10,19 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
 from pyramid.view import view_config
-from classes.exception.ServiceException import ServiceException
+from classes.exception.BaseAppException import BaseAppException
 from classes.service.EventService import EventService
 
 if os.environ['ENV'] == 'test':
 	temp = importlib.import_module('test.classes.EventDao')
 	EventDao = temp.EventDao()
+	temp = importlib.import_module('test.classes.UserFilter')
+	UserFilter = temp.UserFilter()
 else:
 	temp = importlib.import_module('classes.dao.EventDao')
 	EventDao = temp.EventDao()
+	temp = importlib.import_module('classes.filter.UserFilter')
+	UserFilter = temp.UserFilter()
 
 inputValidator = EventValidator()
 __app_service = EventService()
@@ -29,10 +33,10 @@ def post_event(request):
 
 	This returns the event object, populated by all date range objects
 	'''
-
 	try:
-		response = __app_service.create_event(request.json_body)
-	except ServiceException as e:
+		json_body = UserFilter.set_user_id(request.json_body)
+		response = __app_service.create_event(json_body)
+	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
 		response.content_type = 'application/json'
