@@ -4,12 +4,14 @@
 * ~~ApiValidator methods for Attendee fields~~
 * Create service layer for Event/Attendees
 * ~~create base exception class~~
+* test user filter
+* integrate user filter and retest api
 
 # Request Object
 ```
 {
-  user_id: '',
-  token: '',
+  user_id: Int,
+  token: String,
   payload: {
     // an event, availability, or attendee object. See below.
   }
