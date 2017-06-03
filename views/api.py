@@ -80,26 +80,12 @@ def put_event(request):
 	If this eventDetails has existing date ranges, this will update
 	the one with the correspodning composite id.
 	'''
-
 	try:
-		# validate sent object and its event hash
-		inputErrors = inputValidator.validate_event(request.json_body)
-		inputErrors = inputErrors + inputValidator.validate_event_hash(request.json_body['eventId'])
-
-		if not inputErrors:
-			data = EventDao.update_event(request.json_body)
-			json_data = json.dumps(data)
-			response = json_data
-
-		else:
-			response = HTTPBadRequest()
-			response.text = json.dumps(inputErrors)
-			response.content_type = 'application/json'
-
-	except Exception as e:
-		print(e)
+		json_body = UserFilter.set_user_id(request.json_body)
+		response = __app_service.update_event(json_body)
+	except BaseAppException as e:
 		response = HTTPBadRequest()
-		response.text = json.dumps({'errors': 'An error occurred while updating this event.'})
+		response.text = e.get_payload()
 		response.content_type = 'application/json'
 
 	return response
@@ -113,28 +99,11 @@ def delete_event(request):
 	'''
 
 	try:
-		# validate hash id
-		eventId = request.matchdict['eventId']
-		inputErrors = inputValidator.validate_event_hash(eventId)
-
-		if not inputErrors:
-			EventDao.delete_event(request.json_body)
-			response = Response(status=204)
-
-		else:
-			response = HTTPBadRequest()
-			response.text = json.dumps({'errors': inputErrors})
-			response.content_type = 'application/json'
-
-	except DaoException as e:
-		response = HTTPNotFound()
-		response.text = json.dumps({'errors': 'No event with given id.'})
-		response.content_type = 'application/json'
-
-	except Exception as e:
-		print(e)
-		response = HTTPNotFound()
-		response.text = json.dumps({'errors': 'An exception occurred deleting this event.'})
+		json_body = UserFilter.set_user_id(request.json_body)
+		response = __app_service.delete_event(json_body)
+	except BaseAppException as e:
+		response = HTTPBadRequest()
+		response.text = e.get_payload()
 		response.content_type = 'application/json'
 
 	return response
