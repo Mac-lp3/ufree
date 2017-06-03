@@ -24,6 +24,9 @@ class EventService:
 			temp = importlib.import_module('classes.dao.AttendeeDao')
 			self.__attendee_dao = temp.AttendeeDao()
 
+	def load_event (self, req_body):
+		pass
+
 	def update_event (self, req_body):
 		pass
 
