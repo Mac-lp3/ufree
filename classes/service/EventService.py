@@ -19,14 +19,14 @@ class EventService:
 			temp = importlib.import_module('test.classes.AttendeeDao')
 			self.__attendee_dao = temp.AttendeeDao()
 			temp = importlib.import_module('test.classes.AvailabilityDao')
-			self.__availability_dao = temp.AttendeeDao()
+			self.__availability_dao = temp.AvailabilityDao()
 		else:
 			temp = importlib.import_module('classes.dao.EventDao')
 			self.__event_dao = temp.EventDao()
 			temp = importlib.import_module('classes.dao.AttendeeDao')
 			self.__attendee_dao = temp.AttendeeDao()
 			temp = importlib.import_module('classes.dao.AvailabilityDao')
-			self.__availability_dao = temp.AttendeeDao()
+			self.__availability_dao = temp.AvailabilityDao()
 
 	def load_event (self, event_id):
 		response_body = {}
