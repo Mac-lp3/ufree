@@ -24,11 +24,36 @@ class EventService:
 			temp = importlib.import_module('classes.dao.AttendeeDao')
 			self.__attendee_dao = temp.AttendeeDao()
 
-	def load_event (self, req_body):
-		pass
+	def load_event (self, event_id):
+		response_body = {}
+		try:
+			data = self.__event_dao.load_event(event_id)
+			json_data = json.dumps(data)
+			response_body = json_data
+		except BaseAppException as e:
+			raise ServiceException(e.message)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while loading this event.'
+			)
+		return response_body
 
 	def update_event (self, req_body):
-		pass
+		response_body = {}
+		try:
+			self.__inputValidator.validate_event(event_payload)
+			data = self.__event_dao.update_event(event_payload)
+			json_data = json.dumps(data)
+			response_body = json_data
+		except BaseAppException as e:
+			raise ServiceException(e.message)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while updating this event.'
+			)
+		return response_body
 
 	def create_event (self, req_body):
 		'''
@@ -66,6 +91,7 @@ class EventService:
 		return response_body
 
 	def delete_event (self, req_body):
+		# TODO only creator should be able to do this.
 		try:
 			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__event_dao.delete_event(req_body)
