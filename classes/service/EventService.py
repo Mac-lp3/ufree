@@ -18,11 +18,15 @@ class EventService:
 			self.__event_dao = temp.EventDao()
 			temp = importlib.import_module('test.classes.AttendeeDao')
 			self.__attendee_dao = temp.AttendeeDao()
+			temp = importlib.import_module('test.classes.AvailabilityDao')
+			self.__availability_dao = temp.AttendeeDao()
 		else:
 			temp = importlib.import_module('classes.dao.EventDao')
 			self.__event_dao = temp.EventDao()
 			temp = importlib.import_module('classes.dao.AttendeeDao')
 			self.__attendee_dao = temp.AttendeeDao()
+			temp = importlib.import_module('classes.dao.AvailabilityDao')
+			self.__availability_dao = temp.AttendeeDao()
 
 	def load_event (self, event_id):
 		response_body = {}
@@ -139,4 +143,18 @@ class EventService:
 			)
 
 	def update_attendee_availability (self, req_body):
-		pass
+		response_body = {}
+		try:
+			# TODO validate availability
+			#inputErrors = self.__inputValidator.validate_attendee(req_body)
+			data = self.__availability_dao.update_availability(req_body)
+			json_data = json.dumps(data)
+			response_body = json_data
+		except BaseAppException as e:
+			raise ServiceException(e.message)
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while updating availability.'
+			)
+		return response_body
