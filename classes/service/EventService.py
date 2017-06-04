@@ -35,7 +35,7 @@ class EventService:
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise ServiceException(
@@ -51,7 +51,7 @@ class EventService:
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise ServiceException(
@@ -86,7 +86,7 @@ class EventService:
 			else:
 				response_body = json.dumps(inputErrors)
 		except BaseAppException as e:
-			raise ServiceException(e.messages)
+			raise ServiceException(str(e))
 
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -100,14 +100,14 @@ class EventService:
 			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__event_dao.delete_event(req_body)
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 
 	def add_event_attendee (self, req_body, event_id):
 		try:
 			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__attendee_dao.join_event(req_body, event_id)
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise ServiceException(
@@ -122,7 +122,7 @@ class EventService:
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise ServiceException(
@@ -135,7 +135,7 @@ class EventService:
 			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__event_dao.leave_event(req_body, event_id)
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise ServiceException(
@@ -151,7 +151,7 @@ class EventService:
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
-			raise ServiceException(e.message)
+			raise ServiceException(str(e))
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise ServiceException(
