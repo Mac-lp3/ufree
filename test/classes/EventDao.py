@@ -45,7 +45,7 @@ class EventDao:
         print('Calling update')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
-        return load_event(eventObject['id'])
+        return self.load_event(eventObject['id'])
 
     def delete_event(self, eventObject):
         print('Calling delete')
