@@ -46,8 +46,9 @@ class EventService:
 	def update_event (self, req_body):
 		response_body = {}
 		try:
-			self.__inputValidator.validate_event(req_body)
-			data = self.__event_dao.update_event(req_body)
+			payload = req_body['payload']
+			self.__inputValidator.validate_event(payload)
+			data = self.__event_dao.update_event(payload)
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
