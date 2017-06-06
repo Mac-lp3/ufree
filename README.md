@@ -6,6 +6,8 @@
 * ~~create base exception class~~
 * test user filter
 * integrate user filter and retest api
+* availability validation
+* year mechanism
 
 # Request Object
 ```
@@ -79,15 +81,16 @@
   email: String
 }
 ```
+
 ## Availability
 ### URL
-`/events/{id}/availability`
-* GET - Returns compiled availability for this event (see response object)
+`/events/{id}/attendees/{id}/availability`
+* GET - Returns compiled availability for this attendee (see response object)
 * POST - Creates a new availability for this event (see request/response objects)
 * PUT - Not used
 * DELETE - Not used
 
-`/events/{id}/availability/{id}`
+`/events/{id}/attendees/{id}/availability/{id}`
 * GET - Returns the availability details (see response object)
 * POST - not used
 * PUT - Updates this availability
