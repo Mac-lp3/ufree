@@ -5,8 +5,11 @@ class UserFilter:
     def __init__ (self):
         pass
 
-    def set_user_id (self, req_body):
+    def set_user_id (self, req):
         if builtins.db_fail == 'True':
             raise ValidationException('mock exception')
-        req_body['user_id'] = 'heyheyhey'
-        return req_body
+        req.cookies['user_id'] = 'heyheyhey'
+        print('the req:', req)
+        print('the req json body:', req.json_body)
+        print('the req cookies:', req.cookies)
+        return req
