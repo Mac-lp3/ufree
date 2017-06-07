@@ -34,6 +34,7 @@ class ApiTest(unittest.TestCase):
         resp = api.post_event(req)
         self.assertEqual(type(resp), HTTPBadRequest)
         e_list = resp.json_body['errors']
+        print(resp.json_body)
         self.assertTrue(
             'Name must only contain letters, numbers, spaces, or dashes' in e_list
         )
@@ -75,9 +76,12 @@ class ApiTest(unittest.TestCase):
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
+        jbod = json.loads(resp.json_body)
+        print('the resp', resp)
+        print('resp json bod', jbod)
         self.assertNotEqual(type(resp), HTTPBadRequest)
-        self.assertEqual(resp['name'], 'A mock event')
-        self.assertEqual(resp['creator'], 'Tony T')
+        self.assertEqual(jbod['name'], 'A mock event')
+        self.assertEqual(jbod['creator'], 'Tony T')
 
     def get_event_fail_test (self):
         # test bad id - too short
