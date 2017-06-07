@@ -46,7 +46,7 @@ class EventService:
 	def update_event (self, req_body):
 		response_body = {}
 		try:
-			payload = req_body['payload']
+			payload = req_body.json_body
 			self.__inputValidator.validate_event(payload)
 			data = self.__event_dao.update_event(payload)
 			json_data = json.dumps(data)
@@ -60,7 +60,7 @@ class EventService:
 			)
 		return response_body
 
-	def create_event (self, req_body):
+	def create_event (self, req):
 		'''
 		Creates a new event.
 
@@ -70,15 +70,12 @@ class EventService:
 		# TODO year mechanism.
 		response_body = {}
 		try:
-			event_payload = req_body['payload']
-			inputErrors = self.__inputValidator.validate_event(event_payload)
+			inputErrors = self.__inputValidator.validate_event(req.json_body)
 
 			if not inputErrors:
-				creator_id = req_body['user_id']
-
 				# set the creator_id and save the event
-				req_body['creator_id'] = creator_id
-				data = self.__event_dao.save_event(event_payload)
+				req.json_body['creator_id'] = req.cookies['user_id']
+				data = self.__event_dao.save_event(req.json_body)
 
 				# build the response body
 				json_data = json.dumps(data)
@@ -97,6 +94,7 @@ class EventService:
 
 	def delete_event (self, req_body):
 		# TODO only creator should be able to do this.
+		# TODO HTTP header-based id
 		try:
 			inputErrors = self.__inputValidator.validate_event(req_body)
 			self.__event_dao.delete_event(req_body)
