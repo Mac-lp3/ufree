@@ -5,6 +5,7 @@ import builtins
 import views.api as api
 from pyramid import testing
 from pyramid.httpexceptions import HTTPBadRequest
+from test.classes.MockRequest import MockRequest
 
 class ApiTest(unittest.TestCase):
 
@@ -119,20 +120,6 @@ class ApiTest(unittest.TestCase):
         jbod = json.loads(resp)
         self.assertNotEqual(resp, HTTPBadRequest)
         self.assertEqual(self.__good_id, jbod['id'])
-
-class MockRequest():
-
-    matchdict = {}
-    json_body = {}
-    cookies = {}
-
-    def __init__ (self, id={}, body={}, cookies={}):
-        if id:
-            self.matchdict = {'eventId': id}
-        if body:
-            self.json_body = body
-        if cookies:
-            self.cookies = cookies
 
 if __name__ == '__main__':
 	unittest.main()
