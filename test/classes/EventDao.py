@@ -47,11 +47,9 @@ class EventDao:
             raise DaoException('General exception')
         return self.load_event(eventObject['id'])
 
-    def delete_event(self, eventObject):
+    def delete_event(self, event_id):
         print('Calling delete')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
-        if eventObject['id'] in EventDao.mock_event_ids:
-            self.mock_event_ids.remove(eventObject['id'])
-        else:
+        if event_id not in self.__mock_event_ids:
             raise DaoException('Event wasn\'t in there')
