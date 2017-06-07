@@ -27,11 +27,8 @@ class ApiTest(unittest.TestCase):
         #test bad event name
         builtins.db_fail = 'False'
         post_body = {
-            'user_id': 'lasoaslasdo',
-            'payload': {
-                'name': self.__bad_name,
-                'creator': self.__good_creator
-            }
+            'name': self.__bad_name,
+            'creator': self.__good_creator
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
@@ -43,11 +40,8 @@ class ApiTest(unittest.TestCase):
 
         #test bad creator
         post_body = {
-            'user_id': 'lasoaslasdo',
-            'payload': {
-                'name': self.__good_name,
-                'creator': self.__bad_creator
-            }
+            'name': self.__good_name,
+            'creator': self.__bad_creator
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
@@ -60,11 +54,8 @@ class ApiTest(unittest.TestCase):
         # test DB exception
         builtins.db_fail = 'True'
         post_body = {
-            'user_id': 'lasoaslasdo',
-            'payload': {
-                'name': self.__good_name,
-                'creator': self.__good_creator
-            }
+            'name': self.__good_name,
+            'creator': self.__good_creator
         }
         req = MockRequest(body=post_body)
         try:
@@ -79,18 +70,14 @@ class ApiTest(unittest.TestCase):
     def post_event_success_test (self):
         builtins.db_fail = 'False'
         post_body = {
-            'user_id': 'hwehweh',
-            'payload': {
-                'name': self.__good_name,
-                'creator': self.__good_creator
-            }
+            'name': self.__good_name,
+            'creator': self.__good_creator
         }
         req = MockRequest(body=post_body)
         resp = api.post_event(req)
-        jbod = json.loads(resp)
-        self.assertNotEqual(resp, HTTPBadRequest)
-        self.assertEqual(jbod['name'], 'A mock event')
-        self.assertEqual(jbod['creator'], 'Tony T')
+        self.assertNotEqual(type(resp), HTTPBadRequest)
+        self.assertEqual(resp['name'], 'A mock event')
+        self.assertEqual(resp['creator'], 'Tony T')
 
     def get_event_fail_test (self):
         # test bad id - too short
@@ -133,12 +120,15 @@ class MockRequest():
 
     matchdict = {}
     json_body = {}
+    cookies = {}
 
-    def __init__ (self, id={}, body={}):
+    def __init__ (self, id={}, body={}, cookies={}):
         if id:
             self.matchdict = {'eventId': id}
         if body:
             self.json_body = body
+        if cookies:
+            self.cookies = cookies
 
 if __name__ == '__main__':
 	unittest.main()
