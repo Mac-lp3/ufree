@@ -16,10 +16,10 @@ def UserFilter():
     def __create_new_user (self, req_body):
         # Get the creator or attendee name.
         attendee_name = ''
-        if 'creator' in req_body.payload:
-            attendee_name = req_body.payload['creator']
-        elif 'name' in req_body.payload:
-            attendee_name = req_body.payload['name']
+        if 'creator' in req_body['payload']:
+            attendee_name = req_body['payload']['creator']
+        elif 'name' in req_body['payload']:
+            attendee_name = req_body['payload']['name']
 
         # If neither is found, then this is a bad request
         if not attendee_name:
@@ -33,18 +33,32 @@ def UserFilter():
             'name': attendee_name
         })
 
-        # attach the user ID to the request
-        req_body['id'] = att['id']
-        return req_body
+        # return the attendee object
+        return att
 
-    def set_user_id (self, req_body):
-        if 'id' in req_body and req_body['id']:
+    def set_user_id (self, req):
+        if 'cookies' in req_body and 'user_id' in req_body['cookies']:
             # throws exception on failure
-            self.__inputValidator.validate_attendee_id(req_body['id'])
-            if self.__attendee_dao.attendee_exists(req_body['id']):
-                return req_body
+            cookies = req_body['cookies']
+            if cookies['user_id']:
+                self.__inputValidator.validate_attendee_id(cookies['user_id'])
+                if self.__attendee_dao.attendee_exists(cookies['user_id']):
+                    # user exists and cookie is not stale
+                    return req
+                else:
+                    # stale cookie. create new user and overwrite existing cookie
+                    att = self.__create_new_user(req.json_body)
+                    req.cookies['user_id'] = att['id']
+                    return req
             else:
-                # stale cookie. create new user and overwrite existing cookie
-                return self.__create_new_user(req_body)
+                # create new user and cookie
+                att = self.__create_new_user(req.json_body)
+                req.cookies.push({
+                    'user_id': att['id']
+                })
+                return req
         else:
-            return self.__create_new_user(req_body)
+            att = self.__create_new_user(req.json_body)
+            req.cookies = []
+            req.cookies['user_id'] = att['id']
+            return req
