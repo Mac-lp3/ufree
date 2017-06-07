@@ -92,12 +92,13 @@ class EventService:
 
 		return response_body
 
-	def delete_event (self, req_body):
+	def delete_event (self, req):
 		# TODO only creator should be able to do this.
 		# TODO HTTP header-based id
 		try:
-			inputErrors = self.__inputValidator.validate_event(req_body)
-			self.__event_dao.delete_event(req_body)
+			eventId = req.matchdict['eventId']
+			inputErrors = self.__inputValidator.validate_event_id(eventId)
+			self.__event_dao.delete_event(eventId)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 
