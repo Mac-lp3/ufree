@@ -9,16 +9,7 @@
 * availability validation
 * year mechanism
 
-# Request Object
-```
-{
-  user_id: Int,
-  token: String,
-  payload: {
-    // an event, availability, or attendee object. See below.
-  }
-}
-```
+# Request Objects
 ## Events
 ### URL
 `/events`
