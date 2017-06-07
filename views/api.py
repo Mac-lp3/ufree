@@ -34,8 +34,11 @@ def post_event(request):
 	This returns the event object, populated by all date range objects
 	'''
 	try:
-		json_body = UserFilter.set_user_id(request.json_body)
-		response = __app_service.create_event(json_body)
+		filtered_request = UserFilter.set_user_id(request)
+		payload = __app_service.create_event(filtered_request)
+		response = Response(content_type='application/json')
+		response.charset = 'UTF-8'
+		response.json_body = payload
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
