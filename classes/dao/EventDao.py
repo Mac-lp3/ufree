@@ -141,7 +141,7 @@ class EventDao:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error while updating event')
 
-	def delete_event(self, eventObject):
+	def delete_event(self, event_id):
 		'''
 		Deletes the event with the given id.
 
@@ -151,12 +151,12 @@ class EventDao:
 		try:
 			# delete the event
 			self.__cur.execute(
-				'DELETE FROM event WHERE id={0}'.format(eventObject['id'])
+				'DELETE FROM event WHERE id={0}'.format(event_id)
 			)
 			# delete event_attendee entries
 			self.__cur.execute(
 				'DELETE FROM event_attendee WHERE event_id={0}'.format(
-					eventObject['id']
+					event_id
 				)
 			)
 		except Exception as e:
