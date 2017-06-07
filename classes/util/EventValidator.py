@@ -1,5 +1,6 @@
 import re
 import datetime
+from classes.util.HashCodeUtils import HashCodeUtils
 from classes.exception.ValidationException import ValidationException
 
 class EventValidator:
@@ -9,6 +10,12 @@ class EventValidator:
 	__event_name_length = 50
 	__event_creator_pattern = r'^[\w\d\s-]+$'
 	__event_creator_length = 25
+
+	def validate_event_id (self, event_id):
+		error_messages = HashCodeUtils.validate_hash(event_id)
+		if error_messages:
+			raise ValidationException(error_messages)
+		return None
 
 	def validate_event(self, eventObject):
 		'''
