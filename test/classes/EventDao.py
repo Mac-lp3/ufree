@@ -1,19 +1,15 @@
 import os
 from classes.exception.DaoException import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
+import test.classes.Const as const
 
 class EventDao:
-
-    __mock_event_ids = [
-        'qwe1fd23qwe123qwe123qwe123asd345',
-        '12345567890asdfghjklqwertyuiopzx'
-    ]
 
     def event_exists (eventId):
         print('Calling exists??')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
-        if eventId in EventDao.__mock_event_ids:
+        if eventId in const.MOCK_EVENT_IDS:
             return True
         else:
             return False
@@ -22,12 +18,12 @@ class EventDao:
         print('Calling load')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
-        if eventId in self.__mock_event_ids:
+        if eventId in const.MOCK_EVENT_IDS:
             print('id found in list')
             return {
                 'id': eventId,
                 'name': 'A mock event',
-                'creator_id': 'heyheyhey'
+                'creator_id': const.GOOD_USER_ID
             }
         else:
             print('id not found')
@@ -38,7 +34,7 @@ class EventDao:
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
         generatedId = HashCodeUtils.generate_code(eventObject['name'])
-        self.__mock_event_ids.append(generatedId)
+        const.MOCK_EVENT_IDS.append(generatedId)
         return self.load_event(generatedId)
 
     def update_event(self, eventObject):
@@ -51,5 +47,5 @@ class EventDao:
         print('Calling delete')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
-        if event_id not in self.__mock_event_ids:
+        if event_id not in const.MOCK_EVENT_IDS:
             raise DaoException('Event wasn\'t in there')
