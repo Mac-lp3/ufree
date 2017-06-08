@@ -82,7 +82,7 @@ class ApiTest(unittest.TestCase):
         print('resp json bod', jbod)
         self.assertNotEqual(type(resp), HTTPBadRequest)
         self.assertEqual(jbod['name'], 'A mock event')
-        self.assertEqual(jbod['creator'], 'Tony T')
+        self.assertEqual(jbod['creator_id'], 'heyheyhey')
 
     def get_event_fail_test (self):
         # test bad id - too short
