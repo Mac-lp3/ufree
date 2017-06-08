@@ -93,12 +93,22 @@ class EventService:
 		return response_body
 
 	def delete_event (self, req):
-		# TODO only creator should be able to do this.
-		# TODO HTTP header-based id
 		try:
+			# validate event ID
 			eventId = req.matchdict['eventId']
 			inputErrors = self.__inputValidator.validate_event_id(eventId)
-			self.__event_dao.delete_event(eventId)
+
+			# make sure this user is the creator
+			user_id = req.cookies['user_id']
+			event = self.__event_dao.load_event(eventId)
+
+			# delete event if so
+			if event['creator_id'] == user_id:
+				self.__event_dao.delete_event(eventId)
+			else:
+				raise ServiceException(
+					'Only the creator cannot delete this event'
+				)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 
