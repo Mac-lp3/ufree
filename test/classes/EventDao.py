@@ -27,7 +27,7 @@ class EventDao:
             return {
                 'id': eventId,
                 'name': 'A mock event',
-                'creator': 'Tony T'
+                'creator_id': 'heyheyhey'
             }
         else:
             print('id not found')
