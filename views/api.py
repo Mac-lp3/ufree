@@ -102,8 +102,8 @@ def delete_event(request):
 	'''
 
 	try:
-		json_body = UserFilter.set_user_id(request.json_body)
-		response = __app_service.delete_event(json_body)
+		filtered_request = UserFilter.set_user_id(request)
+		response = __app_service.delete_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
