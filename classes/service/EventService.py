@@ -112,10 +112,11 @@ class EventService:
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 
-	def add_event_attendee (self, req_body, event_id):
+	def add_event_attendee (self, req, event_id):
 		try:
-			inputErrors = self.__inputValidator.validate_event(req_body)
-			self.__attendee_dao.join_event(req_body, event_id)
+			self.__inputValidator.validate_attendee(req.json_body)
+			self.__inputValidator.validate_event_id(event_id.json_body)
+			self.__attendee_dao.join_event(req.json_body, event_id)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 		except Exception as e:
