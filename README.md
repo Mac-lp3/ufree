@@ -8,6 +8,7 @@
 * integrate user filter and retest api
 * availability validation
 * year mechanism
+* switch all of api method to use service layer
 
 # Request Objects
 ## Events
