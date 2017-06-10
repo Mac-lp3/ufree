@@ -3,7 +3,6 @@ from classes.exception.ValidationException import ValidationException
 import test.classes.Const as const
 class UserFilter:
 
-    GOOD_USER_ID = 'heyheyhey'
     BAD_USER_ID = 'watwatwat'
 
     def __init__ (self):
