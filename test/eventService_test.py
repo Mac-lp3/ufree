@@ -89,5 +89,18 @@ class EventServiceTest(unittest.TestCase):
         except Exception as e:
             self.assertTrue(isinstance(e, ServiceException))
 
+    def add_event_attendee_test (self):
+        try:
+            r = self.__event_service.add_event_attendee(MockRequest(
+                    id=const.GOOD_EVENT_ID,
+                    body={
+                        'name': 'juan'
+                    })
+                )
+            self.assertTrue(True)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
 if __name__ == '__main__':
     unittest.main()
