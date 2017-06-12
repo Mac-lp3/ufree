@@ -11,12 +11,18 @@ class AttendeeValidator:
     def validate_attendee (self, attendee):
         error_messages = []
         try:
-            self.validate_attendee_name(attendee['name'])
+            if 'name' in attendee:
+                self.validate_attendee_name(attendee['name'])
+            else:
+                error_messages.append(
+                    'Name is blank. A value for name is required'
+                )
         except ValidationException as e:
             error_messages.append(e.messages)
 
         try:
-            self.validate_attendee_id(attendee['id'])
+            if 'id' in attendee:
+                self.validate_attendee_id(attendee['id'])
         except ValidationException as e:
             error_messages.append(e.messages)
 
@@ -27,24 +33,22 @@ class AttendeeValidator:
 
     def validate_attendee_name (self, name):
         error_messages = []
-        if 'name' in attendee:
-            if not isinstance(attendee['name'], str):
-                error_messages.append('Name must be a string')
 
-            elif len(attendee['name']) > self.__attendee_name_length:
-                message = 'Name must be less than {0} characters'.format(
-                    self.__attendee_name_length
-                )
-                error_messages.append(message)
+        if not isinstance(name, str):
+            error_messages.append('Name must be a string')
 
-            else:
-                test = re.search(self.__attendee_name_pattern, attendee['name'])
-                if test == None or test.string != attendee['name']:
-                    error_messages.append(
-                        'Name must only contain letters, numbers, spaces, or dashes'
-                    )
+        elif len(name) > self.__attendee_name_length:
+            message = 'Name must be less than {0} characters'.format(
+                self.__attendee_name_length
+            )
+            error_messages.append(message)
+
         else:
-            error_messages.append('Name is blank. A value for name is required')
+            test = re.search(self.__attendee_name_pattern, name)
+            if test == None or test.string != name:
+                error_messages.append(
+                    'Name must only contain letters, numbers, spaces, or dashes'
+                )
 
         if error_messages:
             raise ValidationException(error_messages)
@@ -58,7 +62,7 @@ class AttendeeValidator:
             except Exception:
                 error_messages.append('Attendee ID must be an integer')
         else:
-                error_messages.append('Attendee ID must not be blank')
+            error_messages.append('Attendee ID must not be blank')
 
         if error_messages:
             raise ValidationException(error_messages)

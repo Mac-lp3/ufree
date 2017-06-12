@@ -34,3 +34,6 @@ class AttendeeDao:
 
 	def delete_attendee (self, attendee):
 		pass
+
+	def join_event (self, attendee, event_id):
+		pass
