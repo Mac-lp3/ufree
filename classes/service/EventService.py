@@ -5,6 +5,7 @@ import inspect
 import importlib
 from classes.util.HashCodeUtils import HashCodeUtils
 from classes.util.EventValidator import EventValidator
+from classes.util.AttendeeValidator import AttendeeValidator
 from classes.exception.ServiceException import ServiceException
 from classes.exception.BaseAppException import BaseAppException
 
@@ -12,7 +13,8 @@ class EventService:
 
 	def __init__ (self):
 		# init DAOs based on environment
-		self.__inputValidator = EventValidator()
+		self.__eventValidator = EventValidator()
+		self.__attendeeValidator = AttendeeValidator()
 		if os.environ['ENV'] == 'test':
 			temp = importlib.import_module('test.classes.EventDao')
 			self.__event_dao = temp.EventDao()
@@ -47,7 +49,7 @@ class EventService:
 		response_body = {}
 		try:
 			payload = req_body.json_body
-			self.__inputValidator.validate_event(payload)
+			self.__eventValidator.validate_event(payload)
 			data = self.__event_dao.update_event(payload)
 			json_data = json.dumps(data)
 			response_body = json_data
@@ -70,7 +72,7 @@ class EventService:
 		# TODO year mechanism.
 		response_body = {}
 		try:
-			inputErrors = self.__inputValidator.validate_event(req.json_body)
+			inputErrors = self.__eventValidator.validate_event(req.json_body)
 
 			if not inputErrors:
 				# set the creator_id and save the event
@@ -96,7 +98,7 @@ class EventService:
 		try:
 			# validate event ID
 			eventId = req.matchdict['eventId']
-			inputErrors = self.__inputValidator.validate_event_id(eventId)
+			inputErrors = self.__eventValidator.validate_event_id(eventId)
 
 			# make sure this user is the creator
 			user_id = req.cookies['user_id']
@@ -112,11 +114,12 @@ class EventService:
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 
-	def add_event_attendee (self, req, event_id):
+	def add_event_attendee (self, req):
 		try:
-			self.__inputValidator.validate_attendee(req.json_body)
-			self.__inputValidator.validate_event_id(event_id.json_body)
-			self.__attendee_dao.join_event(req.json_body, event_id)
+			eventId = req.matchdict['eventId']
+			self.__attendeeValidator.validate_attendee(req.json_body)
+			self.__eventValidator.validate_event_id(eventId)
+			self.__attendee_dao.join_event(req.json_body, eventId)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 		except Exception as e:
@@ -128,7 +131,7 @@ class EventService:
 	def update_attendee (self, req_body):
 		response_body = {}
 		try:
-			inputErrors = self.__inputValidator.validate_attendee(req_body)
+			inputErrors = self.__attendeeValidator.validate_attendee(req_body)
 			data = self.__attendee_dao.update_attendee(req_body)
 			json_data = json.dumps(data)
 			response_body = json_data
@@ -143,7 +146,8 @@ class EventService:
 
 	def delete_event_attendee (self, req_body, event_id):
 		try:
-			inputErrors = self.__inputValidator.validate_event(req_body)
+			# only creator or attendee should be able to do this.
+			inputErrors = self.__eventValidator.validate_event_id(event_id)
 			self.__event_dao.leave_event(req_body, event_id)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
@@ -157,7 +161,7 @@ class EventService:
 		response_body = {}
 		try:
 			# TODO validate availability
-			#inputErrors = self.__inputValidator.validate_attendee(req_body)
+			#inputErrors = self.__eventValidator.validate_attendee(req_body)
 			data = self.__availability_dao.update_availability(req_body)
 			json_data = json.dumps(data)
 			response_body = json_data
