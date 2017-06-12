@@ -5,14 +5,15 @@ from classes.exception.ValidationException import ValidationException
 class AttendeeValidator:
 
     # just letters, numbers, and spaces
+    __attendee_id_pattern = r'^[\w\d\s-]+$'
     __attendee_name_pattern = r'^[\w\d\s-]+$'
     __attendee_name_length = 20
 
-    def validate_attendee (self, attendee):
+    def validate_attendee_request (self, req):
         error_messages = []
         try:
-            if 'name' in attendee:
-                self.validate_attendee_name(attendee['name'])
+            if 'name' in req.json_body:
+                self.validate_attendee_name(req.json_body['name'])
             else:
                 error_messages.append(
                     'Name is blank. A value for name is required'
@@ -21,8 +22,14 @@ class AttendeeValidator:
             error_messages.append(e.messages)
 
         try:
-            if 'id' in attendee:
-                self.validate_attendee_id(attendee['id'])
+            if 'id' in req.json_body:
+                self.validate_attendee_id(req.json_body['id'])
+            elif 'user_id' in req.cookies:
+                self.validate_attendee_id(req.cookies['user_id'])
+            else:
+                error_messages.append(
+                    'A suitable ID could not be found for this request'
+                )
         except ValidationException as e:
             error_messages.append(e.messages)
 
@@ -56,13 +63,14 @@ class AttendeeValidator:
     def validate_attendee_id (self, id):
         error_messages = []
         # Validate ID field
-        if 'id' in attendee:
-            try:
-                int(attendee['id'])
-            except Exception:
-                error_messages.append('Attendee ID must be an integer')
+        if isinstance(id, str):
+            test = re.search(self.__attendee_id_pattern, id)
+            if test == None or test.string != id:
+                error_messages.append(
+                    'ID must only contain letters or numbers'
+                )
         else:
-            error_messages.append('Attendee ID must not be blank')
+            error_messages.append('Attendee ID must be a String')
 
         if error_messages:
             raise ValidationException(error_messages)
