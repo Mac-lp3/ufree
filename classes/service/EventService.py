@@ -115,10 +115,14 @@ class EventService:
 			raise ServiceException(str(e))
 
 	def add_event_attendee (self, req):
+		'''
+		only users can join an event. a user cannot be added by anyone else.
+		'''
 		try:
 			eventId = req.matchdict['eventId']
-			self.__attendeeValidator.validate_attendee(req.json_body)
+			self.__attendeeValidator.validate_attendee_request(req)
 			self.__eventValidator.validate_event_id(eventId)
+			req.json_body['id'] = req.cookies['user_id']
 			self.__attendee_dao.join_event(req.json_body, eventId)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
