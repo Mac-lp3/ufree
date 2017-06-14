@@ -132,11 +132,13 @@ class EventService:
 				'An error occurred while joining this event.'
 			)
 
-	def update_attendee (self, req_body):
+	def update_attendee (self, req):
 		response_body = {}
 		try:
-			inputErrors = self.__attendeeValidator.validate_attendee(req_body)
-			data = self.__attendee_dao.update_attendee(req_body)
+			if 'id' not in req.json_body:
+				raise ServiceException('Id was not found on this request')
+			inputErrors = self.__attendeeValidator.validate_attendee_request(req)
+			data = self.__attendee_dao.update_attendee(req.json_body)
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
