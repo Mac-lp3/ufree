@@ -127,5 +127,41 @@ class EventServiceTest(unittest.TestCase):
             print(e)
             self.assertTrue(False)
 
+    def delete_event_attendee_test (self):
+        # test normal behavior
+        try:
+            r = self.__event_service.delete_event_attendee(MockRequest(
+                    body={
+                        'name': 'juan'
+                    },
+                    attendee_id=const.GOOD_USER_ID,
+                    id=const.GOOD_EVENT_ID)
+                )
+            self.assertTrue(True)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+        # try to delete as another user
+        try:
+            r = self.__event_service.delete_event_attendee(MockRequest(
+                    body={
+                        'name': 'juan'
+                    },
+                    attendee_id=const.GOOD_USER_ID,
+                    cookies={
+                        'user_id': const.BAD_USER_ID
+                    })
+                )
+            print(r)
+            self.assertTrue(False)
+        except Exception as e:
+            print(e)
+            self.assertEqual(
+                str(e),
+                'Only the creator can remove other users from an event'
+            )
+            self.assertTrue(True)
+
 if __name__ == '__main__':
     unittest.main()
