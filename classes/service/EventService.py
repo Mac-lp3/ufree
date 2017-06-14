@@ -156,14 +156,14 @@ class EventService:
 			attendee_id = req.matchdict['attendee_id']
 			self.__eventValidator.validate_event_id(eventId)
 			self.__attendeeValidator.validate_attendee_id(attendee_id)
-			
+
 			if req.cookies['user_id'] == attendee_id:
 				# user is leaving this event
 				self.__attendee_dao.leave_event(attendee_id, eventId)
 			else:
 				# check if this is the event creator
 				event = self.__event_dao.load_event(eventId)
-				if req.cookies['user_id'] == event.creator_id:
+				if req.cookies['user_id'] == event['creator_id']:
 					self.__attendee_dao.leave_event(attendee_id, eventId)
 				else:
 					# neither creator or the target user
