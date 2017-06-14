@@ -46,11 +46,21 @@ class AttendeeDao:
 
 	def leave_event (self, attendee, event_id):
 		try:
+			target_id = ''
+			if 'id' in attendee:
+				target_id = attendee['id']
+			else:
+				target = self.load_attendee(attendee)
+				target_id = target['id']
+
 			self.__cur.execute(
-				'DELETE FROM event_attendee WHERE event_id=\'{0}\''.format(
-					event_id
+				'DELETE FROM event_attendee WHERE event_id=\'{0}\'' +
+				'AND attendee_id={1}'.format(
+					event_id,
+					target_id
 				)
 			)
+
 		except Exception as e:
 			print(e, sys.exc_info(), attendee, event_id)
 			raise DaoException(
