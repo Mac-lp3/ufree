@@ -91,9 +91,34 @@ class EventServiceTest(unittest.TestCase):
 
     def add_event_attendee_test (self):
         try:
-            r = self.__event_service.add_event_attendee(MockRequest(
+            self.__event_service.add_event_attendee(MockRequest(
                     id=const.GOOD_EVENT_ID,
                     body={
+                        'name': 'juan'
+                    })
+                )
+            self.assertTrue(True)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+    def update_attendee_test (self):
+        try:
+            r = self.__event_service.update_attendee(MockRequest(
+                    body={
+                        'name': 'juan'
+                    })
+                )
+            self.assertTrue(False)
+        except Exception as e:
+            print(e)
+            self.assertEqual(str(e), 'Id was not found on this request')
+            self.assertTrue(True)
+
+        try:
+            r = self.__event_service.update_attendee(MockRequest(
+                    body={
+                        'id': 'idklol',
                         'name': 'juan'
                     })
                 )
