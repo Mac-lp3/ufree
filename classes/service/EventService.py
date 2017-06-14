@@ -150,11 +150,24 @@ class EventService:
 			)
 		return response_body
 
-	def delete_event_attendee (self, req_body, event_id):
+	def delete_event_attendee (self, req):
 		try:
-			# only creator or attendee should be able to do this.
-			inputErrors = self.__eventValidator.validate_event_id(event_id)
-			self.__event_dao.leave_event(req_body, event_id)
+			eventId = req.matchdict['eventId']
+			self.__eventValidator.validate_event_id(eventId)
+
+			if req.cookies['user_id'] == req.json_body['id']:
+				# user is leaving this event
+				self.__attendee_dao.leave_event(req.json_body, eventId)
+			else:
+				# check if this is the event creator
+				event = self.__event_dao.load_event(eventId)
+				if req.cookies['user_id'] == event.creator_id:
+					self.__attendee_dao.leave_event(req.json_body, eventId)
+				else:
+					# neither creator or the target user
+					raise ServiceException(
+						'Only the creator can remove other users from an event'
+					)
 		except BaseAppException as e:
 			raise ServiceException(str(e))
 		except Exception as e:
