@@ -9,6 +9,7 @@
 * availability validation
 * year mechanism
 * switch all of api method to use service layer
+* query to load events by attendee
 
 # Request Objects
 ## Events
