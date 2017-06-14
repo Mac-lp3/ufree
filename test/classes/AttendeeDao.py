@@ -5,6 +5,9 @@ from classes.exception.DaoException import DaoException
 
 class AttendeeDao:
 
+	def leave_event (self, attendee_id, event_id):
+		print('leaving this event...')
+
 	def save_attendee (self, attendee):
 		data = {
 			'id': 'asd',
