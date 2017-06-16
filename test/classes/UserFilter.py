@@ -9,8 +9,14 @@ class UserFilter:
         pass
 
     def set_user_id (self, req):
-        if builtins.db_fail == 'True':
-            raise ValidationException('mock exception')
+        try:
+            if builtins.db_fail == 'True':
+                raise ValidationException('mock exception')
+        except ValidationException as e:
+            raise # coding=utf-8
+        except Exception:
+            pass
+
         req.cookies['user_id'] = const.GOOD_USER_ID
         print('the req:', req)
         print('the req json body:', req.json_body)
