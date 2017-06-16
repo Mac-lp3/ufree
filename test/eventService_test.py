@@ -15,7 +15,9 @@ class EventServiceTest(unittest.TestCase):
     __event_service = EventService()
 
     def test_load_event (self):
-        ret = self.__event_service.load_event(const.GOOD_EVENT_ID)
+        ret = self.__event_service.load_event(MockRequest(
+            id=const.GOOD_EVENT_ID
+        ))
         print(ret)
         self.assertTrue('name' in ret)
         self.assertTrue('id' in ret)
