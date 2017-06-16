@@ -54,24 +54,14 @@ def get_event(request):
 	'''
 	response = {}
 	try:
-		# validate
-		eventId = request.matchdict['eventId']
-		inputErrors = HashCodeUtils.validate_hash(eventId)
-
-		if not inputErrors:
-			data = EventDao.load_event(eventId)
-			json_data = json.dumps(data)
-			response = json_data
-
-		else:
-			response = HTTPBadRequest()
-			response.text = json.dumps(inputErrors)
-			response.content_type = 'application/json'
-
-	except Exception as e:
-		print(e)
+		filtered_request = UserFilter.set_user_id(request)
+		payload = __app_service.load_event(filtered_request)
+		response = Response(content_type='application/json')
+		response.charset = 'UTF-8'
+		response.json_body = payload
+	except BaseAppException as e:
 		response = HTTPBadRequest()
-		response.text = json.dumps({'errors': 'An error occurred while loading this event.'})
+		response.text = e.get_payload()
 		response.content_type = 'application/json'
 
 	return response
