@@ -30,10 +30,13 @@ class EventService:
 			temp = importlib.import_module('classes.dao.AvailabilityDao')
 			self.__availability_dao = temp.AvailabilityDao()
 
-	def load_event (self, event_id):
+	def load_event (self, req):
 		response_body = {}
 		try:
-			data = self.__event_dao.load_event(event_id)
+			# validate
+			eventId = req.matchdict['eventId']
+			self.__eventValidator.validate_event_id(eventId)
+			data = self.__event_dao.load_event(eventId)
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
