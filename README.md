@@ -56,7 +56,7 @@
 * GET - Returns the attendee details (see response object)
 * POST - not used
 * PUT - Updates this attendee
-* DELETE - Deletes this attendee
+* DELETE - Deletes this attendee (just removes them from the event)
 
 ### Request
 ```
@@ -100,10 +100,21 @@
 ### Response
 ```
 {
-  id: int,
+  id: String,
   event_id: String,
-  attendee_id: int (may match user_id),
+  attendee_id: String,
   year: String,
-
+  january: String,
+  february: String,
+  march: String,
+  april: String,
+  may: String,
+  june: String,
+  july: String,
+  august: String,
+  september: String,
+  october: String,
+  november: String,
+  december: String
 }
 ```
