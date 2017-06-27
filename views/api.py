@@ -25,7 +25,7 @@ else:
 	UserFilter = temp.UserFilter()
 
 inputValidator = EventValidator()
-__app_service = EventService()
+__event_service = EventService()
 
 def post_event(request):
 	'''
@@ -35,7 +35,7 @@ def post_event(request):
 	'''
 	try:
 		filtered_request = UserFilter.set_user_id(request)
-		payload = __app_service.create_event(filtered_request)
+		payload = __event_service.create_event(filtered_request)
 		response = Response(content_type='application/json')
 		response.charset = 'UTF-8'
 		response.json_body = payload
@@ -55,7 +55,7 @@ def get_event(request):
 	response = {}
 	try:
 		filtered_request = UserFilter.set_user_id(request)
-		payload = __app_service.load_event(filtered_request)
+		payload = __event_service.load_event(filtered_request)
 		response = Response(content_type='application/json')
 		response.charset = 'UTF-8'
 		response.json_body = payload
@@ -75,7 +75,7 @@ def put_event(request):
 	'''
 	try:
 		json_body = UserFilter.set_user_id(request.json_body)
-		response = __app_service.update_event(json_body)
+		response = __event_service.update_event(json_body)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
@@ -93,7 +93,7 @@ def delete_event(request):
 
 	try:
 		filtered_request = UserFilter.set_user_id(request)
-		response = __app_service.delete_event(filtered_request)
+		response = __event_service.delete_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
@@ -101,36 +101,20 @@ def delete_event(request):
 
 	return response
 
-def post_date_range(request):
+def post_attendee(request):
 	'''
-	Create a new date range associated with this event
+	Add attendee to this event
 
-	This will create a new date range with a generated composite id
-	for this event.
+	If no ID found in the cookies, a new attendee instance is created in the
+	database. Otherwise, it uses the provided user id
 	'''
 
 	try:
-		# validate event id and date range format
-		eventId = request.matchdict['eventId']
-		inputErrors = inputValidator.validate_event_hash(eventId)
-		inputErrors = inputErrors + inputValidator.validate_date_range(request.json_body['dateRange'])
-
-		if not inputErrors:
-			# hash is valid - save and return
-			data = EventDao.add_date_range(eventId, request.json_body)
-			json_data = json.dumps(data)
-			response = json_data
-
-		else:
-			# bad input
-			response = HTTPBadRequest()
-			response.text = json.dumps(inputErrors)
-			response.content_type = 'application/json'
-
-	except Exception as e:
-		print(e)
+		filtered_request = UserFilter.set_user_id(request)
+		response = __event_service.add_event_attendee(filtered_request)
+	except BaseAppException as e:
 		response = HTTPBadRequest()
-		response.text = json.dumps({'errors': 'An exception occurred while handeling new date range.'})
+		response.text = e.get_payload()
 		response.content_type = 'application/json'
 
 	return response
