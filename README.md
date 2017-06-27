@@ -5,10 +5,9 @@
 * Create service layer for Event/Attendees
 * ~~create base exception class~~
 * test user filter
-* integrate user filter and retest api
 * availability validation
 * year mechanism
-* switch all of api method to use service layer
+* add rest of attendee methods to API
 * query to load events by attendee
 
 # Request Objects
