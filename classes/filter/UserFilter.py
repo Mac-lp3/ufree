@@ -37,26 +37,33 @@ def UserFilter():
         return att
 
     def set_user_id (self, req):
+        '''
+        Checks if user_id cookie is in the request. Creates a new user if not.
+        '''
+
+        # check if cookies were sent with this request
         if 'cookies' in req_body and 'user_id' in req_body['cookies']:
-            # throws exception on failure
             cookies = req_body['cookies']
+            # Check if user_id cookie was sent with the request
             if cookies['user_id']:
+                # validate the ID
                 self.__inputValidator.validate_attendee_id(cookies['user_id'])
+                # if the id exists in the DB, return the request unchanged
                 if self.__attendee_dao.attendee_exists(cookies['user_id']):
-                    # user exists and cookie is not stale
                     return req
                 else:
-                    # stale cookie. create new user and overwrite existing cookie
+                    # ID not in database. Create new user and overwrite cookie
                     att = self.__create_new_user(req.json_body)
                     req.cookies['user_id'] = att['id']
                     return req
             else:
-                # create new user and cookie
+                # if not, create new user and attach user_id cookie
                 att = self.__create_new_user(req.json_body)
                 req.cookies.push({
                     'user_id': att['id']
                 })
                 return req
+        # if not, create a new user and assign user_id cookie
         else:
             att = self.__create_new_user(req.json_body)
             req.cookies = []
