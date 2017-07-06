@@ -135,7 +135,7 @@ class EventService:
 				'An error occurred while joining this event.'
 			)
 
-	def update_attendee (self, req):
+	def update_event_attendee (self, req):
 		response_body = {}
 		try:
 			if 'id' not in req.json_body:

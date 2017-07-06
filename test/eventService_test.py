@@ -106,7 +106,7 @@ class EventServiceTest(unittest.TestCase):
 
     def update_attendee_test (self):
         try:
-            r = self.__event_service.update_attendee(MockRequest(
+            r = self.__event_service.update_event_attendee(MockRequest(
                     body={
                         'name': 'juan'
                     })
@@ -118,7 +118,7 @@ class EventServiceTest(unittest.TestCase):
             self.assertTrue(True)
 
         try:
-            r = self.__event_service.update_attendee(MockRequest(
+            r = self.__event_service.update_event_attendee(MockRequest(
                     body={
                         'id': 'idklol',
                         'name': 'juan'
