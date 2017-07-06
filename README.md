@@ -4,7 +4,9 @@
 * ~~ApiValidator methods for Attendee fields~~
 * Create service layer for Event/Attendees
 * ~~create base exception class~~
+* load_attendees Dao method.
 * test user filter
+* test attendee validator
 * availability validation
 * year mechanism
 * add rest of attendee methods to API
