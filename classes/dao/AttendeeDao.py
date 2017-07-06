@@ -95,6 +95,9 @@ class AttendeeDao:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading attendee')
 
+	def load_attendees (self, event_id):
+		pass
+
 	def load_attendee (self, attendee_id):
 		attendeeRows = {}
 		try:
