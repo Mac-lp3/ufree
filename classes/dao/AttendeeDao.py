@@ -96,7 +96,33 @@ class AttendeeDao:
 			raise DaoException('Unknown error when loading attendee')
 
 	def load_attendees (self, event_id):
-		pass
+		try:
+			# retrieve all event attendees from the DB
+			self.__cur.execute(
+				'SELECT attendee.id, attendee.name, attendee.email FROM attendee '
+				'INNER JOIN event_attendee ON attendee.id=event_attendee.attendee_id '
+				'WHERE event_attendee.event_id={0}'.format(
+					event_id
+				)
+			)
+			atts = self.__cur.fetchall()
+
+			# build a list of attendee objects
+			att_list = []
+			for att in atts:
+				temp_att = {
+					'id': att[0],
+					'name': att[1],
+					'email': att[2]
+				}
+				att_list.append(temp_att)
+
+			# return the built list
+			return att_list
+
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading attendee')
 
 	def load_attendee (self, attendee_id):
 		attendeeRows = {}
