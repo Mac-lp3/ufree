@@ -119,17 +119,29 @@ class EventService:
 
 	def add_event_attendee (self, req):
 		'''
-		only users can join an event. a user cannot be added by anyone else.
+		Adds the user to the event.
+
+		Only the user making the request can join an event. Users cannot be
+		added to an event by another user.
 		'''
+
 		try:
-			eventId = req.matchdict['eventId']
+			# validate the attendee object
 			self.__attendeeValidator.validate_attendee_request(req)
+
+			# validate the event id
+			eventId = req.matchdict['eventId']
 			self.__eventValidator.validate_event_id(eventId)
+
+			# get the user id from the request and add it to attendee list
 			req.json_body['id'] = req.cookies['user_id']
 			self.__attendee_dao.join_event(req.json_body, eventId)
+
 		except BaseAppException as e:
+			# Handle DAO/Validation errors
 			raise ServiceException(str(e))
 		except Exception as e:
+			# Handle unexpected errors
 			print(e, sys.exc_info())
 			raise ServiceException(
 				'An error occurred while joining this event.'
@@ -145,8 +157,10 @@ class EventService:
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
+			# Handle DAO/Validation errors
 			raise ServiceException(str(e))
 		except Exception as e:
+			# Handle unexpected errors
 			print(e, sys.exc_info())
 			raise ServiceException(
 				'An error occurred while updating your info.'
@@ -174,12 +188,38 @@ class EventService:
 						'Only the creator can remove other users from an event'
 					)
 		except BaseAppException as e:
+			# Handle DAO/Validation errors
 			raise ServiceException(str(e))
 		except Exception as e:
+			# Handle unexpected errors
 			print(e, sys.exc_info())
 			raise ServiceException(
 				'An error occurred while leaving this info.'
 			)
+
+	def get_event_attendees (self, req_body):
+		try:
+			# validate the event id
+			eventId = req.matchdict['eventId']
+			self.__eventValidator.validate_event_id(eventId)
+
+			# load the attendee list
+			data = self.__attendee_dao.load_attendees(eventId)
+
+			# build response object
+			json_data = json.dumps(data)
+			response_body = json_data
+
+		except BaseAppException as e:
+			# Handle DAO/Validation errors
+			raise ServiceException(str(e))
+		except Exception as e:
+			# Handle unexpected errors
+			print(e, sys.exc_info())
+			raise ServiceException(
+				'An error occurred while retrieving attendee list.'
+			)
+		return response_body
 
 	def update_attendee_availability (self, req_body):
 		response_body = {}
@@ -190,8 +230,10 @@ class EventService:
 			json_data = json.dumps(data)
 			response_body = json_data
 		except BaseAppException as e:
+			# Handle DAO/Validation errors
 			raise ServiceException(str(e))
 		except Exception as e:
+			# Handle unexpected errors
 			print(e, sys.exc_info())
 			raise ServiceException(
 				'An error occurred while updating availability.'
