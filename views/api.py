@@ -101,12 +101,15 @@ def delete_event(request):
 
 	return response
 
-def post_attendee(request):
+def post_event_attendee(request):
 	'''
 	Add attendee to this event
 
-	If no ID found in the cookies, a new attendee instance is created in the
-	database. Otherwise, it uses the provided user id
+	/events/{id}/attendees
+	The user making this request is added to the event attendees list. If no ID
+	is found in cookies, a new attendee instance is created and the user id
+	cookie is generated. If a valid user ID cookie is found, it uses the
+	provided user id
 	'''
 
 	try:
@@ -118,6 +121,24 @@ def post_attendee(request):
 		response.content_type = 'application/json'
 
 	return response
+
+def get_event_attendees(request):
+	'''
+	Returns all attendees in this event's attendee list
+
+	/events/{id}/attendees/{id}
+	Returns a JSON list of names and email addresses
+	'''
+
+	try:
+		filtered_request = UserFilter.set_user_id(request)
+		response = __event_service.add_event_attendee(filtered_request)
+	except BaseAppException as e:
+		response = HTTPBadRequest()
+		response.text = e.get_payload()
+		response.content_type = 'application/json'
+
+	pass
 
 def includeme(config):
 
@@ -134,16 +155,35 @@ def includeme(config):
 	config.add_renderer('rangeDetails', 'pyramid.renderers.json_renderer_factory')
 
 	# creates new date and generates an id
-	config.add_view(post_event, route_name='eventBase', request_method="POST", renderer="json")
+	config.add_view(
+		post_event,
+		route_name='eventBase',
+		request_method="POST",
+		renderer="json"
+	)
 
 	# returns the event object + children
-	config.add_view(get_event, route_name='eventDetails', request_method="GET", renderer='json')
+	config.add_view(
+		get_event,
+		route_name='eventDetails',
+		request_method="GET",
+		renderer='json'
+	)
 
-	# updates the event (new/updated date range)
-	config.add_view(put_event, route_name='eventDetails', request_method="PUT", renderer="json")
+	# updates the event (new name/description)
+	config.add_view(
+		put_event,
+		route_name='eventDetails',
+		request_method="PUT",
+		renderer="json"
+	)
 
 	# deletes an event
-	config.add_view(delete_event, route_name='eventDetails', request_method="DELETE")
+	config.add_view(
+		delete_event,
+		route_name='eventDetails',
+		request_method="DELETE"
+	)
 
 	# creates a new date range
 	config.add_view(post_date_range, route_name='rangesBase', request_method="POST", renderer="json")
