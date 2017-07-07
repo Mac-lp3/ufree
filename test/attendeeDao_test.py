@@ -60,9 +60,32 @@ class AttendeeDaoTest(unittest.TestCase):
 		# test normal functionality
 		builtins.db_fail = 'False'
 		builtins.return_pattern = [
-			['idk', 'some name', 'some@email.com'],
+			['idk', 'some name', 'some@email.com']
 		]
 		val = self.__dao.load_attendee('some id')
+		self.assertTrue('id' in val)
+		self.assertTrue('name' in val)
+		self.assertTrue('email' in val)
+
+		# test exception handeling
+		builtins.db_fail = 'True'
+		try:
+			val = self.__dao.load_attendee('some id')
+		except Exception as e:
+			self.assertTrue(isinstance(e, DaoException))
+
+	def load_event_attendees_test (self):
+		# test normal functionality
+		builtins.db_fail = 'False'
+		builtins.return_pattern = [
+			['idk', 'some name', 'some@email.com'],
+			['lol', 'some name', 'some@email.com'],
+			['wat', 'some name', 'some@email.com'],
+			['afk', 'some name', 'some@email.com'],
+			['jk', 'some name', 'some@email.com']
+		]
+		val = self.__dao.load_event_attendees('some_event_id')
+		print(val)
 		self.assertTrue('id' in val)
 		self.assertTrue('name' in val)
 		self.assertTrue('email' in val)
