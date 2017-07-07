@@ -85,15 +85,14 @@ class AttendeeDaoTest(unittest.TestCase):
 			['jk', 'some name', 'some@email.com']
 		]
 		val = self.__dao.load_event_attendees('some_event_id')
-		print(val)
-		self.assertTrue('id' in val)
-		self.assertTrue('name' in val)
-		self.assertTrue('email' in val)
+		self.assertTrue('id' in val[0])
+		self.assertTrue('name' in val[0])
+		self.assertTrue('email' in val[0])
 
 		# test exception handeling
 		builtins.db_fail = 'True'
 		try:
-			val = self.__dao.load_attendee('some id')
+			val = self.__dao.load_event_attendees('some_event_id')
 		except Exception as e:
 			self.assertTrue(isinstance(e, DaoException))
 
