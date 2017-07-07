@@ -95,7 +95,13 @@ class AttendeeDao:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading attendee')
 
-	def load_attendees (self, event_id):
+	def load_event_attendees (self, event_id):
+		'''
+		loads all attendees that are attending this event.
+
+		Uses an inner join on the attendee and event_attendee table to retrieve
+		the attendee data.
+		'''
 		try:
 			# retrieve all event attendees from the DB
 			self.__cur.execute(
