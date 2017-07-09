@@ -4,7 +4,8 @@
 * ~~ApiValidator methods for Attendee fields~~
 * Create service layer for Event/Attendees
 * ~~create base exception class~~
-* load_attendees Dao method.
+* ~~load_attendees Dao method~~
+* builtins variable names. change other tests to use new fetchall pattern
 * test user filter
 * test attendee validator
 * availability validation
