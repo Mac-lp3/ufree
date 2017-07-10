@@ -26,9 +26,13 @@ class AvailabilityDao:
             print(sys.exc_info())
             print('I am unable to connect to the database')
 
-    def get_availability (self, attendee_id='', event_id=''):
+    def get_event_availability (self, event_id='', attendee_id=''):
         '''
-        gets this users availability
+        Gets all availability objects for this event.
+
+        Attendee id can be provided optionally, in which case only this user's
+        availability for this event will be loaded. If no event ID is provided
+        an exception will be thrown
         '''
         try:
             if attendee_id:
