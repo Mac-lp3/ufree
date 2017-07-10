@@ -144,7 +144,7 @@ class AvailabilityDao:
 
     def delete_availability (self, availability_id='', attendee_id='', event_id=''):
         '''
-        removes this users availability from the event.
+        Removes the event's, user's, or single instance of availability from DB.
         '''
         try:
             if availability_id:
