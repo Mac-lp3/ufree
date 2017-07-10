@@ -31,7 +31,8 @@ class EventDao:
 	def event_exists(self, eventId):
 		try:
 			self.__cur.execute('SELECT name FROM event WHERE id = {0}'.format(eventId))
-			return self.__cur.fetchone() is not None
+			val = self.__cur.fetchone()
+			return val is not None
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when searching for event')
@@ -46,19 +47,19 @@ class EventDao:
 				'SELECT id, name, creator_id, created_date from event WHERE id={0}'
 				.format(eventId)
 			)
-			eventRows = self.__cur.fetchall()
+			eventData = self.__cur.fetchone()
 
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading event')
 
-		if (len(eventRows) == 1):
+		if (len(eventData) > 0):
 			# ID is primary key. Should only ever get 1 or 0
 			data = {}
-			data['id'] = eventRows[0][0]
-			data['name'] = eventRows[0][1]
-			data['creator_id'] = eventRows[0][2]
-			data['created_date'] = eventRows[0][3]
+			data['id'] = eventData[0]
+			data['name'] = eventData[1]
+			data['creator_id'] = eventData[2]
+			data['created_date'] = eventData[3]
 			return data
 		else:
 			# not found
@@ -81,7 +82,9 @@ class EventDao:
 			# if the id is taken, append characters and re-generate
 			count = 0
 			newSeed = eventObject['name'] + 'a';
-			while self.event_exists(generatedId) and count < 5:
+			while count < 5:
+				if (self.event_exists(generatedId)):
+					break
 				generatedId = HashCodeUtils.generate_code(newSeed)
 				newSeed = newSeed + 'a'
 				count += 1

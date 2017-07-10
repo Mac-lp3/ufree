@@ -46,6 +46,7 @@ class AttendeeDaoTest(unittest.TestCase):
 
 	def attendee_exists_test (self):
 		# test normal functionality
+		builtins.db_return_object = 'some id'
 		val = self.__dao.attendee_exists('some id')
 		self.assertTrue(val)
 

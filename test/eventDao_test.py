@@ -1,6 +1,7 @@
 import os
 import unittest
 import builtins
+import test.classes.Const as const
 from classes.dao.EventDao import EventDao
 from classes.exception.DaoException import DaoException
 
@@ -46,20 +47,37 @@ class EventDaoTest(unittest.TestCase):
 
 	def exists_test (self):
 		# test normal functionality
-		val = self.__dao.event_exists('some id')
+		builtins.db_return_object = [[
+			const.GOOD_EVENT_ID,
+			'some name',
+			'some creator',
+			'some date'
+		],[
+			const.GOOD_EVENT_ID,
+			'some name',
+			'some creator',
+			'some date'
+		]]
+		val = self.__dao.event_exists(const.GOOD_EVENT_ID)
 		self.assertTrue(val)
 
 		# test exception handling
 		builtins.db_fail = 'True'
 		try:
-			val = self.__dao.event_exists('some id')
+			val = self.__dao.event_exists(const.GOOD_EVENT_ID)
 		except Exception as e:
 			self.assertTrue(isinstance(e, DaoException))
 
 	def load_event_test (self):
 		# test normal functionality
 		builtins.db_fail = 'False'
-		val = self.__dao.load_event('some id')
+		builtins.db_return_object = [[
+			const.GOOD_EVENT_ID,
+			'some name',
+			'some creator',
+			'some date'
+		]]
+		val = self.__dao.load_event(const.GOOD_EVENT_ID)
 		self.assertTrue('id' in val)
 		self.assertTrue('name' in val)
 		self.assertTrue('creator_id' in val)
@@ -78,7 +96,7 @@ class EventDaoTest(unittest.TestCase):
 			['name'],
 			None,
 			None,
-			['idk', 'some name', 'some@email.com'],
+			['idk', 'some name', 'someCreator', 'someCreatorId'],
 			None,
 			[['abcd1234']]
 		]
@@ -89,6 +107,7 @@ class EventDaoTest(unittest.TestCase):
 		self.assertTrue('id' in val)
 		self.assertTrue('name' in val)
 		self.assertTrue('creator_id' in val)
+		self.assertTrue('created_date' in val)
 
 		# test unable to generate unique id
 		builtins.db_return_object = [
