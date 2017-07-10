@@ -36,26 +36,16 @@ class AvailabilityDao:
         '''
         try:
             if attendee_id:
-                if event_id:
-                    self.__cur.execute(
-                        'SELECT id, attendee_id, event_id, year, january, '
-                        'february, march, april, may, june, july, august, '
-                        'september, october, november, december FROM '
-                        'availability WHERE attendee_id={0} AND event_id=\'{1}\''
-                        .format(
-                            attendee_id,
-                            event_id
-                        )
+                self.__cur.execute(
+                    'SELECT id, attendee_id, event_id, year, january, '
+                    'february, march, april, may, june, july, august, '
+                    'september, october, november, december FROM '
+                    'availability WHERE attendee_id={0} AND event_id=\'{1}\''
+                    .format(
+                        attendee_id,
+                        event_id
                     )
-                else:
-                    self.__cur.execute(
-                        'SELECT id, attendee_id, event_id, year, january, '
-                        'february, march, april, may, june, july, august, '
-                        'september, october, november, december FROM '
-                        'availability WHERE attendee_id={0}'.format(
-                            attendee_id
-                        )
-                    )
+                )
             else:
                 self.__cur.execute(
                     'SELECT id, attendee_id, event_id, year, january, '
