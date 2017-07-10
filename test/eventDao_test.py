@@ -74,7 +74,7 @@ class EventDaoTest(unittest.TestCase):
 
 	def save_event_test (self):
 		# test normal functionality
-		builtins.return_pattern = [
+		builtins.db_return_object = [
 			['name'],
 			None,
 			None,
@@ -91,7 +91,7 @@ class EventDaoTest(unittest.TestCase):
 		self.assertTrue('creator_id' in val)
 
 		# test unable to generate unique id
-		builtins.return_pattern = [
+		builtins.db_return_object = [
 			None,
 			['name'],
 			['name'],

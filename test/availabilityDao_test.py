@@ -48,7 +48,7 @@ class AvailabilityDaoTest(unittest.TestCase):
 
     def create_availability_test (self):
         # test normal behavior
-        builtins.return_pattern = [self.return_row]
+        builtins.db_return_object = [self.return_row]
         obj = self.__dao.create_availability(self.availability_object)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)
@@ -93,7 +93,7 @@ class AvailabilityDaoTest(unittest.TestCase):
 
     def update_availability_test (self):
         # test normal behavior
-        builtins.return_pattern = [self.return_row]
+        builtins.db_return_object = [self.return_row]
         obj = self.__dao.update_availability(self.availability_object)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)
@@ -110,7 +110,7 @@ class AvailabilityDaoTest(unittest.TestCase):
 
     def get_availability_test (self):
         # test attendee_id input
-        builtins.return_pattern = [self.return_row]
+        builtins.db_return_object = [self.return_row]
         obj = self.__dao.get_availability(attendee_id=2345)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)
@@ -118,7 +118,7 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.assertTrue('december' in obj)
 
         # test event_id input
-        builtins.return_pattern = [self.return_row]
+        builtins.db_return_object = [self.return_row]
         obj = self.__dao.get_availability(event_id=1234)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)
@@ -126,7 +126,7 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.assertTrue('december' in obj)
 
         # test event_id and attendee_id input
-        builtins.return_pattern = [self.return_row]
+        builtins.db_return_object = [self.return_row]
         obj = self.__dao.get_availability(event_id=1234, attendee_id=2345)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)

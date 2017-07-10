@@ -59,7 +59,7 @@ class AttendeeDaoTest(unittest.TestCase):
 	def load_attendee_test (self):
 		# test normal functionality
 		builtins.db_fail = 'False'
-		builtins.return_pattern = [
+		builtins.db_return_object = [
 			['idk', 'some name', 'some@email.com']
 		]
 		val = self.__dao.load_attendee('some id')
@@ -77,7 +77,7 @@ class AttendeeDaoTest(unittest.TestCase):
 	def load_event_attendees_test (self):
 		# test normal functionality
 		builtins.db_fail = 'False'
-		builtins.return_pattern = [
+		builtins.db_return_object = [
 			['idk', 'some name', 'some@email.com'],
 			['lol', 'some name', 'some@email.com'],
 			['wat', 'some name', 'some@email.com'],
@@ -98,7 +98,7 @@ class AttendeeDaoTest(unittest.TestCase):
 
 	def save_attendee_test (self):
 		# test normal functionality
-		builtins.return_pattern = [
+		builtins.db_return_object = [
 			['idk', 'some name', 'some@email.com'],
 			['idk', 'some name', 'some@email.com']
 		]
