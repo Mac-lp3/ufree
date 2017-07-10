@@ -13,6 +13,7 @@
 * year mechanism
 * add rest of attendee methods to API
 * query to load events by attendee
+* tabs to spaces
 
 # Request Objects
 ## Events
