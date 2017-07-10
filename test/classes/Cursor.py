@@ -15,16 +15,10 @@ class Cursor:
         if builtins.db_fail == 'True':
             print('Mocking an exception...')
             raise Exception('some exception')
-        ret = {}
-        try:
-            if len(builtins.db_return_object) > 0:
-                ret = builtins.db_return_object.pop(0)
-        except:
-            ret = {
-                'id': '123123123123',
-                'name': 'Kenny K\'s thing',
-                'creator': 'Kenny K'
-            }
+        if isinstance(builtins.db_return_object, list):
+            ret = builtins.db_return_object.pop()
+        else:
+            ret = builtins.db_return_object
         print('returning', ret)
         return ret
 
