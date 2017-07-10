@@ -17,8 +17,8 @@ class Cursor:
             raise Exception('some exception')
         ret = {}
         try:
-            if len(builtins.return_pattern) > 0:
-                ret = builtins.return_pattern.pop(0)
+            if len(builtins.db_return_object) > 0:
+                ret = builtins.db_return_object.pop(0)
         except:
             ret = {
                 'id': '123123123123',
@@ -33,4 +33,4 @@ class Cursor:
             print('Mocking an exception...')
             raise Exception('some exception')
         print('fetching all...')
-        return builtins.return_pattern
+        return builtins.db_return_object
