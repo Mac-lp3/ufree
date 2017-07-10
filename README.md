@@ -5,7 +5,8 @@
 * Create service layer for Event/Attendees
 * ~~create base exception class~~
 * ~~load_attendees Dao method~~
-* builtins variable names. change other tests to use new fetchall pattern
+* ~~builtins variable names. change other tests to use new fetchall pattern~~
+* test all attendee api/dao/srvice methods
 * test user filter
 * test attendee validator
 * availability validation
