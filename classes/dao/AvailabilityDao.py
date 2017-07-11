@@ -26,35 +26,21 @@ class AvailabilityDao:
             print(sys.exc_info())
             print('I am unable to connect to the database')
 
-    def get_event_availability (self, event_id='', attendee_id=''):
+    def get_attendee_availability (self, event_id, attendee_id):
         '''
-        Gets all availability objects for this event.
-
-        Attendee id can be provided optionally, in which case only this user's
-        availability for this event will be loaded. If no event ID is provided
-        an exception will be thrown
+        Returns the attendee's availability object for specified event
         '''
         try:
-            if attendee_id:
-                self.__cur.execute(
-                    'SELECT id, attendee_id, event_id, year, january, '
-                    'february, march, april, may, june, july, august, '
-                    'september, october, november, december FROM '
-                    'availability WHERE attendee_id={0} AND event_id=\'{1}\''
-                    .format(
-                        attendee_id,
-                        event_id
-                    )
+            self.__cur.execute(
+                'SELECT id, attendee_id, event_id, year, january, '
+                'february, march, april, may, june, july, august, '
+                'september, october, november, december FROM '
+                'availability WHERE attendee_id={0} AND event_id=\'{1}\''
+                .format(
+                    attendee_id,
+                    event_id
                 )
-            else:
-                self.__cur.execute(
-                    'SELECT id, attendee_id, event_id, year, january, '
-                    'february, march, april, may, june, july, august, '
-                    'september, october, november, december FROM '
-                    'availability WHERE event_id={0}'.format(
-                        event_id
-                    )
-                )
+            )
 
             at = self.__cur.fetchone()
 
@@ -76,6 +62,50 @@ class AvailabilityDao:
                 'november': at[14],
                 'december': at[15]
             }
+
+            return data
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while saving availability'
+            )
+
+    def get_event_availability (self, event_id):
+        '''
+        Gets all availability objects for this event.
+        '''
+        try:
+            self.__cur.execute(
+                'SELECT id, attendee_id, event_id, year, january, '
+                'february, march, april, may, june, july, august, '
+                'september, october, november, december FROM '
+                'availability WHERE event_id={0}'.format(
+                    event_id
+                )
+            )
+            rows = self.__cur.fetchall()
+
+            data = []
+            for row in rows:
+                data.append({
+                    'id': row[0],
+                    'attendee_id': row[1],
+                    'event_id': row[2],
+                    'year': row[3],
+                    'january': row[4],
+                    'february': row[5],
+                    'march': row[6],
+                    'april': row[7],
+                    'may': row[8],
+                    'june': row[9],
+                    'july': row[10],
+                    'august': row[11],
+                    'september': row[12],
+                    'october': row[13],
+                    'november': row[14],
+                    'december': row[15]
+                })
 
             return data
 
