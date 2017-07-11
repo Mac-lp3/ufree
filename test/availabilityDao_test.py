@@ -7,7 +7,7 @@ from classes.exception.DaoException import DaoException
 class AvailabilityDaoTest(unittest.TestCase):
 
     def setUp (self):
-        builtins.db_fail = os.environ['TEST_DB_FAIL']
+        builtins.db_fail = False
         self.__dao = AvailabilityDao()
         self.availability_object = {
             'id': 1234,
@@ -108,30 +108,31 @@ class AvailabilityDaoTest(unittest.TestCase):
             self.assertTrue(isinstance(e, DaoException))
         builtins.db_fail = 'False'
 
-    def get_event_availability_test (self):
-        # test attendee_id input
+    def get_attendee_availability_test (self):
+        # test event_id and attendee_id input
         builtins.db_return_object = [self.return_row]
-        obj = self.__dao.get_event_availability(attendee_id=2345)
+        obj = self.__dao.get_attendee_availability(1234, 2345)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)
         self.assertTrue('august' in obj)
         self.assertTrue('december' in obj)
 
+        # test exception handeling
+        builtins.db_fail = 'True'
+        try:
+            val = self.__dao.get_event_availability(event_id=1234)
+        except Exception as e:
+            self.assertTrue(isinstance(e, DaoException))
+        builtins.db_fail = 'False'
+
+    def get_event_availability_test (self):
         # test event_id input
         builtins.db_return_object = [self.return_row]
         obj = self.__dao.get_event_availability(event_id=1234)
-        self.assertTrue('id' in obj)
-        self.assertTrue('february' in obj)
-        self.assertTrue('august' in obj)
-        self.assertTrue('december' in obj)
-
-        # test event_id and attendee_id input
-        builtins.db_return_object = [self.return_row]
-        obj = self.__dao.get_event_availability(event_id=1234, attendee_id=2345)
-        self.assertTrue('id' in obj)
-        self.assertTrue('february' in obj)
-        self.assertTrue('august' in obj)
-        self.assertTrue('december' in obj)
+        self.assertTrue('id' in obj[0])
+        self.assertTrue('february' in obj[0])
+        self.assertTrue('august' in obj[0])
+        self.assertTrue('december' in obj[0])
 
         # test exception handeling
         builtins.db_fail = 'True'
