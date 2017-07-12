@@ -172,38 +172,42 @@ class AvailabilityDao:
                 'Unknown error while updaing availability'
             )
 
-    def delete_availability (self, availability_id='', attendee_id='', event_id=''):
+    def delete_attendee_availability (self, attendee_id):
+        try:
+            self.__cur.execute(
+                'DELETE FROM availability WHERE attendee_id={0}'.format(
+                    attendee_id
+                )
+            )
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while deleting user\'s availability'
+            )
+
+    def delete_event_availability (self, event_id):
+        try:
+            self.__cur.execute(
+                    'DELETE FROM availability WHERE event_id={0}'.format(
+                        event_id
+                    )
+                )
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while deleting event\'s availability'
+            )
+
+    def delete_availability (self, availability_id):
         '''
         Removes the event's, user's, or single instance of availability from DB.
         '''
         try:
-            if availability_id:
-                self.__cur.execute(
-                    'DELETE FROM availability WHERE id={0}'.format(
-                        availability_id
-                    )
+            self.__cur.execute(
+                'DELETE FROM availability WHERE id={0}'.format(
+                    availability_id
                 )
-            elif attendee_id:
-                if event_id:
-                    self.__cur.execute(
-                        'DELETE FROM availability WHERE attendee_id={0} '
-                        'AND event_id=\'{1}\''.format(
-                            attendee_id,
-                            event_id
-                        )
-                    )
-                else:
-                    self.__cur.execute(
-                        'DELETE FROM availability WHERE attendee_id={0}'.format(
-                            attendee_id
-                        )
-                    )
-            elif event_id:
-                self.__cur.execute(
-                        'DELETE FROM availability WHERE event_id={0}'.format(
-                            event_id
-                        )
-                    )
+            )
         except Exception as e:
             print(e, sys.exc_info())
             raise DaoException(
