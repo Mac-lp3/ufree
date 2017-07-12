@@ -63,30 +63,53 @@ class AvailabilityDaoTest(unittest.TestCase):
             self.assertTrue(isinstance(e, DaoException))
         builtins.db_fail = 'False'
 
-    def delete_availability_test (self):
+    def delete_attendee_availability_test (self):
         # test normal bevavior
         try:
-            self.__dao.delete_availability()
-            self.__dao.delete_availability(availability_id=1234)
-            self.__dao.delete_availability(event_id='jkh234kjlh1234')
-            self.__dao.delete_availability(attendee_id=2341)
-            self.__dao.delete_availability(
-                attendee_id=2341, event_id='jkh234kjlh1234'
-            )
+            self.__dao.delete_attendee_availability(12312)
             self.assertTrue(True)
         except Exception as e:
+            print(e)
             self.assertTrue(False)
 
         # test exception handling
         builtins.db_fail = 'True'
         try:
-            self.__dao.delete_availability()
-            self.__dao.delete_availability(availability_id=1234)
-            self.__dao.delete_availability(event_id='jkh234kjlh1234')
-            self.__dao.delete_availability(attendee_id=2341)
-            self.__dao.delete_availability(
-                attendee_id=2341, event_id='jkh234kjlh1234'
-            )
+            self.__dao.delete_attendee_availability(12312)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertEqual(type(e), DaoException)
+
+    def delete_event_availability_test (self):
+        # test normal bevavior
+        try:
+            self.__dao.delete_event_availability('jkh234kjlh1234')
+            self.assertTrue(True)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+        # test exception handling
+        builtins.db_fail = 'True'
+        try:
+            self.__dao.delete_event_availability('jkh234kjlh1234')
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertEqual(type(e), DaoException)
+
+    def delete_availability_test (self):
+        # test normal bevavior
+        try:
+            self.__dao.delete_availability(1234)
+            self.assertTrue(True)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+        # test exception handling
+        builtins.db_fail = 'True'
+        try:
+            self.__dao.delete_availability(1234)
             self.assertTrue(False)
         except Exception as e:
             self.assertEqual(type(e), DaoException)
