@@ -6,14 +6,15 @@
 * ~~create base exception class~~
 * ~~load_attendees Dao method~~
 * ~~builtins variable names. change other tests to use new fetchall pattern~~
-* test all attendee api/dao/srvice methods
+* ~~test attendee dao methods~~
 * test user filter
 * test attendee validator
-* availability validation
-* year mechanism
+* availability validator w/ year mechanism
+* create attendee and availability service
 * add rest of attendee methods to API
 * query to load events by attendee
 * tabs to spaces
+* Script to test DB load/save queries
 
 # Request Objects
 ## Events
