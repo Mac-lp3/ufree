@@ -7,7 +7,7 @@ class AttendeeValidator:
     # just letters, numbers, and spaces
     __attendee_id_pattern = r'^[\w\d\s-]+$'
     __attendee_name_pattern = r'^[\w\d\s-]+$'
-    __attendee_name_length = 20
+    __attendee_name_length = 30
 
     def validate_attendee_request (self, req):
         error_messages = []
