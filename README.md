@@ -8,7 +8,7 @@
 * ~~builtins variable names. change other tests to use new fetchall pattern~~
 * ~~test attendee dao methods~~
 * test user filter
-* test attendee validator
+* ~~test attendee validator~~
 * availability validator w/ year mechanism
 * create attendee and availability service
 * add rest of attendee methods to API
