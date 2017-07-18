@@ -1,6 +1,8 @@
 import os
 import unittest
 import builtins
+import test.classes.Const as const
+from test.classes.MockRequest import MockRequest
 from classes.util.AttendeeValidator import AttendeeValidator
 from classes.exception.ValidationException import ValidationException
 
@@ -11,7 +13,59 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.__validator = AttendeeValidator()
 
     def validate_attendee_request_test (self):
-        pass
+        # test name not/in body
+        # test id not/in body and not/in cookies
+
+        # test normal behavior
+        test_body = {
+            'id': 'asdasd',
+            'name': 'A fine name'
+        }
+        req = MockRequest(body=test_body)
+        try:
+            ers = self.__validator.validate_attendee_request(req)
+            self.assertTrue(ers is None)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+        # test no name
+        test_body = {
+            'id': 'asdasd'
+        }
+        req = MockRequest(body=test_body)
+        try:
+            ers = self.__validator.validate_attendee_request(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ValidationException))
+
+        # test no id in request
+        test_body = {
+            'name': 'A Good Name'
+        }
+        test_cookies = {
+            'user_id': 'asdf234'
+        }
+        req = MockRequest(body=test_body, cookies=test_cookies)
+        try:
+            ers = self.__validator.validate_attendee_request(req)
+            self.assertTrue(ers is None)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+        # test no id at all
+        test_body = {
+            'name': 'Some other name'
+        }
+        req = MockRequest(body=test_body, cookies={'idk why': 'lol'})
+        try:
+            ers = self.__validator.validate_attendee_request(req)
+            self.assertTrue(False)
+        except Exception as e:
+            print(e)
+            self.assertTrue(isinstance(e, ValidationException))
 
     def validate_attendee_name_test (self):
         # test type - bad
