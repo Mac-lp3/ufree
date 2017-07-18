@@ -43,7 +43,7 @@ def UserFilter():
         '''
 
         # check if cookies were sent with this request
-        if 'cookies' in req_body and 'user_id' in req_body['cookies']:
+        if 'cookies' in req and 'user_id' in req['cookies']:
             cookies = req_body['cookies']
             # Check if user_id cookie was sent with the request
             if cookies['user_id']:
