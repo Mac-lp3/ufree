@@ -2,7 +2,7 @@ from classes.util.AttendeeValidator import AttendeeValidator
 from classes.dao.AttendeeDao import AttendeeDao
 from classes.exception.ValidationException import ValidationException
 
-def UserFilter():
+class UserFilter():
 
     def __init__ (self):
         # init DAO based on environment
