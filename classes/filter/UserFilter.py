@@ -17,18 +17,23 @@ class UserFilter():
             self.__attendee_dao = temp.AttendeeDao()
 
     def __create_new_user (self, req_body):
-        # Get the creator or attendee name.
-        attendee_name = ''
-        if 'creator' in req_body['payload']:
-            attendee_name = req_body['payload']['creator']
-        elif 'name' in req_body['payload']:
-            attendee_name = req_body['payload']['name']
 
-        # If neither is found, then this is a bad request
-        if not attendee_name:
+        attendee_name = ''
+        try:
+            payload = req_body['payload']
+            if 'creator' in payload:
+                attendee_name = payload['creator']
+            elif 'name' in payload:
+                attendee_name = payload['name']
+        except Exception as e:
             raise ValidationException(
-                'Name for this user could not be located'
+                'Payload was not found in this request'
             )
+        else:
+            if not attendee_name:
+                raise ValidationException(
+                    'Name for this user could not be located'
+                )
 
         # create a new user with the provided name
         self.__inputValidator.validate_attendee_name(attendee_name)
