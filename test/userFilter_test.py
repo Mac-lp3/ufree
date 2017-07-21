@@ -16,8 +16,8 @@ class UserFilterTest(unittest.TestCase):
         try:
             req = MockRequest(body={'name': 'Jimmy'})
             res = self.__filter.set_user_id(req)
-            print(res)
+            print('response', res)
         except Exception as e:
-            print(e)
+            print('exception', e)
         print(UserFilter())
         self.assertTrue(False)
