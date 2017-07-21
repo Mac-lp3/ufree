@@ -44,21 +44,23 @@ class UserFilter():
         Checks if user_id cookie is in the request. Creates a new user if not.
         '''
 
-        # check if cookies were sent with this request
-        if 'cookies' in req and 'user_id' in req['cookies']:
+        try:
+            # check if cookies were sent with this request
             cookies = req_body['cookies']
-            # Check if user_id cookie was sent with the request
-            if cookies['user_id']:
-                # validate the ID
-                self.__inputValidator.validate_attendee_id(cookies['user_id'])
-                # if the id exists in the DB, return the request unchanged
-                if self.__attendee_dao.attendee_exists(cookies['user_id']):
-                    return req
-                else:
-                    # ID not in database. Create new user and overwrite cookie
-                    att = self.__create_new_user(req.json_body)
-                    req.cookies['user_id'] = att['id']
-                    return req
+            if 'user_id' in cookies:
+                cookies = req_body['cookies']
+                # Check if user_id cookie was sent with the request
+                if cookies['user_id']:
+                    # validate the ID
+                    self.__inputValidator.validate_attendee_id(cookies['user_id'])
+                    # if the id exists in the DB, return the request unchanged
+                    if self.__attendee_dao.attendee_exists(cookies['user_id']):
+                        return req
+                    else:
+                        # ID not in database. Create new user and overwrite cookie
+                        att = self.__create_new_user(req.json_body)
+                        req.cookies['user_id'] = att['id']
+                        return req
             else:
                 # if not, create new user and attach user_id cookie
                 att = self.__create_new_user(req.json_body)
@@ -66,8 +68,9 @@ class UserFilter():
                     'user_id': att['id']
                 })
                 return req
-        # if not, create a new user and assign user_id cookie
-        else:
+
+        except Exception as e:
+            # if not, create a new user and assign user_id cookie
             att = self.__create_new_user(req.json_body)
             req.cookies = []
             req.cookies['user_id'] = att['id']
