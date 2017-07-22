@@ -17,14 +17,12 @@ class UserFilter():
             self.__attendee_dao = temp.AttendeeDao()
 
     def __create_new_user (self, req_body):
-
         attendee_name = ''
         try:
-            payload = req_body['payload']
-            if 'creator' in payload:
-                attendee_name = payload['creator']
-            elif 'name' in payload:
-                attendee_name = payload['name']
+            if 'creator' in req_body:
+                attendee_name = req_body['creator']
+            elif 'name' in req_body:
+                attendee_name = req_body['name']
         except Exception as e:
             raise ValidationException(
                 'Payload was not found in this request'
@@ -51,32 +49,27 @@ class UserFilter():
 
         try:
             # check if cookies were sent with this request
-            cookies = req_body['cookies']
-            if 'user_id' in cookies:
-                cookies = req_body['cookies']
-                # Check if user_id cookie was sent with the request
-                if cookies['user_id']:
-                    # validate the ID
-                    self.__inputValidator.validate_attendee_id(cookies['user_id'])
-                    # if the id exists in the DB, return the request unchanged
-                    if self.__attendee_dao.attendee_exists(cookies['user_id']):
-                        return req
-                    else:
-                        # ID not in database. Create new user and overwrite cookie
-                        att = self.__create_new_user(req.json_body)
-                        req.cookies['user_id'] = att['id']
-                        return req
+            cookies = req.req_body['cookies']
+
+            # Check if user_id cookie was sent with the request
+            if cookies['user_id']:
+                # validate the ID
+                self.__inputValidator.validate_attendee_id(cookies['user_id'])
+                # if the id exists in the DB, return the request unchanged
+                if self.__attendee_dao.attendee_exists(cookies['user_id']):
+                    return req
+                else:
+                    # ID not in database. Create new user and overwrite cookie
+                    att = self.__create_new_user(req.json_body)
+                    req.cookies['user_id'] = att['id']
+                    return req
             else:
                 # if not, create new user and attach user_id cookie
                 att = self.__create_new_user(req.json_body)
-                req.cookies.push({
-                    'user_id': att['id']
-                })
-                return req
+                req.cookies['user_id'] = att['id']
 
         except Exception as e:
-            # if not, create a new user and assign user_id cookie
+            # if not, create new user and attach user_id cookie
             att = self.__create_new_user(req.json_body)
-            req.cookies = []
             req.cookies['user_id'] = att['id']
             return req
