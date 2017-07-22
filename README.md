@@ -2,19 +2,18 @@
 * ~~Design Dao test framework~~
 * ~~Move utils classes to a Utils folder~~
 * ~~ApiValidator methods for Attendee fields~~
-* Create service layer for Event/Attendees
 * ~~create base exception class~~
 * ~~load_attendees Dao method~~
 * ~~builtins variable names. change other tests to use new fetchall pattern~~
 * ~~test attendee dao methods~~
 * ~~test user filter~~
 * ~~test attendee validator~~
-* availability validator w/ year mechanism
 * create attendee and availability service
+* availability validator w/ year mechanism
 * add rest of attendee methods to API
 * query to load events by attendee
-* tabs to spaces
 * Script to test DB load/save queries
+* tabs to spaces
 
 # Request Objects
 ## Events
