@@ -7,7 +7,7 @@
 * ~~load_attendees Dao method~~
 * ~~builtins variable names. change other tests to use new fetchall pattern~~
 * ~~test attendee dao methods~~
-* test user filter
+* ~~test user filter~~
 * ~~test attendee validator~~
 * availability validator w/ year mechanism
 * create attendee and availability service
