@@ -1,7 +1,7 @@
 import os
 import importlib
-from classes.util.AttendeeValidator import AttendeeValidator
 from classes.dao.AttendeeDao import AttendeeDao
+from classes.util.AttendeeValidator import AttendeeValidator
 from classes.exception.ValidationException import ValidationException
 
 class UserFilter():
