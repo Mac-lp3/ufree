@@ -85,20 +85,16 @@ class EventDao:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading event')
 
-		if (len(eventData) > 0):
-			# ID is primary key. Should only ever get 1 or 0
-			data = {}
-			data['id'] = eventData[0]
-			data['name'] = eventData[1]
-			data['creator_id'] = eventData[2]
-			data['created_date'] = eventData[3]
-			return data
-		else:
-			# not found
-			print('Given ID was not found', eventId)
-			raise DaoException('Unknown error when loading event')
+		data = []
+		for event in eventData:
+			tempData = {}
+			tempData['id'] = event[0]
+			tempData['name'] = event[1]
+			tempData['creator_id'] = event[2]
+			tempData['created_date'] = event[3]
+			data.append(tempData)
 
-		pass
+		return data
 
 	def save_event(self, eventObject):
 		'''
