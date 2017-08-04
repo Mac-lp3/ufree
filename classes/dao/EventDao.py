@@ -66,6 +66,40 @@ class EventDao:
 			print('Given ID was not found', eventId)
 			raise DaoException('Unknown error when loading event')
 
+	def load_attendee_events (self, attendee_id):
+		'''
+		Loads all events that the attendee is attending.
+		'''
+		eventRows = {}
+		try:
+			self.__cur.execute(
+				'SELECT events.id, events.name, events.creator_id, ' +
+				'events.created_date FROM events INNER JOIN event_attendees ' +
+				'ON event_attendees.event_id = events.id AND ' +
+				'event_attendees.attendee_id = {0}'
+				.format(attendee_id)
+			)
+			eventData = self.__cur.fetchall()
+
+		except Exception as e:
+			print(e, sys.exc_info())
+			raise DaoException('Unknown error when loading event')
+
+		if (len(eventData) > 0):
+			# ID is primary key. Should only ever get 1 or 0
+			data = {}
+			data['id'] = eventData[0]
+			data['name'] = eventData[1]
+			data['creator_id'] = eventData[2]
+			data['created_date'] = eventData[3]
+			return data
+		else:
+			# not found
+			print('Given ID was not found', eventId)
+			raise DaoException('Unknown error when loading event')
+
+		pass
+
 	def save_event(self, eventObject):
 		'''
 		Generates a unique ID for the event and creates a new instance in the database.
