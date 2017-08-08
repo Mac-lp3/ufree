@@ -90,6 +90,29 @@ class EventDaoTest(unittest.TestCase):
 		except Exception as e:
 			self.assertTrue(isinstance(e, DaoException))
 
+	def load_attendee_events_test (self):
+		# test normal functionality
+		builtins.db_fail = 'False'
+		builtins.db_return_object = [[
+			const.GOOD_EVENT_ID,
+			'some name',
+			'some creator',
+			'some date'
+		]]
+		val = self.__dao.load_attendee_events(const.GOOD_USER_ID)
+		self.assertTrue(len(val) == 1)
+		self.assertTrue('id' in val[0])
+		self.assertTrue('name' in val[0])
+		self.assertTrue('creator_id' in val[0])
+		self.assertTrue('created_date' in val[0])
+
+		# test exception handeling
+		builtins.db_fail = 'True'
+		try:
+			val = self.__dao.load_attendee_events(const.GOOD_USER_ID)
+		except Exception as e:
+			self.assertTrue(isinstance(e, DaoException))
+
 	def save_event_test (self):
 		# test normal functionality
 		builtins.db_return_object = [
@@ -125,7 +148,6 @@ class EventDaoTest(unittest.TestCase):
 			})
 		except Exception as e:
 			self.assertTrue(isinstance(e, DaoException))
-
 
 if __name__ == '__main__':
 	unittest.main()
