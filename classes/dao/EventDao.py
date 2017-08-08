@@ -79,14 +79,14 @@ class EventDao:
 				'event_attendees.attendee_id = {0}'
 				.format(attendee_id)
 			)
-			eventData = self.__cur.fetchall()
+			eventRows = self.__cur.fetchall()
 
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading event')
 
 		data = []
-		for event in eventData:
+		for event in eventRows:
 			tempData = {}
 			tempData['id'] = event[0]
 			tempData['name'] = event[1]
