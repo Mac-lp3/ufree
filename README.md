@@ -9,8 +9,9 @@
 * ~~test user filter~~
 * ~~test attendee validator~~
 * ~~query to load events by attendee~~
-* DAO methods should use fetch one unless it is a many-type query
+* ~~DAO methods should use fetch one unless it is a many-type query~~
 * create attendee and availability service
+  * CRUD methods that accept raw HTTP request
 * availability validator w/ year mechanism
 * add rest of attendee methods to API
 * Script to test DB load/save queries
