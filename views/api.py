@@ -14,13 +14,9 @@ from classes.exception.BaseAppException import BaseAppException
 from classes.service.EventService import EventService
 
 if os.environ['ENV'] == 'test':
-	temp = importlib.import_module('test.classes.EventDao')
-	EventDao = temp.EventDao()
 	temp = importlib.import_module('test.classes.UserFilter')
 	UserFilter = temp.UserFilter()
 else:
-	temp = importlib.import_module('classes.dao.EventDao')
-	EventDao = temp.EventDao()
 	temp = importlib.import_module('classes.filter.UserFilter')
 	UserFilter = temp.UserFilter()
 
