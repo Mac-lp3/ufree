@@ -10,8 +10,10 @@
 * ~~test attendee validator~~
 * ~~query to load events by attendee~~
 * ~~DAO methods should use fetch one unless it is a many-type query~~
+* ~~factory that provides DOAs and Services based on environment~~
+* test factory and wire it up
+* abstract DAO to initialize psycopg2
 * investigate __import__ vs importlib in DAOs
-* factory that provides DOAs and Services based on environment
 * create attendee and availability service
   * CRUD methods that accept raw HTTP request
 * availability validator w/ year mechanism
