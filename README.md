@@ -10,6 +10,7 @@
 * ~~test attendee validator~~
 * ~~query to load events by attendee~~
 * ~~DAO methods should use fetch one unless it is a many-type query~~
+* factory that provides DOAs and Services based on environment
 * create attendee and availability service
   * CRUD methods that accept raw HTTP request
 * availability validator w/ year mechanism
