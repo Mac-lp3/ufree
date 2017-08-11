@@ -14,25 +14,25 @@ class DependencyProvider:
             filters_prefix = 'classes.filter.'
 
     def get_instance (self, class_name):
+        target = none
+        package = ''
         target_class = none
-        if 'dao' in class_name.lower()
-            try:
+        try:
+            if 'dao' in class_name.lower()
+                package = daos_prefix
                 target_class = importlib.import_module(
-                    daos_prefix + class_name
+                    package + class_name
                 )
-            except Exception as e:
-                message = 'Could not locate dependency' +
-                    class_name + 'in' + daos_prefix
-                raise ProviderException(message)
-        if 'filter' in class_name.lower()
-            try:
+            if 'filter' in class_name.lower()
+                package = filters_prefix
                 target_class = importlib.import_module(
-                    filters_prefix + class_name
+                    package + class_name
                 )
-            except Exception as e:
-                message = 'Could not locate dependency' +
-                    class_name + 'in' + filters_prefix
-                raise ProviderException(message)
+            target = getattr(target_class, class_name)
+        except Exception as e:
+            raise ProviderException(
+                'Could not locate dependency' + class_name + 'in' + package
+            )
 
         target = getattr(target_class, class_name)
 
