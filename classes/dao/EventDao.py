@@ -2,6 +2,7 @@ import os
 import sys
 import importlib
 import datetime
+from classes.dao.BaseDao import BaseDao
 from classes.exception.DaoException import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 
@@ -13,7 +14,7 @@ if os.environ['ENV'] == 'test':
 else:
 	psycopg2 = __import__('psycopg2')
 
-class EventDao:
+class EventDao (BaseDao):
 
 	__cur = {}
 

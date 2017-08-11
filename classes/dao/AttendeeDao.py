@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+from classes.dao.BaseDao import BaseDao
 from classes.exception.DaoException import DaoException
 
 psycopg2 = {}
@@ -14,7 +15,7 @@ try:
 except ImportError:
 	print(ImportError)
 
-class AttendeeDao:
+class AttendeeDao (BaseDao):
 
 	__cur = {}
 
