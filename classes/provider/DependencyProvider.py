@@ -1,4 +1,5 @@
 import os
+import importlib
 from classes.exception.ProviderException import ProviderException
 
 class DependencyProvider:
@@ -14,24 +15,24 @@ class DependencyProvider:
             filters_prefix = 'classes.filter.'
 
     def get_instance (self, class_name):
-        target = none
+        target = None
         package = ''
-        target_class = none
+        target_class = None
         try:
             if 'dao' in class_name.lower():
-                package = daos_prefix
+                package = self.daos_prefix
                 target_class = importlib.import_module(
                     package + class_name
                 )
             if 'filter' in class_name.lower():
-                package = filters_prefix
+                package = self.filters_prefix
                 target_class = importlib.import_module(
                     package + class_name
                 )
             target = getattr(target_class, class_name)
         except Exception as e:
             raise ProviderException(
-                'Could not locate dependency' + class_name + 'in' + package
+                'Could not locate dependency ' + class_name + ' in ' + package
             )
 
         target = getattr(target_class, class_name)
