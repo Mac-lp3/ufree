@@ -18,12 +18,12 @@ class DependencyProvider:
         package = ''
         target_class = none
         try:
-            if 'dao' in class_name.lower()
+            if 'dao' in class_name.lower():
                 package = daos_prefix
                 target_class = importlib.import_module(
                     package + class_name
                 )
-            if 'filter' in class_name.lower()
+            if 'filter' in class_name.lower():
                 package = filters_prefix
                 target_class = importlib.import_module(
                     package + class_name
