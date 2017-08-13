@@ -22,6 +22,7 @@ def check_db_exists ():
     # check if ufree database exists
     print('Checking DB for required tables...')
     if not config['database']['password']:
+        print('Password not found. Using default')
         arg_array = [
             'psql',
             '-U',
@@ -38,15 +39,16 @@ def check_db_exists ():
             config['database']['password']
         ]
 
-    print(arg_array)
+    print('Using arguments:', arg_array)
     db_exist = subprocess.Popen(
         arg_array,
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
-    out, err = db_exist.communicate()
-    print(out, err)
+    out = db_exist.stdout.read()
+    print('Start script output:', out)
+    prrint('here')
 
     # check output for 'does not exist...' string
     check_string = str.encode('FATAL:  database \"' + os.environ['DB_NAME'] + '\" does not exist')
@@ -61,6 +63,8 @@ def check_db_exists ():
         )
         out, err = create_db.communicate()
         print(out, err)
+
+    print('Check complete')
 
 def check_db_cluster ():
     # get status of the /database directory
@@ -89,21 +93,23 @@ def start_db_server ():
     print('Starting database...')
     check_db_cluster()
     port_arg = '\"-p ' + str(config['database']['port']) + '\"'
-    print('using port: ' + port_arg)
+    print('using port: ' +  str(config['database']['port']))
     start_db = subprocess.Popen([
-        'pg_ctl',
-        '-o',
-        port_arg,
-        '-D',
-        './database',
-        '-l',
-        './db-logfile',
-        'start'
-    ],
-    shell=True,
-    stdin=subprocess.PIPE)
-    print(start_db.communicate())
+            'pg_ctl',
+            '-o',
+            port_arg,
+            '-D',
+            './database',
+            '-l',
+            './db-logfile',
+            'start'
+        ],
+        shell=True,
+        stdin=subprocess.PIPE
+    )
+    print('Start-up message:', start_db.communicate())
     if start_db.returncode > 0:
+        print('return code > 0. exiting.')
         sys.exit()
 
 def stop_db ():
@@ -144,9 +150,11 @@ def start_app_server ():
 def load_config ():
     global config
     if os.environ['ENV'] != 'production':
+        print('Loading dev configuration')
         with open('build_config_dev.json') as json_data_file:
             config = json.load(json_data_file)
     else:
+        print('Loading production configuration')
         with open('build_config_prod.json') as json_data_file:
             config = json.load(json_data_file)
 
