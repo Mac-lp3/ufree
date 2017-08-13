@@ -4,35 +4,14 @@ import importlib
 from classes.dao.BaseDao import BaseDao
 from classes.exception.DaoException import DaoException
 
-psycopg2 = {}
-
-try:
-	if os.environ['ENV'] == 'test':
-		temp = importlib.import_module('test.classes.Psycopg2')
-		psycopg2 = temp.psycopg2()
-	else:
-		psycopg2 = __import__('psycopg2')
-except ImportError:
-	print(ImportError)
-
 class AttendeeDao (BaseDao):
 
-	__cur = {}
-
 	def __init__ (self):
-		try:
-			db_conn_str = 'dbname=' + os.environ['DB_NAME']
-			conn = psycopg2.connect(db_conn_str)
-			self.__cur = conn.cursor()
-		except ImportError:
-			print(ImportError)
-		except:
-			print(sys.exc_info())
-			print('I am unable to connect to the database')
+		BaseDao.__init__(self)
 
 	def join_event (self, attendee, event_id):
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'INSERT INTO event_attendee (event_id, creator_id) '
 				'VALUES (\'{0}\', {1})'.format(
 					event_id,
@@ -47,7 +26,7 @@ class AttendeeDao (BaseDao):
 
 	def leave_event (self, attendee_id, event_id):
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'DELETE FROM event_attendee WHERE event_id=\'{0}\' ' +
 				'AND attendee_id={1}'.format(
 					event_id,
@@ -63,12 +42,12 @@ class AttendeeDao (BaseDao):
 
 	def save_attendee (self, attendee):
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'INSERT INTO attendee (name) VALUES ({0})'.format(
 					attendee['name']
 				)
 			)
-			at = self.__cur.fetchone()
+			at = self._cur.fetchone()
 			data = {
 				'id': at[0],
 				'name': at[1],
@@ -83,7 +62,7 @@ class AttendeeDao (BaseDao):
 
 	def update_attendee (self, attendee):
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'INSERT INTO attendee (name, email) VALUES (\'{0}\', \'{1}\') '
 				'WHERE id={2}'.format(
 					attendee['name'],
@@ -91,7 +70,7 @@ class AttendeeDao (BaseDao):
 					attendee['id']
 				)
 			)
-			return self.__cur.fetchone()
+			return self._cur.fetchone()
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when loading attendee')
@@ -105,14 +84,14 @@ class AttendeeDao (BaseDao):
 		'''
 		try:
 			# retrieve all event attendees from the DB
-			self.__cur.execute(
+			self._cur.execute(
 				'SELECT attendee.id, attendee.name, attendee.email FROM attendee '
 				'INNER JOIN event_attendee ON attendee.id=event_attendee.attendee_id '
 				'WHERE event_attendee.event_id={0}'.format(
 					event_id
 				)
 			)
-			atts = self.__cur.fetchall()
+			atts = self._cur.fetchall()
 
 			# build a list of attendee objects
 			att_list = []
@@ -134,11 +113,11 @@ class AttendeeDao (BaseDao):
 	def load_attendee (self, attendee_id):
 		attendeeRows = {}
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'SELECT id, name, email from attendee WHERE id={0}'
 				.format(attendee_id)
 			)
-			attendeeRows = self.__cur.fetchone()
+			attendeeRows = self._cur.fetchone()
 
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -158,12 +137,12 @@ class AttendeeDao (BaseDao):
 
 	def attendee_exists (self, attendee_id):
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'SELECT id name email FROM attendee WHERE id = {0}'.format(
 					attendee_id
 				)
 			)
-			return self.__cur.fetchone() is not None
+			return self._cur.fetchone() is not None
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error when searching for attendee')
@@ -171,11 +150,11 @@ class AttendeeDao (BaseDao):
 	def delete_attendee (self, attendee):
 		try:
 			# delete the attenddee
-			self.__cur.execute(
+			self._cur.execute(
 				'DELETE FROM attendee WHERE id={0}'.format(attendee['id'])
 			)
 			# delete event_attendee entries
-			self.__cur.execute(
+			self._cur.execute(
 				'DELETE FROM event_attendee WHERE attendee_id={0}'.format(
 					attendee['id']
 				)

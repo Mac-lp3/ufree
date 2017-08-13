@@ -6,33 +6,17 @@ from classes.dao.BaseDao import BaseDao
 from classes.exception.DaoException import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 
-psycopg2 = {}
-
-if os.environ['ENV'] == 'test':
-    temp = importlib.import_module('test.classes.Psycopg2')
-    psycopg2 = temp.psycopg2()
-else:
-    psycopg2 = __import__('psycopg2')
-
 class AvailabilityDao (BaseDao):
 
     def __init__ (self):
-        try:
-            db_conn_str = 'dbname=' + os.environ['DB_NAME']
-            conn = psycopg2.connect(db_conn_str)
-            self.__cur = conn.cursor()
-        except ImportError:
-            print(ImportError)
-        except:
-            print(sys.exc_info())
-            print('I am unable to connect to the database')
+        BaseDao.__init__(self)
 
     def get_attendee_availability (self, event_id, attendee_id):
         '''
         Returns the attendee's availability object for specified event
         '''
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'SELECT id, attendee_id, event_id, year, january, '
                 'february, march, april, may, june, july, august, '
                 'september, october, november, december FROM '
@@ -43,7 +27,7 @@ class AvailabilityDao (BaseDao):
                 )
             )
 
-            at = self.__cur.fetchone()
+            at = self._cur.fetchone()
 
             data = {
                 'id': at[0],
@@ -77,7 +61,7 @@ class AvailabilityDao (BaseDao):
         Gets all availability objects for this event.
         '''
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'SELECT id, attendee_id, event_id, year, january, '
                 'february, march, april, may, june, july, august, '
                 'september, october, november, december FROM '
@@ -85,7 +69,7 @@ class AvailabilityDao (BaseDao):
                     event_id
                 )
             )
-            rows = self.__cur.fetchall()
+            rows = self._cur.fetchall()
 
             data = []
             for row in rows:
@@ -121,7 +105,7 @@ class AvailabilityDao (BaseDao):
         Updates this users availability for this event
         '''
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'INSERT INTO availability ('
                 'january, february, march, '
                 'april, may, june, july, august, september, october, '
@@ -144,7 +128,7 @@ class AvailabilityDao (BaseDao):
                 )
             )
 
-            at = self.__cur.fetchone()
+            at = self._cur.fetchone()
 
             data = {
                 'id': at[0],
@@ -175,7 +159,7 @@ class AvailabilityDao (BaseDao):
 
     def delete_attendee_availability (self, attendee_id):
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'DELETE FROM availability WHERE attendee_id={0}'.format(
                     attendee_id
                 )
@@ -188,7 +172,7 @@ class AvailabilityDao (BaseDao):
 
     def delete_event_availability (self, event_id):
         try:
-            self.__cur.execute(
+            self._cur.execute(
                     'DELETE FROM availability WHERE event_id={0}'.format(
                         event_id
                     )
@@ -204,7 +188,7 @@ class AvailabilityDao (BaseDao):
         Removes the event's, user's, or single instance of availability from DB.
         '''
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'DELETE FROM availability WHERE id={0}'.format(
                     availability_id
                 )
@@ -221,7 +205,7 @@ class AvailabilityDao (BaseDao):
         '''
 
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'INSERT INTO availability ('
                 'attendee_id, event_id, year, january, february, march, '
                 'april, may, june, july, august, september, october, '
@@ -246,7 +230,7 @@ class AvailabilityDao (BaseDao):
                 )
             )
 
-            at = self.__cur.fetchone()
+            at = self._cur.fetchone()
 
             data = {
                 'id': at[0],
@@ -277,7 +261,7 @@ class AvailabilityDao (BaseDao):
 
     def availability_exists (self, event_id, attendee_id, year):
         try:
-            self.__cur.execute(
+            self._cur.execute(
                 'SELECT * FROM availability WHERE event_id=\'{0}\' AND '
                 'attendee_id={1} AND year=\'{2}\''.format(
                     event_id,
@@ -285,7 +269,7 @@ class AvailabilityDao (BaseDao):
                     year
                 )
             )
-            return self.__cur.fetchone() is not None
+            return self._cur.fetchone() is not None
         except Exception as e:
             print(e, sys.exc_info())
             raise DaoException(
