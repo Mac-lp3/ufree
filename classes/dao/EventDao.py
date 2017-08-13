@@ -6,33 +6,15 @@ from classes.dao.BaseDao import BaseDao
 from classes.exception.DaoException import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 
-psycopg2 = {}
-
-if os.environ['ENV'] == 'test':
-	temp = importlib.import_module('test.classes.Psycopg2')
-	psycopg2 = temp.psycopg2()
-else:
-	psycopg2 = __import__('psycopg2')
-
 class EventDao (BaseDao):
 
-	__cur = {}
-
 	def __init__ (self):
-		try:
-			db_conn_str = 'dbname=' + os.environ['DB_NAME']
-			conn = psycopg2.connect(db_conn_str)
-			self.__cur = conn.cursor()
-		except ImportError:
-			print(ImportError)
-		except:
-			print(sys.exc_info())
-			print('I am unable to connect to the database')
+		BaseDao.__init__(self)
 
 	def event_exists(self, eventId):
 		try:
-			self.__cur.execute('SELECT name FROM event WHERE id = {0}'.format(eventId))
-			val = self.__cur.fetchone()
+			self._cur.execute('SELECT name FROM event WHERE id = {0}'.format(eventId))
+			val = self._cur.fetchone()
 			return val is not None
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -44,11 +26,11 @@ class EventDao (BaseDao):
 		'''
 		eventRows = {}
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'SELECT id, name, creator_id, created_date from event WHERE id={0}'
 				.format(eventId)
 			)
-			eventData = self.__cur.fetchone()
+			eventData = self._cur.fetchone()
 
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -73,14 +55,14 @@ class EventDao (BaseDao):
 		'''
 		eventRows = {}
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'SELECT events.id, events.name, events.creator_id, ' +
 				'events.created_date FROM events INNER JOIN event_attendees ' +
 				'ON event_attendees.event_id = events.id AND ' +
 				'event_attendees.attendee_id = {0}'
 				.format(attendee_id)
 			)
-			eventRows = self.__cur.fetchall()
+			eventRows = self._cur.fetchall()
 
 		except Exception as e:
 			print(e, sys.exc_info())
@@ -123,7 +105,7 @@ class EventDao (BaseDao):
 			# after 5 tries, check if id is still taken...
 			if not self.event_exists(generatedId):
 				# ... save if id is unique
-				self.__cur.execute(
+				self._cur.execute(
 					'INSERT INTO event (id, name, creator_id, created_date) '
 					'VALUES (\'{0}\', \'{1}\', {2}, \'{3}\')'.format(
 						generatedId,
@@ -134,7 +116,7 @@ class EventDao (BaseDao):
 				)
 
 				# ... and update the event_attendee join table
-				self.__cur.execute(
+				self._cur.execute(
 					'INSERT INTO event_attendee (event_id, creator_id) '
 					'VALUES (\'{0}\', {1})'.format(
 						generatedId,
@@ -163,14 +145,14 @@ class EventDao (BaseDao):
 
 	def update_event(self, eventObject):
 		try:
-			self.__cur.execute(
+			self._cur.execute(
 				'INSERT INTO event (name) VALUES (\'{0}\') '
 				'WHERE id={1}'.format(
 					eventObject['name'],
 					eventObject['id']
 				)
 			)
-			return self.__cur.fetchone()
+			return self._cur.fetchone()
 		except Exception as e:
 			print(e, sys.exc_info())
 			raise DaoException('Unknown error while updating event')
@@ -184,11 +166,11 @@ class EventDao (BaseDao):
 
 		try:
 			# delete the event
-			self.__cur.execute(
+			self._cur.execute(
 				'DELETE FROM event WHERE id={0}'.format(event_id)
 			)
 			# delete event_attendee entries
-			self.__cur.execute(
+			self._cur.execute(
 				'DELETE FROM event_attendee WHERE event_id={0}'.format(
 					event_id
 				)
