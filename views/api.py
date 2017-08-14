@@ -23,6 +23,9 @@ else:
 inputValidator = EventValidator()
 __event_service = EventService()
 
+def post_date_range (request):
+	pass
+
 def post_event(request):
 	'''
 	Get data for a specific event by ID.
@@ -182,4 +185,9 @@ def includeme(config):
 	)
 
 	# creates a new date range
-	config.add_view(post_date_range, route_name='rangesBase', request_method="POST", renderer="json")
+	config.add_view(
+		post_date_range,
+		route_name='rangesBase',
+		request_method="POST",
+		renderer="json"
+	)
