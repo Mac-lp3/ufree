@@ -48,11 +48,11 @@ def check_db_exists ():
     )
     out = db_exist.stdout.read()
     print('Start script output:', out)
-    prrint('here')
+    print('here')
 
     # check output for 'does not exist...' string
     check_string = str.encode('FATAL:  database \"' + os.environ['DB_NAME'] + '\" does not exist')
-    if check_string in out or check_string in err:
+    if check_string in out:
         # initialize cluster if found
         print('Database not found. creating...')
         create_db = subprocess.Popen(
@@ -92,12 +92,12 @@ def check_db_cluster ():
 def start_db_server ():
     print('Starting database...')
     check_db_cluster()
-    port_arg = '\"-p ' + str(config['database']['port']) + '\"'
+    port_arg = '-p ' + str(config['database']['port'])
     print('using port: ' +  str(config['database']['port']))
     start_db = subprocess.Popen([
             'pg_ctl',
             '-o',
-            port_arg,
+            '"' + port_arg + '"',
             '-D',
             './database',
             '-l',
