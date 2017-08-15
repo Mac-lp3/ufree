@@ -36,5 +36,6 @@ class DependencyProvider:
             )
 
         target = getattr(target_class, class_name)
-
+        target = target()
+        
         return target
