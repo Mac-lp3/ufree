@@ -3,6 +3,7 @@ import sys
 import json
 import inspect
 import importlib
+from classes.provider.DependencyProvider import DependencyProvider
 from classes.util.HashCodeUtils import HashCodeUtils
 from classes.util.EventValidator import EventValidator
 from classes.util.AttendeeValidator import AttendeeValidator
@@ -13,22 +14,12 @@ class EventService:
 
 	def __init__ (self):
 		# init DAOs based on environment
+		self.__provider = DependencyProvider()
+		self.__event_dao = self.__provider.get_instance('EventDao')
+		self.__attendee_dao = self.__provider.get_instance('AttendeeDao')
+		self.__availability_dao = self.__provider.get_instance('AvailabilityDao')
 		self.__eventValidator = EventValidator()
 		self.__attendeeValidator = AttendeeValidator()
-		if os.environ['ENV'] == 'test':
-			temp = importlib.import_module('test.classes.EventDao')
-			self.__event_dao = temp.EventDao()
-			temp = importlib.import_module('test.classes.AttendeeDao')
-			self.__attendee_dao = temp.AttendeeDao()
-			temp = importlib.import_module('test.classes.AvailabilityDao')
-			self.__availability_dao = temp.AvailabilityDao()
-		else:
-			temp = importlib.import_module('classes.dao.EventDao')
-			self.__event_dao = temp.EventDao()
-			temp = importlib.import_module('classes.dao.AttendeeDao')
-			self.__attendee_dao = temp.AttendeeDao()
-			temp = importlib.import_module('classes.dao.AvailabilityDao')
-			self.__availability_dao = temp.AvailabilityDao()
 
 	def load_event (self, req):
 		response_body = {}
