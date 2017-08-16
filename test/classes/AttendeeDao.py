@@ -32,6 +32,9 @@ class AttendeeDao:
 		}
 		return data
 
+	def load_event_attendees (self, event_id):
+		pass
+
 	def attendee_exists (self, attendee_id):
 		return False
 
