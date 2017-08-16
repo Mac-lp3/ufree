@@ -2,6 +2,7 @@ import os
 import json
 import unittest
 import hashlib
+import builtins
 from test.classes.MockRequest import MockRequest
 from classes.service.EventService import EventService
 from classes.exception.ServiceException import ServiceException
@@ -176,6 +177,7 @@ class EventServiceTest(unittest.TestCase):
         self.assertEqual(len(obj), 2)
 
         # test error handling
+        builtins.db_fail = 'True'
 
     def update_attendee_availability_test (self):
         pass
