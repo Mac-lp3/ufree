@@ -1,4 +1,5 @@
 import os
+import json
 import unittest
 import hashlib
 from test.classes.MockRequest import MockRequest
@@ -133,10 +134,10 @@ class EventServiceTest(unittest.TestCase):
         # test normal behavior
         try:
             r = self.__event_service.delete_event_attendee(MockRequest(
-                    body={
-                        'name': 'juan'
-                    },
-                    attendee_id=const.GOOD_USER_ID,
+                body={
+                    'name': 'juan'
+                },
+                attendee_id=const.GOOD_USER_ID,
                     id=const.GOOD_EVENT_ID)
                 )
             self.assertTrue(True)
@@ -147,14 +148,14 @@ class EventServiceTest(unittest.TestCase):
         # try to delete as another user
         try:
             r = self.__event_service.delete_event_attendee(MockRequest(
-                    body={
-                        'name': 'juan'
-                    },
-                    attendee_id=const.GOOD_USER_ID,
-                    cookies={
-                        'user_id': const.BAD_USER_ID
-                    })
-                )
+                body={
+                    'name': 'juan'
+                },
+                attendee_id=const.GOOD_USER_ID,
+                cookies={
+                    'user_id': const.BAD_USER_ID
+                })
+            )
             print(r)
             self.assertTrue(False)
         except Exception as e:
@@ -164,6 +165,20 @@ class EventServiceTest(unittest.TestCase):
                 'Only the creator can remove other users from an event'
             )
             self.assertTrue(True)
+
+    def get_event_attendees_test (self):
+        # test regular behavior
+        res = self.__event_service.get_event_attendees(MockRequest(
+            body={'event_id'}
+        ))
+        obj = json.loads(res)
+        print(obj)
+        self.assertEqual(len(obj), 2)
+
+        # test error handling
+
+    def update_attendee_availability_test (self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()
