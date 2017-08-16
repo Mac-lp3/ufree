@@ -39,10 +39,10 @@ class EventService:
             )
         return response_body
 
-    def update_event (self, req_body):
+    def update_event (self, req):
         response_body = {}
         try:
-            payload = req_body.json_body
+            payload = req.json_body
             self.__eventValidator.validate_event(payload)
             data = self.__event_dao.update_event(payload)
             json_data = json.dumps(data)
@@ -188,7 +188,7 @@ class EventService:
                 'An error occurred while leaving this info.'
             )
 
-    def get_event_attendees (self, req_body):
+    def get_event_attendees (self, req):
         try:
             # validate the event id
             eventId = req.matchdict['eventId']
@@ -212,7 +212,8 @@ class EventService:
             )
         return response_body
 
-    def update_attendee_availability (self, req_body):
+    def update_attendee_availability (self, req):
+        req_body = req.json_body
         response_body = {}
         try:
             # TODO validate availability
