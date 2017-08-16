@@ -33,7 +33,16 @@ class AttendeeDao:
         return data
 
     def load_event_attendees (self, event_id):
-        pass
+        data = [{
+            'id': 'asd',
+            'name': 'idkidkidk',
+            'email': 'idk@lol.com'
+            }, {
+            'id': 'asd',
+            'name': 'idkidkidk',
+            'email': 'idk@lol.com'
+        }]
+        return data
 
     def attendee_exists (self, attendee_id):
         return False
