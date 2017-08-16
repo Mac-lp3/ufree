@@ -14,7 +14,7 @@ class EventServiceTest(unittest.TestCase):
 
     __event_service = EventService()
 
-    def test_load_event (self):
+    def load_event_test (self):
         ret = self.__event_service.load_event(MockRequest(
             id=const.GOOD_EVENT_ID
         ))
@@ -28,7 +28,7 @@ class EventServiceTest(unittest.TestCase):
         except Exception as e:
             self.assertTrue(isinstance(e, ServiceException))
 
-    def test_update_event (self):
+    def update_event_test (self):
         post_body = {
             'id': const.GOOD_EVENT_ID,
             'name': 'idk some event',
