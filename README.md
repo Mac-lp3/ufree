@@ -13,7 +13,9 @@
 * ~~factory that provides DOAs and Services based on environment~~
 * ~~abstract DAO to initialize psycopg2~~
 * ~~wire provider to services~~
-* unified API for services. All should accept raw request.
+* ~~unified API for service methods. All should accept raw request.~~
+* finish testing event service
+* services should return a fully populated request object
 * find way to test provider in production
 * investigate __import__ vs importlib in DAOs
 * create attendee and availability service
