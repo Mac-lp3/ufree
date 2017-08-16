@@ -195,7 +195,7 @@ class EventService:
             self.__eventValidator.validate_event_id(eventId)
 
             # load the attendee list
-            data = self.__attendee_dao.load_attendees(eventId)
+            data = self.__attendee_dao.load_event_attendees(eventId)
 
             # build response object
             json_data = json.dumps(data)
