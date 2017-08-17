@@ -1,8 +1,20 @@
 {
-  "database":{
+  "database": {
     "host": "localhost",
     "port": 5432,
     "user": "postgres",
     "password": ""
+  },
+  "metadata": {
+    "event": {
+      "fieldNames": {
+        "id": "event_id"
+      }
+    },
+    "attendee": {
+      "fieldNames": {
+        "id": "attendee_id"
+      }
+    }
   }
 }
