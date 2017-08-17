@@ -169,6 +169,7 @@ class EventServiceTest(unittest.TestCase):
 
     def get_event_attendees_test (self):
         # test regular behavior
+        builtins.db_fail = 'False'
         res = self.__event_service.get_event_attendees(MockRequest(
             body={'event_id'}
         ))
@@ -178,6 +179,14 @@ class EventServiceTest(unittest.TestCase):
 
         # test error handling
         builtins.db_fail = 'True'
+        try:
+            res = self.__event_service.get_event_attendees(MockRequest(
+                body={'event_id'}
+            ))
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(type(e) is ServiceException)
+            pass
 
     def update_attendee_availability_test (self):
         pass
