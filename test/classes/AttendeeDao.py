@@ -1,6 +1,7 @@
 import os
 import sys
 import importlib
+import builtins
 from classes.exception.DaoException import DaoException
 
 class AttendeeDao:
@@ -33,6 +34,8 @@ class AttendeeDao:
         return data
 
     def load_event_attendees (self, event_id):
+        if builtins.db_fail == 'True':
+            raise DaoException('test exception')
         data = [{
             'id': 'asd',
             'name': 'idkidkidk',
