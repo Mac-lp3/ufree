@@ -1,4 +1,5 @@
 import os
+import builtins
 from classes.exception.DaoException import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 
@@ -24,16 +25,26 @@ class AvailabilityDao:
     }
 
     def get_availability (self, attendee_id='', event_id=''):
+        if builtins.db_fail == 'True':
+            raise DaoException('General exception')
         return self.__simple_obj
 
     def update_availability (self, availability):
+        if builtins.db_fail == 'True':
+            raise DaoException('General exception')
         return self.__simple_obj
 
     def delete_availability (self, availability_id='', attendee_id='', event_id=''):
+        if builtins.db_fail == 'True':
+            raise DaoException('General exception')
         pass
 
     def create_availability(self, availability):
+        if builtins.db_fail == 'True':
+            raise DaoException('General exception')
         return self.__simple_obj
 
     def availability_exists (self, event_id, attendee_id, year):
+        if builtins.db_fail == 'True':
+            raise DaoException('General exception')
         return True
