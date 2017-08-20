@@ -186,10 +186,29 @@ class EventServiceTest(unittest.TestCase):
             self.assertTrue(False)
         except Exception as e:
             self.assertTrue(type(e) is ServiceException)
-            pass
 
     def update_attendee_availability_test (self):
-        pass
+        # test regular behavior
+        builtins.db_fail = 'False'
+        # TODO proper aailability object
+        res = self.__event_service.update_attendee_availability(MockRequest(
+            body={'event_id'}
+        ))
+        obj = json.loads(res)
+        self.assertTrue('attendee_id' in obj)
+        self.assertTrue('event_id' in obj)
+        self.assertTrue('january' in obj)
+
+        # test error handling
+        builtins.db_fail = 'True'
+        try:
+            res = self.__event_service.update_attendee_availability(
+                MockRequest(
+                    body={'event_id'}
+            ))
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(type(e) is ServiceException)
 
 if __name__ == '__main__':
     unittest.main()
