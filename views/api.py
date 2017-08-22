@@ -31,10 +31,7 @@ def post_event(request):
 	'''
 	try:
 		filtered_request = UserFilter.set_user_id(request)
-		payload = __event_service.create_event(filtered_request)
-		response = Response(content_type='application/json')
-		response.charset = 'UTF-8'
-		response.json_body = payload
+		response = __event_service.create_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
