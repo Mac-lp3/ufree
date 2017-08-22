@@ -17,8 +17,8 @@ class EventServiceTest(unittest.TestCase):
             id=const.GOOD_EVENT_ID
         ))
         print(ret)
-        self.assertTrue('name' in ret)
-        self.assertTrue('id' in ret)
+        self.assertTrue('name' in ret.json_body)
+        self.assertTrue('id' in ret.json_body)
 
         try:
             self.__event_service.load_event('123123')
@@ -35,8 +35,8 @@ class EventServiceTest(unittest.TestCase):
         req = MockRequest(body=post_body)
         ret = self.__event_service.update_event(req)
         print(ret)
-        self.assertTrue('name' in ret)
-        self.assertTrue('id' in ret)
+        self.assertTrue('name' in ret.json_body)
+        self.assertTrue('id' in ret.json_body)
 
         try:
             ret = self.__event_service.update_event({
@@ -56,8 +56,8 @@ class EventServiceTest(unittest.TestCase):
         req = MockRequest(body=post_body)
         ret = self.__event_service.create_event(req)
         print(ret)
-        self.assertTrue('name' in ret)
-        self.assertTrue('id' in ret)
+        self.assertTrue('name' in ret.json_body)
+        self.assertTrue('id' in ret.json_body)
 
         try:
             ret = self.__event_service.create_event({
@@ -102,31 +102,6 @@ class EventServiceTest(unittest.TestCase):
             print(e)
             self.assertTrue(False)
 
-    def update_attendee_test (self):
-        try:
-            r = self.__event_service.update_event_attendee(MockRequest(
-                    body={
-                        'name': 'juan'
-                    })
-                )
-            self.assertTrue(False)
-        except Exception as e:
-            print(e)
-            self.assertEqual(str(e), 'Id was not found on this request')
-            self.assertTrue(True)
-
-        try:
-            r = self.__event_service.update_event_attendee(MockRequest(
-                    body={
-                        'id': 'idklol',
-                        'name': 'juan'
-                    })
-                )
-            self.assertTrue(True)
-        except Exception as e:
-            print(e)
-            self.assertTrue(False)
-
     def delete_event_attendee_test (self):
         # test normal behavior
         try:
@@ -162,49 +137,6 @@ class EventServiceTest(unittest.TestCase):
                 'Only the creator can remove other users from an event'
             )
             self.assertTrue(True)
-
-    def get_event_attendees_test (self):
-        # test regular behavior
-        builtins.db_fail = 'False'
-        res = self.__event_service.get_event_attendees(MockRequest(
-            body={'event_id'}
-        ))
-        obj = json.loads(res)
-        print(obj)
-        self.assertEqual(len(obj), 2)
-
-        # test error handling
-        builtins.db_fail = 'True'
-        try:
-            res = self.__event_service.get_event_attendees(MockRequest(
-                body={'event_id'}
-            ))
-            self.assertTrue(False)
-        except Exception as e:
-            self.assertTrue(type(e) is ServiceException)
-
-    def update_attendee_availability_test (self):
-        # test regular behavior
-        builtins.db_fail = 'False'
-        # TODO proper aailability object
-        res = self.__event_service.update_attendee_availability(MockRequest(
-            body={'event_id'}
-        ))
-        obj = json.loads(res)
-        self.assertTrue('attendee_id' in obj)
-        self.assertTrue('event_id' in obj)
-        self.assertTrue('january' in obj)
-
-        # test error handling
-        builtins.db_fail = 'True'
-        try:
-            res = self.__event_service.update_attendee_availability(
-                MockRequest(
-                    body={'event_id'}
-            ))
-            self.assertTrue(False)
-        except Exception as e:
-            self.assertTrue(type(e) is ServiceException)
 
 if __name__ == '__main__':
     unittest.main()
