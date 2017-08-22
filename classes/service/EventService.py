@@ -3,6 +3,7 @@ import sys
 import json
 import inspect
 import importlib
+from pyramid.response import Response
 from classes.provider.DependencyProvider import DependencyProvider
 from classes.util.HashCodeUtils import HashCodeUtils
 from classes.util.EventValidator import EventValidator
@@ -28,8 +29,9 @@ class EventService:
             eventId = req.matchdict['eventId']
             self.__eventValidator.validate_event_id(eventId)
             data = self.__event_dao.load_event(eventId)
-            json_data = json.dumps(data)
-            response_body = json_data
+            response = Response(content_type='application/json')
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
         except BaseAppException as e:
             raise ServiceException(str(e))
         except Exception as e:
@@ -37,7 +39,7 @@ class EventService:
             raise ServiceException(
                 'An error occurred while loading this event.'
             )
-        return response_body
+        return response
 
     def update_event (self, req):
         response_body = {}
@@ -45,8 +47,9 @@ class EventService:
             payload = req.json_body
             self.__eventValidator.validate_event(payload)
             data = self.__event_dao.update_event(payload)
-            json_data = json.dumps(data)
-            response_body = json_data
+            response = Response(content_type='application/json')
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
         except BaseAppException as e:
             raise ServiceException(str(e))
         except Exception as e:
@@ -54,7 +57,7 @@ class EventService:
             raise ServiceException(
                 'An error occurred while updating this event.'
             )
-        return response_body
+        return response
 
     def create_event (self, req):
         '''
@@ -74,11 +77,15 @@ class EventService:
                 data = self.__event_dao.save_event(req.json_body)
 
                 # build the response body
-                json_data = json.dumps(data)
-                response_body = json_data
+                response_body = json.dumps(data)
 
             else:
                 response_body = json.dumps(inputErrors)
+
+            response = Response(content_type='application/json')
+            response.charset = 'UTF-8'
+            response.json_body = response_body
+
         except BaseAppException as e:
             raise ServiceException(str(e))
 
@@ -86,7 +93,7 @@ class EventService:
             print(e, sys.exc_info())
             raise ServiceException('An error occurred while creating this event.')
 
-        return response_body
+        return response
 
     def delete_event (self, req):
         try:
@@ -107,6 +114,8 @@ class EventService:
                 )
         except BaseAppException as e:
             raise ServiceException(str(e))
+
+        return Response(status=200)
 
     def add_event_attendee (self, req):
         '''
@@ -138,25 +147,7 @@ class EventService:
                 'An error occurred while joining this event.'
             )
 
-    def update_event_attendee (self, req):
-        response_body = {}
-        try:
-            if 'id' not in req.json_body:
-                raise ServiceException('Id was not found on this request')
-            inputErrors = self.__attendeeValidator.validate_attendee_request(req)
-            data = self.__attendee_dao.update_attendee(req.json_body)
-            json_data = json.dumps(data)
-            response_body = json_data
-        except BaseAppException as e:
-            # Handle DAO/Validation errors
-            raise ServiceException(str(e))
-        except Exception as e:
-            # Handle unexpected errors
-            print(e, sys.exc_info())
-            raise ServiceException(
-                'An error occurred while updating your info.'
-            )
-        return response_body
+        return Response(status=200)
 
     def delete_event_attendee (self, req):
         try:
@@ -188,46 +179,4 @@ class EventService:
                 'An error occurred while leaving this info.'
             )
 
-    def get_event_attendees (self, req):
-        try:
-            # validate the event id
-            eventId = req.matchdict['eventId']
-            self.__eventValidator.validate_event_id(eventId)
-
-            # load the attendee list
-            data = self.__attendee_dao.load_event_attendees(eventId)
-
-            # build response object
-            json_data = json.dumps(data)
-            response_body = json_data
-
-        except BaseAppException as e:
-            # Handle DAO/Validation errors
-            raise ServiceException(str(e))
-        except Exception as e:
-            # Handle unexpected errors
-            print(e, sys.exc_info())
-            raise ServiceException(
-                'An error occurred while retrieving attendee list.'
-            )
-        return response_body
-
-    def update_attendee_availability (self, req):
-        req_body = req.json_body
-        response_body = {}
-        try:
-            # TODO validate availability
-            #inputErrors = self.__eventValidator.validate_attendee(req_body)
-            data = self.__availability_dao.update_availability(req_body)
-            json_data = json.dumps(data)
-            response_body = json_data
-        except BaseAppException as e:
-            # Handle DAO/Validation errors
-            raise ServiceException(str(e))
-        except Exception as e:
-            # Handle unexpected errors
-            print(e, sys.exc_info())
-            raise ServiceException(
-                'An error occurred while updating availability.'
-            )
-        return response_body
+        return Response(status=200)
