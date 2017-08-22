@@ -23,9 +23,6 @@ else:
 inputValidator = EventValidator()
 __event_service = EventService()
 
-def post_date_range (request):
-	pass
-
 def post_event(request):
 	'''
 	Get data for a specific event by ID.
@@ -54,10 +51,7 @@ def get_event(request):
 	response = {}
 	try:
 		filtered_request = UserFilter.set_user_id(request)
-		payload = __event_service.load_event(filtered_request)
-		response = Response(content_type='application/json')
-		response.charset = 'UTF-8'
-		response.json_body = payload
+		response = __event_service.load_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
