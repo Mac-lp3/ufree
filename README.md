@@ -14,13 +14,13 @@
 * ~~abstract DAO to initialize psycopg2~~
 * ~~wire provider to services~~
 * ~~unified API for service methods. All should accept raw request.~~
-* finish testing event service
+* ~~finish testing event service~~
 * services should return a fully populated request object
+* availability validator w/ year mechanism
 * find way to test provider in production
 * investigate __import__ vs importlib in DAOs
 * create attendee and availability service
   * CRUD methods that accept raw HTTP request
-* availability validator w/ year mechanism
 * add rest of attendee methods to API
 * Script to test DB load/save queries
 * tabs to spaces
