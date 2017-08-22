@@ -8,10 +8,6 @@ from classes.service.EventService import EventService
 from classes.exception.ServiceException import ServiceException
 import test.classes.Const as const
 
-# dir_path = os.path.dirname(os.path.realpath(__file__))
-# fts = os.path.join(dir_path, '..\classes\util\HashCodeUtils.py')
-# exec(open(fts).read())
-
 class EventServiceTest(unittest.TestCase):
 
     __event_service = EventService()
