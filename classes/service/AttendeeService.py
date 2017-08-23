@@ -25,19 +25,16 @@ class AttendeeService:
         pass
 
     def update_attendee (self, request):
-        pass
-
-    def update_event_attendee (self, req):
-        # TODO this mehtod may not be needed. could just roll into update_attendee
         response_body = {}
         try:
             if 'id' not in req.json_body:
                 raise ServiceException('Id was not found on this request')
             inputErrors = self.__attendeeValidator.validate_attendee_request(req)
             data = self.__attendee_dao.update_attendee(req.json_body)
-            response = Response(content_type='application/json')
+            response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = json.dumps(data)
+
         except BaseAppException as e:
             # Handle DAO/Validation errors
             raise ServiceException(str(e))
@@ -47,6 +44,7 @@ class AttendeeService:
             raise ServiceException(
                 'An error occurred while updating your info.'
             )
+
         return response
 
     def update_attendee_availability (self, req):
