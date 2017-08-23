@@ -9,13 +9,13 @@ class AttendeeDao (BaseDao):
 	def __init__ (self):
 		BaseDao.__init__(self)
 
-	def join_event (self, attendee, event_id):
+	def join_event (self, attendee_id, event_id):
 		try:
 			self._cur.execute(
 				'INSERT INTO event_attendee (event_id, creator_id) '
 				'VALUES (\'{0}\', {1})'.format(
 					event_id,
-					attendee['id']
+					attendee_id
 				)
 			)
 		except Exception as e:
