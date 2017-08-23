@@ -47,7 +47,7 @@ class EventService:
             payload = req.json_body
             self.__eventValidator.validate_event(payload)
             data = self.__event_dao.update_event(payload)
-            response = Response(content_type='application/json')
+            response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = json.dumps(data)
         except BaseAppException as e:
@@ -82,7 +82,7 @@ class EventService:
             else:
                 response_body = json.dumps(inputErrors)
 
-            response = Response(content_type='application/json')
+            response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = response_body
 
