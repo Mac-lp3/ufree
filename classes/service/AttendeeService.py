@@ -22,19 +22,33 @@ class AttendeeService:
         self.__attendeeValidator = AttendeeValidator()
 
     def load_attendee (self, request):
-        pass
+        try:
+            # validate
+            if 'id' not in req.json_body:
+                raise ServiceException('Id was not found on this request')
+            self.__attendeeValidator.validate_attendee_request(req)
+            data = self.__attendee_dao.load_attendee(req.json_body['id'])
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while loading this attendee.'
+            )
+        return response
 
     def update_attendee (self, request):
-        response_body = {}
         try:
             if 'id' not in req.json_body:
                 raise ServiceException('Id was not found on this request')
-            inputErrors = self.__attendeeValidator.validate_attendee_request(req)
+            self.__attendeeValidator.validate_attendee_request(req)
             data = self.__attendee_dao.update_attendee(req.json_body)
             response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = json.dumps(data)
-
         except BaseAppException as e:
             # Handle DAO/Validation errors
             raise ServiceException(str(e))
@@ -48,12 +62,10 @@ class AttendeeService:
         return response
 
     def update_attendee_availability (self, req):
-        req_body = req.json_body
-        response_body = {}
         try:
             # TODO validate availability
-            #inputErrors = self.__eventValidator.validate_attendee(req_body)
-            data = self.__availability_dao.update_availability(req_body)
+            self.__attendeeValidator.validate_attendee_request(req)
+            data = self.__availability_dao.update_availability(req.json_body)
             response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = json.dumps(data)
@@ -94,11 +106,55 @@ class AttendeeService:
 
         return response
 
-    def create_attendee (self, request):
-        pass
+    def create_attendee (self, req):
+        try:
+            self.__attendeeValidator.validate_attendee_request(req)
+            data = self.__attendee_dao.save_attendee(req.json_body)
+
+            # build the response body
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
+
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException('An error occurred while creating this event.')
+
+        return response
 
     def remove_attendee_from_event (self, request):
-        pass
+        try:
+            self.__attendeeValidator.validate_attendee_request(req)
+            data = self.__attendee_dao.leave_event(
+                req.json_body['id'],
+                req.matchdict['eventId']
+            )
+
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException('An error occurred while creating this event.')
+
+        return Response(status=200)
 
     def add_attendee_to_event (self, request):
-        pass
+        try:
+            self.__attendeeValidator.validate_attendee_request(req)
+            data = self.__attendee_dao.join_event(
+                req.json_body['id'],
+                req.matchdict['eventId']
+            )
+
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException('An error occurred while creating this event.')
+
+        return Response(status=200)
