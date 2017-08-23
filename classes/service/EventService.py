@@ -23,13 +23,12 @@ class EventService:
         self.__attendeeValidator = AttendeeValidator()
 
     def load_event (self, req):
-        response_body = {}
         try:
             # validate
             eventId = req.matchdict['eventId']
             self.__eventValidator.validate_event_id(eventId)
             data = self.__event_dao.load_event(eventId)
-            response = Response(content_type='application/json')
+            response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = json.dumps(data)
         except BaseAppException as e:
@@ -42,7 +41,6 @@ class EventService:
         return response
 
     def update_event (self, req):
-        response_body = {}
         try:
             payload = req.json_body
             self.__eventValidator.validate_event(payload)
@@ -67,10 +65,9 @@ class EventService:
         builds the event and associated objects.
         '''
         # TODO year mechanism.
-        response_body = {}
         try:
             inputErrors = self.__eventValidator.validate_event(req.json_body)
-
+            response_body = {}
             if not inputErrors:
                 # set the creator_id and save the event
                 req.json_body['creator_id'] = req.cookies['user_id']
