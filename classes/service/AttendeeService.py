@@ -21,6 +21,23 @@ class AttendeeService:
         self.__eventValidator = EventValidator()
         self.__attendeeValidator = AttendeeValidator()
 
+    def load_event_attendees (self, req):
+        try:
+            eventId = req.matchdict['eventId']
+            self.__eventValidator.validate_event_id(eventId)
+            data = self.__attendee_dao.load_event_attendees(eventId)
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while loading this attendee.'
+            )
+        return response
+
     def load_attendee (self, request):
         try:
             # validate
