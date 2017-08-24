@@ -15,7 +15,8 @@
 * ~~wire provider to services~~
 * ~~unified API for service methods. All should accept raw request.~~
 * ~~finish testing event service~~
-* services should return a fully populated request object
+* ~~services should return a fully populated request object~~
+* ~~finish AttendeeService~~
 * availability validator w/ year mechanism
 * find way to test provider in production
 * investigate __import__ vs importlib in DAOs
