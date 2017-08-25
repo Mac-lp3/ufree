@@ -17,6 +17,10 @@
 * ~~finish testing event service~~
 * ~~services should return a fully populated request object~~
 * ~~finish AttendeeService~~
+* test AttendeeService
+* design availability mechanism,
+    * new service?
+    * integrate with attendee service?
 * availability validator w/ year mechanism
 * find way to test provider in production
 * investigate __import__ vs importlib in DAOs
