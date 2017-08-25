@@ -3,6 +3,7 @@ import sys
 import json
 import inspect
 import importlib
+from pyramid.response import Response
 from classes.util.HashCodeUtils import HashCodeUtils
 from classes.util.EventValidator import EventValidator
 from classes.util.AttendeeValidator import AttendeeValidator
@@ -14,7 +15,7 @@ class AttendeeService:
 
     def __init__ (self):
         # init DAOs based on environment
-        self.__provider = DependencyProdiver()
+        self.__provider = DependencyProvider()
         self.__event_dao = self.__provider.get_instance('EventDao')
         self.__attendee_dao = self.__provider.get_instance('AttendeeDao')
         self.__availability_dao = self.__provider.get_instance('AvailabilityDao')
@@ -57,7 +58,7 @@ class AttendeeService:
             )
         return response
 
-    def update_attendee (self, request):
+    def update_attendee (self, req):
         try:
             if 'id' not in req.json_body:
                 raise ServiceException('Id was not found on this request')
