@@ -14,7 +14,7 @@ class EventServiceTest(unittest.TestCase):
 
     def load_event_test (self):
         ret = self.__event_service.load_event(MockRequest(
-            id=const.GOOD_EVENT_ID
+            event_id=const.GOOD_EVENT_ID
         ))
         print(ret)
         self.assertTrue('name' in ret.json_body)
@@ -72,7 +72,7 @@ class EventServiceTest(unittest.TestCase):
         # creator should be able to delete their events
         try:
             self.__event_service.delete_event(MockRequest(
-                id=const.GOOD_EVENT_ID
+                event_id=const.GOOD_EVENT_ID
             ))
             self.assertTrue(True)
         except Exception as e:
@@ -81,7 +81,7 @@ class EventServiceTest(unittest.TestCase):
         # only creator should be able to to delete
         try:
             self.__event_service.delete_event(MockRequest(
-                id=const.GOOD_EVENT_ID,
+                event_id=const.GOOD_EVENT_ID,
                 cookies={
                     'user_id': 'nonono'
                 }
@@ -92,7 +92,7 @@ class EventServiceTest(unittest.TestCase):
     def add_event_attendee_test (self):
         try:
             self.__event_service.add_event_attendee(MockRequest(
-                    id=const.GOOD_EVENT_ID,
+                    event_id=const.GOOD_EVENT_ID,
                     body={
                         'name': 'juan'
                     })
@@ -104,30 +104,33 @@ class EventServiceTest(unittest.TestCase):
 
     def delete_event_attendee_test (self):
         # test normal behavior
+        req = MockRequest(
+            body={
+                'name': 'juan'
+            },
+            attendee_id=const.GOOD_USER_ID,
+            event_id=const.GOOD_EVENT_ID
+        )
         try:
-            r = self.__event_service.delete_event_attendee(MockRequest(
-                body={
-                    'name': 'juan'
-                },
-                attendee_id=const.GOOD_USER_ID,
-                    id=const.GOOD_EVENT_ID)
-                )
+            r = self.__event_service.delete_event_attendee(req)
             self.assertTrue(True)
         except Exception as e:
             print(e)
             self.assertTrue(False)
 
         # try to delete as another user
+        req = MockRequest(
+            body={
+                'name': 'juan'
+            },
+            event_id=const.GOOD_EVENT_ID,
+            attendee_id=const.GOOD_USER_ID,
+            cookies={
+                'user_id': const.BAD_USER_ID
+            }
+        )
         try:
-            r = self.__event_service.delete_event_attendee(MockRequest(
-                body={
-                    'name': 'juan'
-                },
-                attendee_id=const.GOOD_USER_ID,
-                cookies={
-                    'user_id': const.BAD_USER_ID
-                })
-            )
+            r = self.__event_service.delete_event_attendee(req)
             print(r)
             self.assertTrue(False)
         except Exception as e:
