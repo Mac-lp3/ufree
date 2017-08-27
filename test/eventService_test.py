@@ -10,7 +10,9 @@ import test.classes.Const as const
 
 class EventServiceTest(unittest.TestCase):
 
-    __event_service = EventService()
+    def setUp (self):
+        builtins.db_fail = False
+        self.__event_service = EventService()
 
     def load_event_test (self):
         ret = self.__event_service.load_event(MockRequest(
