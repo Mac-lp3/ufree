@@ -39,13 +39,17 @@ class AttendeeService:
             )
         return response
 
-    def load_attendee (self, request):
+    def load_attendee (self, req):
         try:
             # validate
-            if 'id' not in req.json_body:
+            att_id = req.matchdict['attendee_id']
+            if att_id is None:
                 raise ServiceException('Id was not found on this request')
-            self.__attendeeValidator.validate_attendee_request(req)
-            data = self.__attendee_dao.load_attendee(req.json_body['id'])
+
+            self.__attendeeValidator.validate_attendee_id(
+                att_id
+            )
+            data = self.__attendee_dao.load_attendee(att_id)
             response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
             response.json_body = json.dumps(data)
@@ -54,7 +58,8 @@ class AttendeeService:
         except Exception as e:
             print(e, sys.exc_info())
             raise ServiceException(
-                'An error occurred while loading this attendee.'
+                'An error occurred while loading attendee with id',
+                att_id
             )
         return response
 
