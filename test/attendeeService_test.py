@@ -43,7 +43,31 @@ class AttendeeServiceTest(unittest.TestCase):
             self.assertTrue(isinstance(e, ServiceException))
 
     def load_attendee_test (self):
-        pass
+        # test correct usage
+        req = MockRequest(attendee_id=const.GOOD_USER_ID)
+        ret = self.__attendee_service.load_attendee(req)
+        data = json.loads(ret.json_body)
+        self.assertEqual(len(data), 3)
+        self.assertTrue('name' in data)
+        self.assertTrue('id' in data)
+        self.assertTrue('email' in data)
+
+        # test bad event id
+        try:
+            req = MockRequest(attendee_id='()*^@#^)')
+            ret = self.__attendee_service.load_attendee(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
+
+        # test db exception
+        builtins.db_fail = True
+        try:
+            req = MockRequest(attendee_id=const.GOOD_USER_ID)
+            self.__attendee_service.load_attendee(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
 
     def update_attendee_test (self):
         # test good field names
