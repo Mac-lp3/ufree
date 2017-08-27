@@ -15,22 +15,48 @@ class AttendeeServiceTest(unittest.TestCase):
         self.__attendee_service = AttendeeService()
 
     def load_event_attendees_test (self):
-        pass
+        # test correct usage
+        req = MockRequest(event_id=const.GOOD_EVENT_ID)
+        ret = self.__attendee_service.load_event_attendees(req)
+        data = json.loads(ret.json_body)
+        self.assertEqual(len(data), 2)
+        self.assertTrue('name' in data[0])
+        self.assertTrue('id' in data[0])
+        self.assertTrue('name' in data[1])
+        self.assertTrue('id' in data[1])
+
+        # test bad event id
+        try:
+            req = MockRequest(event_id='dasfasdfasdasf')
+            ret = self.__attendee_service.load_event_attendees(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
+
+        # test db exception
+        builtins.db_fail = True
+        try:
+            req = MockRequest(event_id=const.GOOD_EVENT_ID)
+            self.__attendee_service.load_event_attendees(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
 
     def load_attendee_test (self):
         pass
 
     def update_attendee_test (self):
+        # test good field names
         post_body = {
             'id': const.GOOD_USER_ID,
             'name': 'New Name'
         }
         req = MockRequest(body=post_body)
         ret = self.__attendee_service.update_attendee(req)
-        print(ret)
         self.assertTrue('name' in ret.json_body)
         self.assertTrue('id' in ret.json_body)
 
+        # test bad request names
         try:
             ret = self.__attendee_service.update_attendee({
                 'name-o': 'idk some event',
