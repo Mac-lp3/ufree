@@ -150,9 +150,10 @@ class AttendeeService:
 
     def remove_attendee_from_event (self, req):
         try:
-            self.__attendeeValidator.validate_attendee_request(req)
+            att_id = req.json_body['id']
+            self.__attendeeValidator.validate_attendee_id(att_id)
             data = self.__attendee_dao.leave_event(
-                req.json_body['id'],
+                att_id,
                 req.matchdict['eventId']
             )
 
