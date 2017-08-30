@@ -93,14 +93,61 @@ class AttendeeServiceTest(unittest.TestCase):
     def update_attendee_availability_test (self):
         pass
 
-    def get_event_attendees_test (self):
-        pass
-
     def create_attendee_test (self):
-        pass
+        # test good field names
+        post_body = {
+            'name': 'New Name'
+        }
+        req = MockRequest(body=post_body)
+        ret = self.__attendee_service.create_attendee(req)
+        self.assertTrue('name' in ret.json_body)
+        self.assertTrue('id' in ret.json_body)
+
+        # test bad request names
+        try:
+            ret = self.__attendee_service.create_attendee({
+                'name-o': 'idk some event'
+            })
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
 
     def remove_attendee_from_event_test (self):
-        pass
+        # test correct usage
+        post_body = {
+            'id': const.GOOD_USER_ID
+        }
+        req = MockRequest(
+            body = post_body,
+            event_id = const.GOOD_EVENT_ID
+        )
+        ret = self.__attendee_service.remove_attendee_from_event(req)
+
+        # test bad event id
+        try:
+            post_body = {
+                'id': '()*^@#^)'
+            }
+            req = MockRequest(
+                body = post_body,
+                event_id = const.GOOD_EVENT_ID
+            )
+            ret = self.__attendee_service.remove_attendee_from_event(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
+
+        # test db exception
+        builtins.db_fail = True
+        try:
+            req = MockRequest(
+                body = post_body,
+                event_id = const.GOOD_EVENT_ID
+            )
+            self.__attendee_service.remove_attendee_from_event(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
 
     def add_attendee_to_event_test (self):
         pass
