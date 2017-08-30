@@ -148,7 +148,7 @@ class AttendeeService:
 
         return response
 
-    def remove_attendee_from_event (self, request):
+    def remove_attendee_from_event (self, req):
         try:
             self.__attendeeValidator.validate_attendee_request(req)
             data = self.__attendee_dao.leave_event(
@@ -165,7 +165,7 @@ class AttendeeService:
 
         return Response(status=200)
 
-    def add_attendee_to_event (self, request):
+    def add_attendee_to_event (self, req):
         try:
             self.__attendeeValidator.validate_attendee_request(req)
             data = self.__attendee_dao.join_event(
