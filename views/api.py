@@ -2,16 +2,17 @@ import os
 import json
 import inspect
 import importlib
-from classes.exception.DaoException import DaoException
-from classes.util.EventValidator import EventValidator
-from classes.util.HashCodeUtils import HashCodeUtils
+from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
-from pyramid.view import view_config
 from classes.exception.BaseAppException import BaseAppException
+from classes.service.AttendeeService import AttendeeService
+from classes.exception.DaoException import DaoException
+from classes.util.EventValidator import EventValidator
 from classes.service.EventService import EventService
+from classes.util.HashCodeUtils import HashCodeUtils
 
 if os.environ['ENV'] == 'test':
 	temp = importlib.import_module('test.classes.UserFilter')
@@ -20,8 +21,8 @@ else:
 	temp = importlib.import_module('classes.filter.UserFilter')
 	UserFilter = temp.UserFilter()
 
-inputValidator = EventValidator()
 __event_service = EventService()
+__attendee_service = AttendeeService()
 
 def post_event(request):
 	'''
@@ -105,6 +106,27 @@ def post_event_attendee(request):
 	try:
 		filtered_request = UserFilter.set_user_id(request)
 		response = __event_service.add_event_attendee(filtered_request)
+	except BaseAppException as e:
+		response = HTTPBadRequest()
+		response.text = e.get_payload()
+		response.content_type = 'application/json'
+
+	return response
+
+def put_event_attendee(request):
+	'''
+	pudate an attendee already in this event
+
+	/events/{id}/attendees
+	The user making this request is added to the event attendees list. If no ID
+	is found in cookies, a new attendee instance is created and the user id
+	cookie is generated. If a valid user ID cookie is found, it uses the
+	provided user id
+	'''
+
+	try:
+		filtered_request = UserFilter.set_user_id(request)
+		response = __event_service.update_attendee(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
