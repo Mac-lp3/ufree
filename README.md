@@ -17,7 +17,7 @@
 * ~~finish testing event service~~
 * ~~services should return a fully populated request object~~
 * ~~finish AttendeeService~~
-* test AttendeeService
+* ~~test AttendeeService~~
 * design availability mechanism,
     * new service?
     * integrate with attendee service?
