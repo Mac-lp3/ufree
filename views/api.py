@@ -126,7 +126,7 @@ def put_event_attendee(request):
 
 	try:
 		filtered_request = UserFilter.set_user_id(request)
-		response = __event_service.update_attendee(filtered_request)
+		response = __attendee_service.update_attendee(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
 		response.text = e.get_payload()
@@ -150,7 +150,27 @@ def get_event_attendees(request):
 		response.text = e.get_payload()
 		response.content_type = 'application/json'
 
-	pass
+	return response
+
+def delete_event_attendee(request):
+	'''
+	Remove this attendee from the event.
+
+	/events/{id}/attendees/{id}
+	Returns 200 if ok. Removes this attendee from the event's attendee list.
+	'''
+
+	try:
+		filtered_request = UserFilter.set_user_id(request)
+		response = __attendee_service.remove_attendee_from_event(
+			filtered_request
+		)
+	except BaseAppException as e:
+		response = HTTPBadRequest()
+		response.text = e.get_payload()
+		response.content_type = 'application/json'
+
+	return response
 
 def includeme(config):
 
@@ -158,13 +178,43 @@ def includeme(config):
 	config.add_renderer('eventBase', 'pyramid.renderers.json_renderer_factory')
 
 	config.add_route('eventDetails', '/api/events/{eventId}')
-	config.add_renderer('eventDetails', 'pyramid.renderers.json_renderer_factory')
+	config.add_renderer(
+		'eventDetails',
+		'pyramid.renderers.json_renderer_factory'
+	)
+
+	config.add_route('eventAttendees', '/api/events/{eventId}/attendees')
+	config.add_renderer(
+		'eventAttendees',
+		'pyramid.renderers.json_renderer_factory'
+	)
+
+	config.add_route('eventAttendeeDetail', '/api/events/{eventId}/attendees')
+	config.add_renderer(
+		'eventAttendeeDetail',
+		'pyramid.renderers.json_renderer_factory'
+	)
+
+	config.add_route(
+		'eventAttendeeDetail',
+		'/api/events/{eventId}/attendees/{attendeeId}'
+	)
+	config.add_renderer(
+		'eventAttendeeDetail',
+		'pyramid.renderers.json_renderer_factory'
+	)
 
 	config.add_route('rangesBase', '/api/events/{eventId}/ranges')
-	config.add_renderer('rangesBase', 'pyramid.renderers.json_renderer_factory')
+	config.add_renderer(
+		'rangesBase',
+		'pyramid.renderers.json_renderer_factory'
+	)
 
 	config.add_route('rangeDetails', '/api/events/{eventId}/ranges/{rangeId}')
-	config.add_renderer('rangeDetails', 'pyramid.renderers.json_renderer_factory')
+	config.add_renderer(
+		'rangeDetails',
+		'pyramid.renderers.json_renderer_factory'
+	)
 
 	# creates new date and generates an id
 	config.add_view(
@@ -195,6 +245,38 @@ def includeme(config):
 		delete_event,
 		route_name='eventDetails',
 		request_method="DELETE"
+	)
+
+	# returns the event's attendee list
+	config.add_view(
+		get_event_attendees,
+		route_name='eventAttendees',
+		request_method="GET",
+		renderer='json'
+	)
+
+	# returns the created attendee
+	config.add_view(
+		post_event_attendee,
+		route_name='eventAttendees',
+		request_method="POST",
+		renderer='json'
+	)
+
+	# returns the event after update
+	config.add_view(
+		put_event_attendee,
+		route_name='eventAttendeeDetail',
+		request_method="PUT",
+		renderer='json'
+	)
+
+	# removes this attendee from the event
+	config.add_view(
+		delete_event_attendee,
+		route_name='eventAttendeeDetail',
+		request_method="DELETE",
+		renderer='json'
 	)
 
 	# creates a new date range
