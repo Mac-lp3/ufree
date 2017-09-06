@@ -150,4 +150,40 @@ class AttendeeServiceTest(unittest.TestCase):
             self.assertTrue(isinstance(e, ServiceException))
 
     def add_attendee_to_event_test (self):
-        pass
+        # test correct usage
+        post_body = {
+            'id': const.GOOD_USER_ID,
+            'name': 'Delete Me'
+        }
+        req = MockRequest(
+            body = post_body,
+            event_id = const.GOOD_EVENT_ID
+        )
+        ret = self.__attendee_service.add_attendee_to_event(req)
+
+        # test bad event id
+        try:
+            post_body = {
+                'id': '()*^@#^)',
+                'name': ') DROP TABLE users'
+            }
+            req = MockRequest(
+                body = post_body,
+                event_id = const.GOOD_EVENT_ID
+            )
+            ret = self.__attendee_service.add_attendee_to_event(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
+
+        # test db exception
+        builtins.db_fail = True
+        try:
+            req = MockRequest(
+                body = post_body,
+                event_id = const.GOOD_EVENT_ID
+            )
+            self.__attendee_service.add_attendee_to_event(req)
+            self.assertTrue(False)
+        except Exception as e:
+            self.assertTrue(isinstance(e, ServiceException))
