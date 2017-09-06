@@ -116,7 +116,7 @@ def get_event_attendees(request):
 	'''
 	Returns all attendees in this event's attendee list
 
-	/events/{id}/attendees/{id}
+	/events/{id}/attendees
 	Returns a JSON list of names and email addresses
 	'''
 
