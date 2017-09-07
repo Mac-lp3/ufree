@@ -156,11 +156,10 @@ class AttendeeService:
     def remove_attendee_from_event (self, req):
         try:
             att_id = req.json_body['id']
+            event_id = req.matchdict['eventId']
             self.__attendeeValidator.validate_attendee_id(att_id)
-            data = self.__attendee_dao.leave_event(
-                att_id,
-                req.matchdict['eventId']
-            )
+            self.__eventValidator.validate_event_id(event_id)
+            data = self.__attendee_dao.delete_attendee(att_id, event_id)
 
         except BaseAppException as e:
             raise ServiceException(str(e))
