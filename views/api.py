@@ -92,9 +92,9 @@ def delete_event(request):
 
 	return response
 
-def post_event_attendee(request):
+def post_event_attendees(request):
 	'''
-	Add attendee to this event
+	create an attendee and add it to this event
 
 	/events/{id}/attendees
 	The user making this request is added to the event attendees list. If no ID
@@ -115,9 +115,9 @@ def post_event_attendee(request):
 
 def put_event_attendee(request):
 	'''
-	pudate an attendee already in this event
+	update an attendee already in this event
 
-	/events/{id}/attendees
+	/events/{id}/attendees/{id}
 	The user making this request is added to the event attendees list. If no ID
 	is found in cookies, a new attendee instance is created and the user id
 	cookie is generated. If a valid user ID cookie is found, it uses the
@@ -257,7 +257,7 @@ def includeme(config):
 
 	# returns the created attendee
 	config.add_view(
-		post_event_attendee,
+		post_event_attendees,
 		route_name='eventAttendees',
 		request_method="POST",
 		renderer='json'
