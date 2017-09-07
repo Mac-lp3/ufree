@@ -114,38 +114,6 @@ class EventService:
 
         return Response(status=200)
 
-    def add_event_attendee (self, req):
-        '''
-        Adds the user to the event.
-
-        Only the user making the request can join an event. Users cannot be
-        added to an event by another user.
-        '''
-
-        try:
-            # validate the attendee object
-            self.__attendeeValidator.validate_attendee_request(req)
-
-            # validate the event id
-            eventId = req.matchdict['eventId']
-            self.__eventValidator.validate_event_id(eventId)
-
-            # get the user id from the request and add it to attendee list
-            req.json_body['id'] = req.cookies['user_id']
-            self.__attendee_dao.join_event(req.json_body, eventId)
-
-        except BaseAppException as e:
-            # Handle DAO/Validation errors
-            raise ServiceException(str(e))
-        except Exception as e:
-            # Handle unexpected errors
-            print(e, sys.exc_info())
-            raise ServiceException(
-                'An error occurred while joining this event.'
-            )
-
-        return Response(status=200)
-
     def delete_event_attendee (self, req):
         try:
             eventId = req.matchdict['eventId']
