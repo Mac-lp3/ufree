@@ -22,24 +22,10 @@ class AttendeeService:
         self.__eventValidator = EventValidator()
         self.__attendeeValidator = AttendeeValidator()
 
-    def load_event_attendees (self, req):
-        try:
-            eventId = req.matchdict['eventId']
-            self.__eventValidator.validate_event_id(eventId)
-            data = self.__attendee_dao.load_event_attendees(eventId)
-            response = Response(content_type='application/json', status=200)
-            response.charset = 'UTF-8'
-            response.json_body = json.dumps(data)
-        except BaseAppException as e:
-            raise ServiceException(str(e))
-        except Exception as e:
-            print(e, sys.exc_info())
-            raise ServiceException(
-                'An error occurred while loading this attendee.'
-            )
-        return response
-
     def load_attendee (self, req):
+        '''
+        returns JSON data of this single attendee
+        '''
         try:
             # validate
             att_id = req.matchdict['attendee_id']
@@ -64,6 +50,9 @@ class AttendeeService:
         return response
 
     def update_attendee (self, req):
+        '''
+        Updates an attendee's details such as name or email address
+        '''
         try:
             if 'id' not in req.json_body:
                 raise ServiceException('Id was not found on this request')
@@ -85,6 +74,10 @@ class AttendeeService:
         return response
 
     def update_attendee_availability (self, req):
+        '''
+        TODO ?
+        Updates the availability of an attendee
+        '''
         try:
             # TODO validate availability
             self.__attendeeValidator.validate_attendee_request(req)
@@ -103,7 +96,10 @@ class AttendeeService:
             )
         return response
 
-    def get_event_attendees (self, req):
+    def load_event_attendees (self, req):
+        '''
+        Returns a JSON list of all attendees in this event
+        '''
         try:
             # validate the event id
             eventId = req.matchdict['eventId']
@@ -130,6 +126,10 @@ class AttendeeService:
         return response
 
     def create_attendee (self, req):
+        '''
+        If the attendee already exists, just join the event. Otherwise, create
+        then join.
+        '''
         try:
             self.__attendeeValidator.validate_attendee_request(req)
             data = self.__attendee_dao.save_attendee(req.json_body)
