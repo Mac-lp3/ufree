@@ -11,16 +11,10 @@ class AttendeeDaoTest(unittest.TestCase):
 		self.__dao = AttendeeDao()
 
 	def delete_attendee_test (self):
-		self.__dao.delete_attendee({
-			'id': 'asdb1234',
-			'name': 'idklol'
-		})
+		self.__dao.delete_attendee('asdb1234', 'idklol')
 		builtins.db_fail = 'True'
 		try:
-			self.__dao.delete_attendee({
-				'id': 'asdb1234',
-				'name': 'idklol'
-			})
+			self.__dao.delete_attendee('asdb1234', 'idklol')
 		except Exception as e:
 			self.assertTrue(isinstance(e, DaoException))
 
