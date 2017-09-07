@@ -24,22 +24,6 @@ class AttendeeDao (BaseDao):
                 'Unknown error when adding attendee to event'
             )
 
-    def leave_event (self, attendee_id, event_id):
-        try:
-            self._cur.execute(
-                'DELETE FROM event_attendee WHERE event_id=\'{0}\' ' +
-                'AND attendee_id={1}'.format(
-                    event_id,
-                    attendee_id
-                )
-            )
-
-        except Exception as e:
-            print(e, sys.exc_info(), attendee, event_id)
-            raise DaoException(
-                'Unknown error when removing attendee from event'
-            )
-
     def save_attendee (self, attendee):
         try:
             self._cur.execute(
