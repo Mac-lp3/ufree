@@ -127,12 +127,17 @@ class AttendeeService:
 
     def create_attendee (self, req):
         '''
-        If the attendee already exists, just join the event. Otherwise, create
-        then join.
+        Create and attendee and join the target event.
         '''
         try:
+            # validate event ID and attendee payload
+            eventId = req.matchdict['eventId']
+            self.__eventValidator.validate_event_id(eventId)
             self.__attendeeValidator.validate_attendee_request(req)
+
+            # create the attendee and join the event
             data = self.__attendee_dao.save_attendee(req.json_body)
+            self.__attendee_dao.join_event(data['id'], eventId)
 
             # build the response body
             response = Response(content_type='application/json', status=200)
