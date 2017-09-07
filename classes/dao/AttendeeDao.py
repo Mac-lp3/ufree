@@ -53,12 +53,14 @@ class AttendeeDao (BaseDao):
                 'name': at[1],
                 'email': at[2]
             }
-            return data
+
         except Exception as e:
             print(e, sys.exc_info())
             raise DaoException(
                 'Unknown error while saving attendee'
             )
+
+        return data
 
     def update_attendee (self, attendee):
         try:
