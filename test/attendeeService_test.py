@@ -95,10 +95,11 @@ class AttendeeServiceTest(unittest.TestCase):
 
     def create_attendee_test (self):
         # test good field names
+        builtins.db_return_object = [['123abcd', 'Juan', 'juan@juan.esp']]
         post_body = {
             'name': 'New Name'
         }
-        req = MockRequest(body=post_body)
+        req = MockRequest(body=post_body, event_id=const.GOOD_EVENT_ID)
         ret = self.__attendee_service.create_attendee(req)
         self.assertTrue('name' in ret.json_body)
         self.assertTrue('id' in ret.json_body)
