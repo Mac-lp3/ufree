@@ -149,16 +149,18 @@ class AttendeeDao (BaseDao):
             print(e, sys.exc_info())
             raise DaoException('Unknown error when searching for attendee')
 
-    def delete_attendee (self, attendee):
+    def delete_attendee (self, attendee_id, event_id):
         try:
             # delete the attenddee
             self._cur.execute(
-                'DELETE FROM attendee WHERE id={0}'.format(attendee['id'])
+                'DELETE FROM attendee WHERE id={0}'.format(attendee_id)
             )
+
             # delete event_attendee entries
             self._cur.execute(
-                'DELETE FROM event_attendee WHERE attendee_id={0}'.format(
-                    attendee['id']
+                'DELETE FROM event_attendee WHERE attendee_id={0} AND event_id={1}'.format(
+                    attendee_id,
+                    event_id
                 )
             )
         except Exception as e:
