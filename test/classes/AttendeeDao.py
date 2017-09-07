@@ -60,7 +60,7 @@ class AttendeeDao:
             raise DaoException('General exception')
         return False
 
-    def delete_attendee (self, attendee):
+    def delete_attendee (self, attendee_id, event_id):
         if builtins.db_fail:
             raise DaoException('General exception')
         pass
