@@ -18,15 +18,15 @@
 * ~~services should return a fully populated request object~~
 * ~~finish AttendeeService~~
 * ~~test AttendeeService~~
+* ~~add rest of attendee methods to API~~
+* decide if all attendees will be unique.
+  * how will multiple events work?
 * design availability mechanism,
-    * new service?
-    * integrate with attendee service?
+  * new service?
+  * integrate with attendee service?
 * availability validator w/ year mechanism
 * find way to test provider in production
 * investigate __import__ vs importlib in DAOs
-* create attendee and availability service
-  * CRUD methods that accept raw HTTP request
-* add rest of attendee methods to API
 * Script to test DB load/save queries
 * tabs to spaces
 
@@ -75,7 +75,7 @@
 * GET - Returns the attendee details (see response object)
 * POST - not used
 * PUT - Updates this attendee
-* DELETE - Deletes this attendee (just removes them from the event)
+* DELETE - deletes this attendee and removes it them from the event
 
 ### Request
 ```
