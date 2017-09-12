@@ -56,6 +56,47 @@ class AvailabilityDao (BaseDao):
                 'Unknown error while saving availability'
             )
 
+    def get_availability (self, availability_id):
+        '''
+        Returns the attendee's availability object for specified event
+        '''
+        try:
+            self._cur.execute(
+                'SELECT id, attendee_id, event_id, year, january, '
+                'february, march, april, may, june, july, august, '
+                'september, october, november, december FROM '
+                'availability WHERE id={0}'.format(availability_id)
+            )
+
+            at = self._cur.fetchone()
+
+            data = {
+                'id': at[0],
+                'attendee_id': at[1],
+                'event_id': at[2],
+                'year': at[3],
+                'january': at[4],
+                'february': at[5],
+                'march': at[6],
+                'april': at[7],
+                'may': at[8],
+                'june': at[9],
+                'july': at[10],
+                'august': at[11],
+                'september': at[12],
+                'october': at[13],
+                'november': at[14],
+                'december': at[15]
+            }
+
+            return data
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise DaoException(
+                'Unknown error while loading availability', availability_id
+            )
+
     def get_event_availability (self, event_id):
         '''
         Gets all availability objects for this event.
