@@ -42,16 +42,97 @@ class AvailabilityService:
             )
         return response
 
-        # delete all availability obs for this event
+    # delete all availability obs for this event
+    def delete_event_availability (self, req):
+        try:
+            event_id = req.matchdict['eventId']
+            self.__eventValidator.validate_event_id(event_id)
 
-        # get all availability obs for this attendee
+            self.__availability_dao.delete_event_availability(event_id)
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while deleting availability for event:',
+                event_id
+            )
+        return response
 
-        # get availability ob for this attendee
+    # get all availability obs for this attendee
+    def get_attendee_availability (self, req):
+        try:
+            event_id = req.matchdict['eventId']
+            self.__eventValidator.validate_event_id(event_id)
 
-        # add availability ob for this attendee
+            attendee_id = req.matchdict['attendeeId']
+            self.__attendeeValidator.validate_attendee_id(attendee_id)
 
-        # update availability ob for this attendee
+            data = self.__availability_dao.get_attendee_availability(
+                event_id,
+                attendee_id
+            )
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while loading availability for attendee:',
+                attendee_id
+            )
 
-        # delte availability ob for this attendee
+        return response
 
-        # delete all availability obs for this attendee
+    # get availability ob for this attendee
+    def get_availability (self, req):
+        try:
+            availability_id = req.matchdict['availabilityId']
+            # TODO add vaildator
+            #self.__attendeeValidator.validate_attendee_id(availability_id)
+
+            data = self.__availability_dao.get_availability(attendee_id)
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+            response.json_body = json.dumps(data)
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while loading availability with id:',
+                availability_id
+            )
+
+        return response
+
+    # add availability ob for this attendee
+
+    # update availability ob for this attendee
+
+    # delte availability ob for this attendee
+    def delete_attendee_availability (self, req):
+        # TODO should accept event ID too?
+        try:
+            attendee_id = req.matchdict['attendeeId']
+            self.__attendeeValidator.validate_attendee_id(attendee_id)
+
+            self.__availability_dao.delete_attendee_availability(attendee_id)
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while deleting attendee availability:',
+                availability_id
+            )
+
+        return response
+
+    # delete all availability obs for this attendee
