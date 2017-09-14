@@ -134,7 +134,7 @@ class AvailabilityDaoTest(unittest.TestCase):
     def get_attendee_availability_test (self):
         # test event_id and attendee_id input
         builtins.db_return_object = [self.return_row]
-        obj = self.__dao.get_attendee_availability(1234, 2345)
+        obj = self.__dao.get_attendee_availability(1234)
         self.assertTrue('id' in obj)
         self.assertTrue('february' in obj)
         self.assertTrue('august' in obj)
@@ -143,7 +143,7 @@ class AvailabilityDaoTest(unittest.TestCase):
         # test exception handeling
         builtins.db_fail = 'True'
         try:
-            val = self.__dao.get_event_availability(event_id=1234)
+            val = self.__dao.get_attendee_availability(1234)
         except Exception as e:
             self.assertTrue(isinstance(e, DaoException))
         builtins.db_fail = 'False'

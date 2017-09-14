@@ -19,14 +19,14 @@ class AvailabilityService:
         self.__event_dao = self.__provider.get_instance('EventDao')
         self.__attendee_dao = self.__provider.get_instance('AttendeeDao')
         self.__availability_dao = self.__provider.get_instance('AvailabilityDao')
-        self.__eventValidator = EventValidator()
-        self.__attendeeValidator = AttendeeValidator()
+        self.__event_validator = EventValidator()
+        self.__attendee_validator = AttendeeValidator()
 
     # get all availability obs for this event
     def get_event_availability (self, req):
         try:
             event_id = req.matchdict['eventId']
-            self.__eventValidator.validate_event_id(event_id)
+            self.__event_validator.validate_event_id(event_id)
 
             data = self.__availability_dao.get_event_availability(event_id)
             response = Response(content_type='application/json', status=200)
@@ -46,7 +46,7 @@ class AvailabilityService:
     def delete_event_availability (self, req):
         try:
             event_id = req.matchdict['eventId']
-            self.__eventValidator.validate_event_id(event_id)
+            self.__event_validator.validate_event_id(event_id)
 
             self.__availability_dao.delete_event_availability(event_id)
             response = Response(content_type='application/json', status=200)
@@ -64,14 +64,10 @@ class AvailabilityService:
     # get all availability obs for this attendee
     def get_attendee_availability (self, req):
         try:
-            event_id = req.matchdict['eventId']
-            self.__eventValidator.validate_event_id(event_id)
-
             attendee_id = req.matchdict['attendeeId']
-            self.__attendeeValidator.validate_attendee_id(attendee_id)
+            self.__attendee_validator.validate_attendee_id(attendee_id)
 
             data = self.__availability_dao.get_attendee_availability(
-                event_id,
                 attendee_id
             )
             response = Response(content_type='application/json', status=200)
@@ -93,7 +89,7 @@ class AvailabilityService:
         try:
             availability_id = req.matchdict['availabilityId']
             # TODO add vaildator
-            #self.__attendeeValidator.validate_attendee_id(availability_id)
+            #self.__attendee_validator.validate_attendee_id(availability_id)
 
             data = self.__availability_dao.get_availability(attendee_id)
             response = Response(content_type='application/json', status=200)
@@ -114,12 +110,34 @@ class AvailabilityService:
 
     # update availability ob for this attendee
 
-    # delte availability ob for this attendee
+    # delte availability ob
+    def delete_availability (self, req):
+        try:
+            availability_id = req.matchdict['availabilityId']
+            # TODO add vaildator
+            #self.__availability_validator.validate_availability_id(
+            #    availability_id
+            #)
+
+            self.__availability_dao.delete_availability(attendee_id)
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException(
+                'An error occurred while loading availability with id:',
+                availability_id
+            )
+
+        return response
+
+    # delete all availability obs for this attendee
     def delete_attendee_availability (self, req):
-        # TODO should accept event ID too?
         try:
             attendee_id = req.matchdict['attendeeId']
-            self.__attendeeValidator.validate_attendee_id(attendee_id)
+            self.__attendee_validator.validate_attendee_id(attendee_id)
 
             self.__availability_dao.delete_attendee_availability(attendee_id)
             response = Response(content_type='application/json', status=200)
@@ -134,5 +152,3 @@ class AvailabilityService:
             )
 
         return response
-
-    # delete all availability obs for this attendee
