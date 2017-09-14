@@ -11,19 +11,18 @@ class AvailabilityDao (BaseDao):
     def __init__ (self):
         BaseDao.__init__(self)
 
-    def get_attendee_availability (self, event_id, attendee_id):
+    def get_attendee_availability (self, attendee_id):
         '''
-        Returns the attendee's availability object for specified event
+        Returns the attendee's availability objects
         '''
         try:
             self._cur.execute(
                 'SELECT id, attendee_id, event_id, year, january, '
                 'february, march, april, may, june, july, august, '
                 'september, october, november, december FROM '
-                'availability WHERE attendee_id={0} AND event_id=\'{1}\''
+                'availability WHERE attendee_id={0}'
                 .format(
-                    attendee_id,
-                    event_id
+                    attendee_id
                 )
             )
 
