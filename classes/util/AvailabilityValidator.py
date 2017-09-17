@@ -15,7 +15,70 @@ class AvailabilityValidator:
         self.__event_validator = EventValidator()
         self.__attendee_validator = AttendeeValidator()
 
-        # init validation patterns
+        # init validation
+        self.__id_field = {
+            pattern: r'^[\w\d\s-]+$',
+            error_message: 'ID field must contain only numbers or letters.'
+        }
+        self.__year_field = {
+            pattern: r'2[0-9]{3}',
+            error_message: 'Year must start with 2 and be 4 digits long.'
+        }
+        base_err_string = (
+            '{0} field must have length {1} and only contain 0-3.'
+        )
+        self.__january_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('January', 31)
+        }
+        self.__february_field = {
+            pattern: r'[0-3]{28}',
+            error_message: base_err_string.format('February', 28)
+        }
+        self.__february_leap_field = {
+            pattern: r'[0-3]{29}',
+            error_message: 'On leap years, Feburary must be 2 characters and only contain values 0-3'
+        }
+        self.__march_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('March', 31)
+        }
+        self.__april_field = {
+            pattern: r'[0-3]{30}',
+            error_message: base_err_string.format('April', 30)
+        }
+        self.__may_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('May', 31)
+        }
+        self.__june_field = {
+            pattern: r'[0-3]{30}',
+            error_message: base_err_string.format('June', 30)
+        }
+        self.__july_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('July', 31)
+        }
+        self.__august_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('August', 31)
+        }
+        self.__september_field = {
+            pattern: r'[0-3]{30}',
+            error_message: base_err_string.format('September', 30)
+        }
+        self.__october_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('October', 31)
+        }
+        self.__november_field = {
+            pattern: r'[0-3]{30}',
+            error_message: base_err_string.format('November', 30)
+        }
+        self.__december_field = {
+            pattern: r'[0-3]{31}',
+            error_message: base_err_string.format('December', 31)
+        }
         self.__availability_id_pattern = r'^[\w\d\s-]+$'
         self.__year_pattern = r'2[0-9]{3}'
         self.__january_pattern = r'[0-3]{31}'
