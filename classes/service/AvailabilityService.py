@@ -88,10 +88,9 @@ class AvailabilityService:
     def get_availability (self, req):
         try:
             availability_id = req.matchdict['availabilityId']
-            # TODO add vaildator
-            #self.__availability_validator.validate_availability_id(
-            #    availability_id
-            #)
+            self.__availability_validator.validate_availability_id(
+                availability_id
+            )
             data = self.__availability_dao.get_availability(availability_id)
             response = Response(content_type='application/json', status=200)
             response.charset = 'UTF-8'
@@ -115,10 +114,9 @@ class AvailabilityService:
     def delete_availability (self, req):
         try:
             availability_id = req.matchdict['availabilityId']
-            # TODO add vaildator
-            #self.__availability_validator.validate_availability_id(
-            #    availability_id
-            #)
+            self.__availability_validator.validate_availability_id(
+                availability_id
+            )
             self.__availability_dao.delete_availability(attendee_id)
 
             response = Response(content_type='application/json', status=200)
@@ -138,10 +136,9 @@ class AvailabilityService:
     def delete_attendee_availability (self, req):
         try:
             attendee_id = req.matchdict['attendeeId']
-            # TODO add vaildator
-            #self.__availability_validator.validate_availability_id(
-            #    availability_id
-            #)
+            self.__availability_validator.validate_availability_id(
+                availability_id
+            )
             self.__attendee_validator.validate_attendee_id(attendee_id)
 
             self.__availability_dao.delete_attendee_availability(attendee_id)
