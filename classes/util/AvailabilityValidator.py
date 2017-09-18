@@ -15,12 +15,15 @@ class AvailabilityValidator:
         self.__event_validator = EventValidator()
         self.__attendee_validator = AttendeeValidator()
 
-        # init validation
+        # init field validation info
+        self.__availability_id_pattern = r'^[\w\d\s-]+$'
         self.__id_field = {
+            name: 'id',
             pattern: r'^[\w\d\s-]+$',
             error_message: 'ID field must contain only numbers or letters.'
         }
         self.__year_field = {
+            name: 'year',
             pattern: r'2[0-9]{3}',
             error_message: 'Year must start with 2 and be 4 digits long.'
         }
@@ -28,91 +31,75 @@ class AvailabilityValidator:
             '{0} field must have length {1} and only contain 0-3.'
         )
         self.__january_field = {
+            name: 'january',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('January', 31)
         }
         self.__february_field = {
+            name: 'february',
             pattern: r'[0-3]{28}',
             error_message: base_err_string.format('February', 28)
         }
         self.__february_leap_field = {
+            name: 'february',
             pattern: r'[0-3]{29}',
             error_message: 'On leap years, Feburary must be 2 characters and only contain values 0-3'
         }
         self.__march_field = {
+            name: 'march',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('March', 31)
         }
         self.__april_field = {
+            name: 'april',
             pattern: r'[0-3]{30}',
             error_message: base_err_string.format('April', 30)
         }
         self.__may_field = {
+            name: 'may',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('May', 31)
         }
         self.__june_field = {
+            name: 'june',
             pattern: r'[0-3]{30}',
             error_message: base_err_string.format('June', 30)
         }
         self.__july_field = {
+            name: 'july',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('July', 31)
         }
         self.__august_field = {
+            name: 'august',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('August', 31)
         }
         self.__september_field = {
+            name: 'september',
             pattern: r'[0-3]{30}',
             error_message: base_err_string.format('September', 30)
         }
         self.__october_field = {
+            name: 'october',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('October', 31)
         }
         self.__november_field = {
+            name: 'novomber',
             pattern: r'[0-3]{30}',
             error_message: base_err_string.format('November', 30)
         }
         self.__december_field = {
+            name: 'december',
             pattern: r'[0-3]{31}',
             error_message: base_err_string.format('December', 31)
         }
-        self.__availability_id_pattern = r'^[\w\d\s-]+$'
-        self.__year_pattern = r'2[0-9]{3}'
-        self.__january_pattern = r'[0-3]{31}'
-        self.__february_pattern = r'[0-3]{28}'
-        self.__february_leap_pattern = r'[0-3]{29}'
-        self.__march_pattern = r'[0-3]{31}'
-        self.__april_pattern = r'[0-3]{30}'
-        self.__may_pattern = r'[0-3]{31}'
-        self.__june_pattern = r'[0-3]{30}'
-        self.__july_pattern = r'[0-3]{31}'
-        self.__august_pattern = r'[0-3]{31}'
-        self.__september_pattern = r'[0-3]{30}'
-        self.__october_pattern = r'[0-3]{31}'
-        self.__november_pattern = r'[0-3]{30}'
-        self.__december_pattern = r'[0-3]{31}'
 
         # define general error
         self.__empty_value_message = '{0} is blank. A value for {0} is required.'
 
     def vaildaite_availability_request (self, req):
-        '''
-        'january': '000000000000000000000000000000',
-        'february': '000000000000000000000000000000',
-        'march': '000000000000000000000000000000',
-        'april': '000000000000000000000000000000',
-        'may': '000000000000000000000000000000',
-        'june': '000000000000000000000000000000',
-        'july': '000000000000000000000000000000',
-        'august': '000000000000000000000000000000',
-        'september': '000000000000000000000000000000',
-        'october': '000000000000000000000000000000',
-        'november': '000000000000000000000000000000',
-        'december': '000000000000000000000000000000'
-        '''
         error_messages = []
         try:
             # if POST or PUT validate the ID
@@ -146,147 +133,82 @@ class AvailabilityValidator:
                 )
 
             # validate year
-            if 'year' in req.json_body:
-                self.validate_field(
-                    self.__year_pattern,
-                    req.json_body['year']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('year')
-                )
+            self.validate_field(
+                self.__year_field,
+                req.json_body['year']
+            )
 
             # validate january
-            if 'january' in req.json_body:
-                self.validate_field(
-                    self.__january_pattern,
-                    req.json_body['january']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('january')
-                )
+            self.validate_field(
+                self.__january_field,
+                req.json_body['january']
+            )
 
             # validate february
-            if 'february' in req.json_body:
-                self.validate_field(
-                    self.__february_pattern,
-                    req.json_body['february']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('february')
-                )
+            self.validate_field(
+                self.__february_field,
+                req.json_body['february']
+            )
 
             # validate march
-            if 'march' in req.json_body:
-                self.validate_field(
-                    self.__march_pattern,
-                    req.json_body['march']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('march')
-                )
+            self.validate_field(
+                self.__march_field,
+                req.json_body['march']
+            )
 
             # validate april
-            if 'april' in req.json_body:
-                self.validate_field(
-                    self.__april_pattern,
-                    req.json_body['april']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('april')
-                )
+            self.validate_field(
+                self.__april_field,
+                req.json_body['april']
+            )
 
             # validate may
-            if 'may' in req.json_body:
-                self.validate_field(
-                    self.__may_pattern,
-                    req.json_body['may']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('may')
-                )
+            self.validate_field(
+                self.__may_field,
+                req.json_body['may']
+            )
 
             # validate june
-            if 'june' in req.json_body:
-                self.validate_field(
-                    self.__june_pattern,
-                    req.json_body['june']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('june')
-                )
+            self.validate_field(
+                self.__june_field,
+                req.json_body['june']
+            )
 
             # validate july
-            if 'july' in req.json_body:
-                self.validate_field(
-                    self.__july_pattern,
-                    req.json_body['july']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('july')
-                )
+            self.validate_field(
+                self.__july_field,
+                req.json_body['july']
+            )
 
             # validate august
-            if 'august' in req.json_body:
-                self.validate_field(
-                    self.__august_pattern,
-                    req.json_body['august']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('august')
-                )
+            self.validate_field(
+                self.__august_field,
+                req.json_body['august']
+            )
 
             # validate september
-            if 'september' in req.json_body:
-                self.validate_field(
-                    self.__september_pattern,
-                    req.json_body['september']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('september')
-                )
+            self.validate_field(
+                self.__september_field,
+                req.json_body['september']
+            )
 
             # validate october
-            if 'october' in req.json_body:
-                self.validate_field(
-                    self.__october_pattern,
-                    req.json_body['october']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('october')
-                )
+            self.validate_field(
+                self.__october_field,
+                req.json_body['october']
+            )
 
             # validate november
-            if 'november' in req.json_body:
-                self.validate_field(
-                    self.__november_pattern,
-                    req.json_body['november']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('november')
-                )
+            self.validate_field(
+                self.__november_field,
+                req.json_body['november']
+            )
 
             # validate december
-            if 'december' in req.json_body:
-                self.validate_field(
-                    self.__december_pattern,
-                    req.json_body['december']
-                )
-            else:
-                error_messages.append(
-                    self.__empty_value_message.format('december')
-                )
+            self.validate_field(
+                self.__december_field,
+                req.json_body['december']
+            )
 
         except ValidationException as e:
             error_messages.append(e.messages)
@@ -296,19 +218,23 @@ class AvailabilityValidator:
 
         return None
 
-    def validate_field (self, pattern, value):
+    def validate_field (self, field, value):
         '''
         Generic method for regex field validation
         '''
         error_messages = []
         if isinstance(value, str):
-            test = re.search(pattern, value)
+            test = re.search(field['pattern'], value)
             if test == None or test.string != value:
                 error_messages.append(
-                    'Field failed validation;', value
+                    field['error_message']
                 )
         else:
-            error_messages.append('Fields must all be strings')
+            error_messages.append(
+                    'Field {0} must all be a non-empty string'.format(
+                        field.name
+                    )
+                )
 
         if error_messages:
             raise ValidationException(error_messages)
