@@ -107,6 +107,29 @@ class AvailabilityService:
         return response
 
     # add availability ob for this attendee
+    def create_availability (self, req):
+        try:
+            # validate the payload
+            self.__availability_validator.vaildaite_availability_request(
+                req
+            )
+
+            # set the creator_id and save the event
+            data = self.__availability_dao.create_availability(req.json_body)
+
+            # build the response body
+            response_body = json.dumps(data)
+            response = Response(content_type='application/json', status=200)
+            response.charset = 'UTF-8'
+            response.json_body = response_body
+            return response
+
+        except BaseAppException as e:
+            raise ServiceException(str(e))
+
+        except Exception as e:
+            print(e, sys.exc_info())
+            raise ServiceException('An error occurred while creating this event.')
 
     # update availability ob for this attendee
 
