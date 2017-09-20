@@ -103,7 +103,7 @@ class AvailabilityValidator:
         error_messages = []
         try:
             # if POST or PUT validate the ID
-            if (req.method === 'POST' || req.method === 'PUT'):
+            if (req.method == 'POST' or req.method == 'PUT'):
                 av_id = req.matchdict['availabilityId']
                 if av_id:
                     validate_availability_id(av_id)
