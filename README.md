@@ -19,11 +19,12 @@
 * ~~finish AttendeeService~~
 * ~~test AttendeeService~~
 * ~~add rest of attendee methods to API~~
-* decide if all attendees will be unique.
-  * how will multiple events work?
-* design availability mechanism,
-  * new service?
-  * integrate with attendee service?
+* ~~decide if all attendees will be unique.~~
+* ~~yes, easier to pair users with their event availability.~~
+  * ~~cookies will contain event id and attendee id pair~~
+* ~~design availability mechanism~~
+  * ~~new service? yes~~
+  * ~~integrate with attendee service? no~~
 * availability validator w/ year mechanism
 * find way to test provider in production
 * investigate __import__ vs importlib in DAOs
