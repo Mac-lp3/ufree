@@ -243,11 +243,11 @@ class AvailabilityValidator:
                             field['name']
                         )
                     )
-
-            if error_messages:
-                raise ValidationException(error_messages)
         except Exception as e:
             print('Error occurred while validating field:', e, field)
+        if error_messages:
+            raise ValidationException(error_messages)
+
 
     def validate_availability_id (self, availability_id):
         error_messages = []
