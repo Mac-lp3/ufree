@@ -5,9 +5,9 @@ import test.classes.Const as const
 from test.classes.MockRequest import MockRequest
 from classes.util.AvailabilityValidator import AvailabilityValidator
 
-class AvailabilityValidator(unittest.TestCase):
+class AvailabilityValidatorTest(unittest.TestCase):
 
-    def setup (self):
+    def setUp (self):
         self.__validator = AvailabilityValidator()
 
         self.__good_year = 2017
@@ -24,7 +24,7 @@ class AvailabilityValidator(unittest.TestCase):
             'event_id': const.GOOD_EVENT_ID,
             'year': self.__good_year,
             'january': self.__31_days,
-            february: self.__28_days,
+            'february': self.__28_days,
             'march': self.__31_days,
             'april': self.__30_days,
             'may': self.__31_days,
@@ -42,8 +42,10 @@ class AvailabilityValidator(unittest.TestCase):
             self.__validator.validate_availability_request(
                 MockRequest(
                     body=self.__good_availability,
+                    availability_id='1234ljh',
                     method='POST'
                 )
             )
         except Exception as e:
             print(e)
+            self.assertTrue(False)
