@@ -1,5 +1,8 @@
 import re
 import datetime
+from classes.util.EventValidator import EventValidator
+from classes.util.AttendeeValidator import AttendeeValidator
+from classes.provider.DependencyProvider import DependencyProvider
 from classes.exception.ValidationException import ValidationException
 
 class AvailabilityValidator:
@@ -18,88 +21,88 @@ class AvailabilityValidator:
         # init field validation info
         self.__availability_id_pattern = r'^[\w\d\s-]+$'
         self.__id_field = {
-            name: 'id',
-            pattern: r'^[\w\d\s-]+$',
-            error_message: 'ID field must contain only numbers or letters.'
+            'name': 'id',
+            'pattern': r'^[\w\d\s-]+$',
+            'error_message': 'ID field must contain only numbers or letters.'
         }
         self.__year_field = {
-            name: 'year',
-            pattern: r'2[0-9]{3}',
-            error_message: 'Year must start with 2 and be 4 digits long.'
+            'name': 'year',
+            'pattern': r'2[0-9]{3}',
+            'error_message': 'Year must start with 2 and be 4 digits long.'
         }
         base_err_string = (
             '{0} field must have length {1} and only contain 0-3.'
         )
         self.__january_field = {
-            name: 'january',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('January', 31)
+            'name': 'january',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('January', 31)
         }
         self.__february_field = {
-            name: 'february',
-            pattern: r'[0-3]{28}',
-            error_message: base_err_string.format('February', 28)
+            'name': 'february',
+            'pattern': r'[0-3]{28}',
+            'error_message': base_err_string.format('February', 28)
         }
         self.__february_leap_field = {
-            name: 'february',
-            pattern: r'[0-3]{29}',
-            error_message: 'On leap years, Feburary must be 2 characters and only contain values 0-3'
+            'name': 'february',
+            'pattern': r'[0-3]{29}',
+            'error_message': 'On leap years, Feburary must be 2 characters and only contain values 0-3'
         }
         self.__march_field = {
-            name: 'march',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('March', 31)
+            'name': 'march',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('March', 31)
         }
         self.__april_field = {
-            name: 'april',
-            pattern: r'[0-3]{30}',
-            error_message: base_err_string.format('April', 30)
+            'name': 'april',
+            'pattern': r'[0-3]{30}',
+            'error_message': base_err_string.format('April', 30)
         }
         self.__may_field = {
-            name: 'may',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('May', 31)
+            'name': 'may',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('May', 31)
         }
         self.__june_field = {
-            name: 'june',
-            pattern: r'[0-3]{30}',
-            error_message: base_err_string.format('June', 30)
+            'name': 'june',
+            'pattern': r'[0-3]{30}',
+            'error_message': base_err_string.format('June', 30)
         }
         self.__july_field = {
-            name: 'july',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('July', 31)
+            'name': 'july',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('July', 31)
         }
         self.__august_field = {
-            name: 'august',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('August', 31)
+            'name': 'august',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('August', 31)
         }
         self.__september_field = {
-            name: 'september',
-            pattern: r'[0-3]{30}',
-            error_message: base_err_string.format('September', 30)
+            'name': 'september',
+            'pattern': r'[0-3]{30}',
+            'error_message': base_err_string.format('September', 30)
         }
         self.__october_field = {
-            name: 'october',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('October', 31)
+            'name': 'october',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('October', 31)
         }
         self.__november_field = {
-            name: 'novomber',
-            pattern: r'[0-3]{30}',
-            error_message: base_err_string.format('November', 30)
+            'name': 'novomber',
+            'pattern': r'[0-3]{30}',
+            'error_message': base_err_string.format('November', 30)
         }
         self.__december_field = {
-            name: 'december',
-            pattern: r'[0-3]{31}',
-            error_message: base_err_string.format('December', 31)
+            'name': 'december',
+            'pattern': r'[0-3]{31}',
+            'error_message': base_err_string.format('December', 31)
         }
 
         # define general error
         self.__empty_value_message = '{0} is blank. A value for {0} is required.'
 
-    def vaildaite_availability_request (self, req):
+    def validate_availability_request (self, req):
         error_messages = []
         try:
             # if POST or PUT validate the ID
