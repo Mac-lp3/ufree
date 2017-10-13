@@ -107,12 +107,12 @@ class AvailabilityValidator:
         try:
             # if POST or PUT validate the ID
             if (req.method == 'POST' or req.method == 'PUT'):
-                av_id = req.matchdict['availabilityId']
+                av_id = req.matchdict['availability_id']
                 if av_id:
-                    validate_availability_id(av_id)
+                    self.validate_availability_id(av_id)
                 else:
                     error_messages.append(
-                        self.__empty_value_message.format('availabilityId')
+                        self.__empty_value_message.format('availability_id')
                     )
 
             # validate attendee id
@@ -215,7 +215,11 @@ class AvailabilityValidator:
 
         except ValidationException as e:
             error_messages.append(e.messages)
-
+        except Exception as e:
+            print('Exception during request validation:', e)
+            raise ValidationException(
+                'An error has occurred. Please try again later.'
+            )
         if error_messages:
             raise ValidationException(error_messages)
 
@@ -226,21 +230,24 @@ class AvailabilityValidator:
         Generic method for regex field validation
         '''
         error_messages = []
-        if isinstance(value, str):
-            test = re.search(field['pattern'], value)
-            if test == None or test.string != value:
-                error_messages.append(
-                    field['error_message']
-                )
-        else:
-            error_messages.append(
-                    'Field {0} must all be a non-empty string'.format(
-                        field.name
+        try:
+            if isinstance(value, str):
+                test = re.search(field['pattern'], value)
+                if test == None or test.string != value:
+                    error_messages.append(
+                        field['error_message']
                     )
-                )
+            else:
+                error_messages.append(
+                        'Field {0} must all be a non-empty string'.format(
+                            field['name']
+                        )
+                    )
 
-        if error_messages:
-            raise ValidationException(error_messages)
+            if error_messages:
+                raise ValidationException(error_messages)
+        except Exception as e:
+            print('Error occurred while validating field:', e, field)
 
     def validate_availability_id (self, availability_id):
         error_messages = []
