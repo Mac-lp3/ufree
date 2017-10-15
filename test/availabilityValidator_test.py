@@ -57,7 +57,27 @@ class AvailabilityValidatorTest(unittest.TestCase):
             'december': self.__30_days
         }
 
+        self.__bad_year_availability = {
+            'id': '3425asdf',
+            'attendee_id': 'asdf1234',
+            'event_id': const.GOOD_EVENT_ID,
+            'year': self.__bad_year,
+            'january': self.__31_days,
+            'february': self.__28_days,
+            'march': self.__31_days,
+            'april': self.__30_days,
+            'may': self.__31_days,
+            'june': self.__30_days,
+            'july': self.__31_days,
+            'august': self.__31_days,
+            'september': self.__30_days,
+            'october': self.__31_days,
+            'november': self.__30_days,
+            'december': self.__31_days
+        }
+
     def vaildaite_availability_request_test (self):
+        # validate a good availability object
         try:
             self.__validator.validate_availability_request(
                 MockRequest(
@@ -71,10 +91,25 @@ class AvailabilityValidatorTest(unittest.TestCase):
             print(e)
             self.assertTrue(False)
 
+        # validate an availability object with bad month lengths
         try:
             self.__validator.validate_availability_request(
                 MockRequest(
                     body=self.__bad_month_length_availability,
+                    availability_id='1234ljh',
+                    method='POST'
+                )
+            )
+            self.assertTrue(False)
+        except Exception as e:
+            print(e)
+            self.assertTrue(isinstance(e, ValidationException))
+
+        # validate an availability object with a bad year
+        try:
+            self.__validator.validate_availability_request(
+                MockRequest(
+                    body=self.__bad_year_availability,
                     availability_id='1234ljh',
                     method='POST'
                 )
