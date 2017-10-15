@@ -76,6 +76,31 @@ class AvailabilityValidatorTest(unittest.TestCase):
             'december': self.__31_days
         }
 
+    def validate_attendee_id_test (self):
+        # validate a good id value
+        try:
+            self.__validator.validate_availability_id('abcd1234')
+            self.assertTrue(True)
+        except Exception as e:
+            print(e)
+            self.assertTrue(False)
+
+        # validate a bad id value
+        try:
+            self.__validator.validate_availability_id(') * DROP TABLE USERS')
+            self.assertTrue(False)
+        except Exception as e:
+            print(e)
+            self.assertTrue(isinstance(e, ValidationException))
+
+        # validate empty id
+        try:
+            self.__validator.validate_availability_id('')
+            self.assertTrue(False)
+        except Exception as e:
+            print(e)
+            self.assertTrue(isinstance(e, ValidationException))
+
     def vaildaite_availability_request_test (self):
         # validate a good availability object
         try:
