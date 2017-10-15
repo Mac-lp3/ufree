@@ -25,11 +25,12 @@
 * ~~design availability mechanism~~
   * ~~new service? yes~~
   * ~~integrate with attendee service? no~~
-* availability validator w/ year mechanism
-* find way to test provider in production
+* ~~availability validator w/ year mechanism~~
+* ~~tabs to spaces~~
+* ensure uniform structure in tests, services, and validators
+* find way to test provider in production mode
 * investigate __import__ vs importlib in DAOs
 * Script to test DB load/save queries
-* tabs to spaces
 
 # Request Objects
 ## Events
