@@ -1,4 +1,5 @@
 /venv
+/ufree
 .DS_Store
 db-logfile
 static/js/bundle.js
