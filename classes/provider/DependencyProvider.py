@@ -7,12 +7,14 @@ class DependencyProvider:
     is_prod = False
     daos_prefix = 'test.classes.'
     filters_prefix = 'test.classes.'
+    psycopg2_prefix = 'test.classes.'
 
     def __init__ (self):
         if os.environ['ENV'] == 'production':
             self.is_prod = True
             daos_prefix = 'classes.dao.'
             filters_prefix = 'classes.filter.'
+            psycopg2_prefix = ''
 
     def get_instance (self, class_name):
         target = None
@@ -26,6 +28,11 @@ class DependencyProvider:
                 )
             if 'filter' in class_name.lower():
                 package = self.filters_prefix
+                target_class = importlib.import_module(
+                    package + class_name
+                )
+            if 'psycopg2' in class_name.lower():
+                package = self.psycopg2_prefix
                 target_class = importlib.import_module(
                     package + class_name
                 )
