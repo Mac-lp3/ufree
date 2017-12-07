@@ -2,7 +2,7 @@ import os
 import unittest
 import builtins
 import subprocess
-from classes.provider.DependencyProvider import DependencyProvider
+from classes.provider.dependency_provider import DependencyProvider
 
 class DependencyProviderTest(unittest.TestCase):
 

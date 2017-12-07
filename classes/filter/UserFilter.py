@@ -2,7 +2,7 @@ import os
 import importlib
 from classes.dao.AttendeeDao import AttendeeDao
 from classes.util.AttendeeValidator import AttendeeValidator
-from classes.provider.DependencyProvider import DependencyProvider
+from classes.provider.dependency_provider import DependencyProvider
 from classes.exception.ValidationException import ValidationException
 
 class UserFilter():

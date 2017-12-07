@@ -9,7 +9,7 @@ from classes.util.EventValidator import EventValidator
 from classes.util.AttendeeValidator import AttendeeValidator
 from classes.exception.ServiceException import ServiceException
 from classes.exception.BaseAppException import BaseAppException
-from classes.provider.DependencyProvider import DependencyProvider
+from classes.provider.dependency_provider import DependencyProvider
 
 class AttendeeService:
 
