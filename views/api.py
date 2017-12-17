@@ -8,19 +8,16 @@ from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
 from classes.exception.base_app_exception import BaseAppException
+from classes.provider.dependency_provider import DependencyProvider
 from classes.service.AttendeeService import AttendeeService
 from classes.exception.dao_exception import DaoException
 from classes.util.EventValidator import EventValidator
 from classes.service.EventService import EventService
 from classes.util.HashCodeUtils import HashCodeUtils
 
-if os.environ['ENV'] == 'test':
-	temp = importlib.import_module('test.classes.UserFilter')
-	UserFilter = temp.UserFilter()
-else:
-	temp = importlib.import_module('classes.filter.UserFilter')
-	UserFilter = temp.UserFilter()
-
+# init DAOs based on environment
+__provider = DependencyProvider()
+__user_filter = self.__provider.get_instance('UserFilter')
 __event_service = EventService()
 __attendee_service = AttendeeService()
 
@@ -31,7 +28,7 @@ def post_event(request):
 	This returns the event object, populated by all date range objects
 	'''
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __event_service.create_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -48,7 +45,7 @@ def get_event(request):
 	'''
 	response = {}
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __event_service.load_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -65,7 +62,7 @@ def put_event(request):
 	the one with the correspodning composite id.
 	'''
 	try:
-		json_body = UserFilter.set_user_id(request.json_body)
+		json_body = __user_filter.set_user_id(request.json_body)
 		response = __event_service.update_event(json_body)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -83,7 +80,7 @@ def delete_event(request):
 	'''
 
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __event_service.delete_event(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -104,7 +101,7 @@ def post_event_attendees(request):
 	'''
 
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __event_service.add_event_attendee(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -125,7 +122,7 @@ def put_event_attendee(request):
 	'''
 
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __attendee_service.update_attendee(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -143,7 +140,7 @@ def get_event_attendees(request):
 	'''
 
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __event_service.add_event_attendee(filtered_request)
 	except BaseAppException as e:
 		response = HTTPBadRequest()
@@ -161,7 +158,7 @@ def delete_event_attendee(request):
 	'''
 
 	try:
-		filtered_request = UserFilter.set_user_id(request)
+		filtered_request = __user_filter.set_user_id(request)
 		response = __attendee_service.remove_attendee_from_event(
 			filtered_request
 		)
