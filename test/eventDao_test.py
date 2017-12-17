@@ -2,7 +2,7 @@ import os
 import unittest
 import builtins
 import test.classes.Const as const
-from classes.dao.EventDao import EventDao
+from classes.dao.event_dao import EventDao
 from classes.exception.DaoException import DaoException
 
 class EventDaoTest(unittest.TestCase):
