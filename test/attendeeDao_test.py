@@ -1,7 +1,7 @@
 import os
 import unittest
 import builtins
-from classes.dao.AttendeeDao import AttendeeDao
+from classes.dao.attendee_dao import AttendeeDao
 from classes.exception.DaoException import DaoException
 
 class AttendeeDaoTest(unittest.TestCase):
