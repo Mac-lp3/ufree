@@ -14,6 +14,7 @@ class DependencyProvider:
             self.is_prod = True
             daos_prefix = 'classes.dao.'
             filters_prefix = 'classes.filter.'
+            services_prefix = 'classes.service.'
             psycopg2_prefix = ''
 
     def get_instance (self, class_name):
@@ -23,19 +24,15 @@ class DependencyProvider:
         try:
             if 'dao' in class_name.lower():
                 package = self.daos_prefix
-                target_class = importlib.import_module(
-                    package + class_name
-                )
             if 'filter' in class_name.lower():
                 package = self.filters_prefix
-                target_class = importlib.import_module(
-                    package + class_name
-                )
+            if 'service' in class_name.lower():
+                package = self.services_prefix
             if 'psycopg2' in class_name.lower():
                 package = self.psycopg2_prefix
-                target_class = importlib.import_module(
-                    package + class_name
-                )
+            target_class = importlib.import_module(
+                package + class_name
+            )
             target = getattr(target_class, class_name)
         except Exception as e:
             raise ProviderException(
