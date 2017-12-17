@@ -6,7 +6,7 @@ import builtins
 import test.classes.Const as const
 from test.classes.MockRequest import MockRequest
 from classes.service.AttendeeService import AttendeeService
-from classes.exception.ServiceException import ServiceException
+from classes.exception.service_exception import ServiceException
 
 class AttendeeServiceTest(unittest.TestCase):
 

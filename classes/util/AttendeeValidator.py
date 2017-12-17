@@ -1,6 +1,6 @@
 import re
 import datetime
-from classes.exception.ValidationException import ValidationException
+from classes.exception.validation_exception import ValidationException
 
 class AttendeeValidator:
 

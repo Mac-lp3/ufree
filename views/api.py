@@ -7,9 +7,9 @@ from pyramid.response import Response
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
-from classes.exception.BaseAppException import BaseAppException
+from classes.exception.base_app_exception import BaseAppException
 from classes.service.AttendeeService import AttendeeService
-from classes.exception.DaoException import DaoException
+from classes.exception.dao_exception import DaoException
 from classes.util.EventValidator import EventValidator
 from classes.service.EventService import EventService
 from classes.util.HashCodeUtils import HashCodeUtils

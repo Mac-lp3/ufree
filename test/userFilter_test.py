@@ -3,7 +3,7 @@ import unittest
 import hashlib
 from test.classes.MockRequest import MockRequest
 from classes.filter.UserFilter import UserFilter
-from classes.exception.ValidationException import ValidationException
+from classes.exception.validation_exception import ValidationException
 
 class UserFilterTest(unittest.TestCase):
 

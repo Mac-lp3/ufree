@@ -2,7 +2,7 @@ import os
 import unittest
 import builtins
 from classes.dao.availability_dao import AvailabilityDao
-from classes.exception.DaoException import DaoException
+from classes.exception.dao_exception import DaoException
 
 class AvailabilityDaoTest(unittest.TestCase):
 

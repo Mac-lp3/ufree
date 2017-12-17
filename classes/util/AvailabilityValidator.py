@@ -3,7 +3,7 @@ import datetime
 from classes.util.EventValidator import EventValidator
 from classes.util.AttendeeValidator import AttendeeValidator
 from classes.provider.dependency_provider import DependencyProvider
-from classes.exception.ValidationException import ValidationException
+from classes.exception.validation_exception import ValidationException
 
 class AvailabilityValidator:
 

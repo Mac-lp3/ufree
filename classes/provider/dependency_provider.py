@@ -1,6 +1,6 @@
 import os
 import importlib
-from classes.exception.ProviderException import ProviderException
+from classes.exception.provider_exception import ProviderException
 
 class DependencyProvider:
 

@@ -4,7 +4,7 @@ import builtins
 import test.classes.Const as const
 from test.classes.MockRequest import MockRequest
 from classes.util.AttendeeValidator import AttendeeValidator
-from classes.exception.ValidationException import ValidationException
+from classes.exception.validation_exception import ValidationException
 
 
 class AvailabilityDaoTest(unittest.TestCase):

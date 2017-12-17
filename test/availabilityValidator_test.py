@@ -4,7 +4,7 @@ import unittest
 import test.classes.Const as const
 from test.classes.MockRequest import MockRequest
 from classes.util.AvailabilityValidator import AvailabilityValidator
-from classes.exception.ValidationException import ValidationException
+from classes.exception.validation_exception import ValidationException
 
 class AvailabilityValidatorTest(unittest.TestCase):
 

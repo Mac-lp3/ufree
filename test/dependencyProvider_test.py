@@ -14,7 +14,7 @@ class DependencyProviderTest(unittest.TestCase):
         dao = self._provider.get_instance('EventDao')
         self.assertEqual(
             dao.__module__ + '.' + dao.__class__.__name__,
-            'test.classes.EventDao.EventDao'
+            'test.classes.event_dao.EventDao'
         )
 
         _filter = self._provider.get_instance('UserFilter')

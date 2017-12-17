@@ -3,7 +3,7 @@ import sys
 import importlib
 import datetime
 from classes.dao.base_dao import BaseDao
-from classes.exception.DaoException import DaoException
+from classes.exception.dao_exception import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 
 class AvailabilityDao (BaseDao):

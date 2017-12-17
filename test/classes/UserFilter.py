@@ -1,5 +1,5 @@
 import builtins
-from classes.exception.ValidationException import ValidationException
+from classes.exception.validation_exception import ValidationException
 import test.classes.Const as const
 class UserFilter:
 
