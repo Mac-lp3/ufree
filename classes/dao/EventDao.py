@@ -2,7 +2,7 @@ import os
 import sys
 import importlib
 import datetime
-from classes.dao.BaseDao import BaseDao
+from classes.dao.base_dao import BaseDao
 from classes.exception.DaoException import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 

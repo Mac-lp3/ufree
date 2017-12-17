@@ -1,7 +1,7 @@
 import os
 import sys
 import importlib
-from classes.dao.BaseDao import BaseDao
+from classes.dao.base_dao import BaseDao
 from classes.exception.DaoException import DaoException
 
 class AttendeeDao (BaseDao):
