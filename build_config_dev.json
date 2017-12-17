@@ -2,6 +2,7 @@
   "database": {
     "host": "localhost",
     "port": 5432,
+    "name": "ufree_test",
     "user": "postgres",
     "password": ""
   },
@@ -16,5 +17,8 @@
         "id": "attendee_id"
       }
     }
-  }
+  },
+  "daoPackae": "",
+  "filterPackage": "test.classes.UserFilter",
+  "validatorPackage": ""
 }
