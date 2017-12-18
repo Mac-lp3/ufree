@@ -1,6 +1,6 @@
 import re
 import datetime
-from classes.util.hash_utils import HashCodeUtils
+from classes.util.hash_utils import HashUtils
 from classes.exception.validation_exception import ValidationException
 
 class EventValidator:
@@ -12,7 +12,7 @@ class EventValidator:
     __event_creator_length = 25
 
     def validate_event_id (self, event_id):
-        error_messages = HashCodeUtils.validate_hash(event_id)
+        error_messages = HashUtils.validate_hash(event_id)
         if error_messages:
             raise ValidationException(error_messages)
         return None

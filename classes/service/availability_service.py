@@ -5,7 +5,6 @@ import inspect
 import importlib
 from pyramid.response import Response
 from classes.provider.dependency_provider import DependencyProvider
-from classes.util.hash_utils import HashCodeUtils
 from classes.util.event_validator import EventValidator
 from classes.util.attendee_validator import AttendeeValidator
 from classes.exception.service_exception import ServiceException

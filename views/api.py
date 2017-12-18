@@ -13,7 +13,7 @@ from classes.service.attendee_service import AttendeeService
 from classes.exception.dao_exception import DaoException
 from classes.util.event_validator import EventValidator
 from classes.service.event_service import EventService
-from classes.util.hash_utils import HashCodeUtils
+from classes.util.hash_utils import HashUtils
 
 # init DAOs based on environment
 __provider = DependencyProvider()

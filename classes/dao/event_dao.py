@@ -4,7 +4,7 @@ import importlib
 import datetime
 from classes.dao.base_dao import BaseDao
 from classes.exception.dao_exception import DaoException
-from classes.util.hash_utils import HashCodeUtils
+from classes.util.hash_utils import HashUtils
 
 class EventDao (BaseDao):
 
@@ -90,7 +90,7 @@ class EventDao (BaseDao):
 
         try:
             # generate an initial id based on event name
-            generatedId = HashCodeUtils.generate_code(eventObject['name'])
+            generatedId = HashUtils.generate_code(eventObject['name'])
 
             # if the id is taken, append characters and re-generate
             count = 0
@@ -98,7 +98,7 @@ class EventDao (BaseDao):
             while count < 5:
                 if (self.event_exists(generatedId)):
                     break
-                generatedId = HashCodeUtils.generate_code(newSeed)
+                generatedId = HashUtils.generate_code(newSeed)
                 newSeed = newSeed + 'a'
                 count += 1
 

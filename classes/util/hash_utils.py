@@ -1,7 +1,7 @@
 import re
 import hashlib
 
-class HashCodeUtils:
+class HashUtils:
 
     hashPattern = re.compile('[a-zA-Z\d]+$')
 
@@ -24,7 +24,7 @@ class HashCodeUtils:
         if not isinstance(hashcode, str):
             errorMessages.append('Event hash must be a string')
 
-        if not HashCodeUtils.hashPattern.match(hashcode):
+        if not HashUtils.hashPattern.match(hashcode):
             errorMessages.append('Hash can only include numbers and letters')
 
         if len(hashcode) < 32:

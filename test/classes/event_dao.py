@@ -1,6 +1,6 @@
 import os
 from classes.exception.dao_exception import DaoException
-from classes.util.hash_utils import HashCodeUtils
+from classes.util.hash_utils import HashUtils
 import test.classes.const as const
 
 class EventDao:
@@ -33,7 +33,7 @@ class EventDao:
         print('Calling save')
         if os.environ['TEST_DB_FAIL'] == 'True':
             raise DaoException('General exception')
-        generatedId = HashCodeUtils.generate_code(eventObject['name'])
+        generatedId = HashUtils.generate_code(eventObject['name'])
         const.MOCK_EVENT_IDS.append(generatedId)
         return self.load_event(generatedId)
 
