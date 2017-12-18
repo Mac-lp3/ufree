@@ -1,7 +1,7 @@
 import os
 from classes.exception.dao_exception import DaoException
 from classes.util.hash_utils import HashCodeUtils
-import test.classes.Const as const
+import test.classes.const as const
 
 class EventDao:
 

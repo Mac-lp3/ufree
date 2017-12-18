@@ -1,7 +1,7 @@
 import os
-from test.classes.Connection import Connection
+from test.classes.connection import Connection
 
-class psycopg2:
+class Psycopg2:
 
     def __init__ (self):
         print('Mock Psycopg2 Initialized')

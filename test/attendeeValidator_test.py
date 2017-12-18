@@ -1,8 +1,8 @@
 import os
 import unittest
 import builtins
-import test.classes.Const as const
-from test.classes.MockRequest import MockRequest
+import test.classes.const as const
+from test.classes.mock_request import MockRequest
 from classes.util.attendee_validator import AttendeeValidator
 from classes.exception.validation_exception import ValidationException
 

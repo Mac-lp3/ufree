@@ -3,8 +3,8 @@ import json
 import unittest
 import hashlib
 import builtins
-import test.classes.Const as const
-from test.classes.MockRequest import MockRequest
+import test.classes.const as const
+from test.classes.mock_request import MockRequest
 from classes.service.attendee_service import AttendeeService
 from classes.exception.service_exception import ServiceException
 

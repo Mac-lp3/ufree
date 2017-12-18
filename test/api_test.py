@@ -5,7 +5,7 @@ import builtins
 import views.api as api
 from pyramid import testing
 from pyramid.httpexceptions import HTTPBadRequest
-from test.classes.MockRequest import MockRequest
+from test.classes.mock_request import MockRequest
 
 class ApiTest(unittest.TestCase):
 

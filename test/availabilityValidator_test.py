@@ -1,8 +1,8 @@
 import os
 import json
 import unittest
-import test.classes.Const as const
-from test.classes.MockRequest import MockRequest
+import test.classes.const as const
+from test.classes.mock_request import MockRequest
 from classes.util.availability_validator import AvailabilityValidator
 from classes.exception.validation_exception import ValidationException
 

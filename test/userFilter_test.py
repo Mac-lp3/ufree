@@ -1,7 +1,7 @@
 import os
 import unittest
 import hashlib
-from test.classes.MockRequest import MockRequest
+from test.classes.mock_request import MockRequest
 from classes.filter.user_filter import UserFilter
 from classes.exception.validation_exception import ValidationException
 

@@ -1,4 +1,4 @@
-from test.classes.Cursor import Cursor
+from test.classes.cursor import Cursor
 
 class Connection:
 

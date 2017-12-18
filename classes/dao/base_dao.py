@@ -6,7 +6,7 @@ class BaseDao ():
 
     def __init__ (self):
         if os.environ['ENV'] == 'test':
-            temp = importlib.import_module('test.classes.Psycopg2')
+            temp = importlib.import_module('test.classes.psycopg2')
         else:
             temp = importlib.import_module('psycopg2')
         psycopg2 = temp.psycopg2()

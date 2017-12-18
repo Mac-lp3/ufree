@@ -28,6 +28,7 @@
 * ~~availability validator w/ year mechanism~~
 * ~~tabs to spaces~~
 * file and class names should match python conventions.
+* base DAO should use provider for psycopg2 instance.
 * Dependency provider needs new logic so apply file naming convention to supplied class name.
 * ensure uniform structure in tests, services, and validators
 * find way to test provider in production mode

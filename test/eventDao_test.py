@@ -1,7 +1,7 @@
 import os
 import unittest
 import builtins
-import test.classes.Const as const
+import test.classes.const as const
 from classes.dao.event_dao import EventDao
 from classes.exception.dao_exception import DaoException
 

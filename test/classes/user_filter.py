@@ -1,6 +1,6 @@
 import builtins
 from classes.exception.validation_exception import ValidationException
-import test.classes.Const as const
+import test.classes.const as const
 class UserFilter:
 
     BAD_USER_ID = 'watwatwat'
