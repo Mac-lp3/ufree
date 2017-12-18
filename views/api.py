@@ -9,10 +9,10 @@ from pyramid.httpexceptions import HTTPNotFound
 from pyramid.httpexceptions import HTTPInternalServerError
 from classes.exception.base_app_exception import BaseAppException
 from classes.provider.dependency_provider import DependencyProvider
-from classes.service.AttendeeService import AttendeeService
+from classes.service.attendee_service import AttendeeService
 from classes.exception.dao_exception import DaoException
 from classes.util.EventValidator import EventValidator
-from classes.service.EventService import EventService
+from classes.service.event_service import EventService
 from classes.util.HashCodeUtils import HashCodeUtils
 
 # init DAOs based on environment

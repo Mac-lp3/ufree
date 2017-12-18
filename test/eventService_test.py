@@ -4,7 +4,7 @@ import unittest
 import hashlib
 import builtins
 from test.classes.MockRequest import MockRequest
-from classes.service.EventService import EventService
+from classes.service.event_service import EventService
 from classes.exception.service_exception import ServiceException
 import test.classes.Const as const
 

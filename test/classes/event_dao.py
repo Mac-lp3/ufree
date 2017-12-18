@@ -1,5 +1,5 @@
 import os
-from classes.exception.DaoException import DaoException
+from classes.exception.dao_exception import DaoException
 from classes.util.HashCodeUtils import HashCodeUtils
 import test.classes.Const as const
 
