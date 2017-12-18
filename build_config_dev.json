@@ -19,6 +19,6 @@
     }
   },
   "daoPackae": "",
-  "filterPackage": "test.classes.UserFilter",
+  "filterPackage": "test.classes.user_filter",
   "validatorPackage": ""
 }

@@ -20,5 +20,5 @@ class DependencyProviderTest(unittest.TestCase):
         _filter = self._provider.get_instance('UserFilter')
         self.assertEqual(
             _filter.__module__ + '.' + _filter.__class__.__name__,
-            'test.classes.UserFilter.UserFilter'
+            'test.classes.user_filter.UserFilter'
         )
