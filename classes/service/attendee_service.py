@@ -4,9 +4,9 @@ import json
 import inspect
 import importlib
 from pyramid.response import Response
-from classes.util.HashCodeUtils import HashCodeUtils
-from classes.util.EventValidator import EventValidator
-from classes.util.AttendeeValidator import AttendeeValidator
+from classes.util.hash_utils import HashCodeUtils
+from classes.util.event_validator import EventValidator
+from classes.util.attendee_validator import AttendeeValidator
 from classes.exception.service_exception import ServiceException
 from classes.exception.base_app_exception import BaseAppException
 from classes.provider.dependency_provider import DependencyProvider

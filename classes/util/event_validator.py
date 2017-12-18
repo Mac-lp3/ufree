@@ -1,6 +1,6 @@
 import re
 import datetime
-from classes.util.HashCodeUtils import HashCodeUtils
+from classes.util.hash_utils import HashCodeUtils
 from classes.exception.validation_exception import ValidationException
 
 class EventValidator:

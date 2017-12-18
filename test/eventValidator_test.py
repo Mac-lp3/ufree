@@ -1,7 +1,7 @@
 import os
 import json
 import unittest
-from classes.util.EventValidator import EventValidator
+from classes.util.event_validator import EventValidator
 
 class EventValidatorTest(unittest.TestCase):
 

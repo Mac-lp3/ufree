@@ -3,7 +3,7 @@ import unittest
 import builtins
 import test.classes.Const as const
 from test.classes.MockRequest import MockRequest
-from classes.util.AttendeeValidator import AttendeeValidator
+from classes.util.attendee_validator import AttendeeValidator
 from classes.exception.validation_exception import ValidationException
 
 

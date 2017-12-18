@@ -4,7 +4,7 @@ import importlib
 import datetime
 from classes.dao.base_dao import BaseDao
 from classes.exception.dao_exception import DaoException
-from classes.util.HashCodeUtils import HashCodeUtils
+from classes.util.hash_utils import HashCodeUtils
 
 class EventDao (BaseDao):
 

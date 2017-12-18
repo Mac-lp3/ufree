@@ -1,7 +1,7 @@
 import re
 import datetime
-from classes.util.EventValidator import EventValidator
-from classes.util.AttendeeValidator import AttendeeValidator
+from classes.util.event_validator import EventValidator
+from classes.util.attendee_validator import AttendeeValidator
 from classes.provider.dependency_provider import DependencyProvider
 from classes.exception.validation_exception import ValidationException
 

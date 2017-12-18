@@ -1,7 +1,7 @@
 import os
 import builtins
 from classes.exception.dao_exception import DaoException
-from classes.util.HashCodeUtils import HashCodeUtils
+from classes.util.hash_utils import HashCodeUtils
 
 class AvailabilityDao:
 

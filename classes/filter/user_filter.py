@@ -1,7 +1,7 @@
 import os
 import importlib
 from classes.dao.attendee_dao import AttendeeDao
-from classes.util.AttendeeValidator import AttendeeValidator
+from classes.util.attendee_validator import AttendeeValidator
 from classes.provider.dependency_provider import DependencyProvider
 from classes.exception.validation_exception import ValidationException
 
