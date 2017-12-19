@@ -30,9 +30,9 @@
 * ~~file and class names should match python conventions.~~
 * ~~base DAO should use provider for psycopg2 instance.~~
 * ~~Dependency provider needs new logic so apply file naming convention to supplied class name.~~
+* build config file and remove any other sources of truth
 * ensure uniform structure in tests, services, and validators
 * find way to test provider in production mode
-* investigate __import__ vs importlib in DAOs
 * Script to test DB load/save queries
 
 # Request Objects
