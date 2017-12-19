@@ -17,7 +17,7 @@ from classes.util.hash_utils import HashUtils
 
 # init DAOs based on environment
 __provider = DependencyProvider()
-__user_filter = self.__provider.get_instance('UserFilter')
+__user_filter = __provider.get_instance('UserFilter')
 __event_service = EventService()
 __attendee_service = AttendeeService()
 
