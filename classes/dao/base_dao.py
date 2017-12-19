@@ -1,19 +1,17 @@
 import os
 import sys
 import importlib
+from classes.provider.dependency_provider import DependencyProvider
 
 class BaseDao ():
 
     def __init__ (self):
-        if os.environ['ENV'] == 'test':
-            temp = importlib.import_module('test.classes.psycopg2')
-        else:
-            temp = importlib.import_module('psycopg2')
-        psycopg2 = temp.psycopg2()
+        self.__provider = DependencyProvider()
+        self.__psycopg2 = self.__provider.get_instance('psycopg2')
 
         try:
             db_conn_str = 'dbname=' + os.environ['DB_NAME']
-            conn = psycopg2.connect(db_conn_str)
+            conn = self.__psycopg2.connect(db_conn_str)
             self._cur = conn.cursor()
         except ImportError:
             print(ImportError)

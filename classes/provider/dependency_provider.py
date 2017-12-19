@@ -1,4 +1,5 @@
 import os
+import re
 import importlib
 from classes.exception.provider_exception import ProviderException
 
@@ -31,7 +32,7 @@ class DependencyProvider:
             if 'psycopg2' in class_name.lower():
                 package = self.psycopg2_prefix
             target_class = importlib.import_module(
-                package + class_name
+                package + self.to_snake_case(class_name)
             )
             target = getattr(target_class, class_name)
         except Exception as e:
@@ -43,3 +44,7 @@ class DependencyProvider:
         target = target()
         
         return target
+
+    def to_snake_case(self, name):
+        s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
