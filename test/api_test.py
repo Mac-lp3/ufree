@@ -9,20 +9,21 @@ from test.classes.mock_request import MockRequest
 
 class ApiTest(unittest.TestCase):
 
-    # test event ids
-    __short_id = '123123123123123'
-    __long_id = '123123123123123adsasdasdasdasj12jkas'
-    __non_exist_id = 'asd234fgh234asd123dfg123dfg23dfg'
-    __bad_char_id = 'sdkjhdsfakjh3232ksjdn$sdlk1dsw12'
-    __good_id = 'qwe1fd23qwe123qwe123qwe123asd345'
+    def setUp (self):
+        # test event ids
+        self.__short_id = '123123123123123'
+        self.__long_id = '123123123123123adsasdasdasdasj12jkas'
+        self.__non_exist_id = 'asd234fgh234asd123dfg123dfg23dfg'
+        self.__bad_char_id = 'sdkjhdsfakjh3232ksjdn$sdlk1dsw12'
+        self.__good_id = 'qwe1fd23qwe123qwe123qwe123asd345'
 
-    # test event names
-    __bad_name = ') DROP TABLE \'USERS\''
-    __good_name = 'A good name for the event'
+        # test event names
+        self.__bad_name = ') DROP TABLE \'USERS\''
+        self.__good_name = 'A good name for the event'
 
-    # test creator names
-    __bad_creator = ') DROP TABLE \'USERS\''
-    __good_creator = 'Tommy T'
+        # test creator names
+        self.__bad_creator = ') DROP TABLE \'USERS\''
+        self.__good_creator = 'Tommy T'
 
     def post_event_fail_test (self):
         #test bad event name
