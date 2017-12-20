@@ -6,19 +6,8 @@
     "user": "postgres",
     "password": ""
   },
-  "metadata": {
-    "event": {
-      "fieldNames": {
-        "id": "event_id"
-      }
-    },
-    "attendee": {
-      "fieldNames": {
-        "id": "attendee_id"
-      }
-    }
-  },
-  "daoPackae": "",
-  "filterPackage": "test.classes.user_filter",
-  "validatorPackage": ""
+  "databaseAdapter": "test.classes.psycopg2",
+  "daoPackae": "test.classes",
+  "filterPackage": "test.classes",
+  "validatorPackage": "test.classes"
 }
