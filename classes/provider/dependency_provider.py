@@ -5,18 +5,19 @@ from classes.exception.provider_exception import ProviderException
 
 class DependencyProvider:
 
-    is_prod = False
-    daos_prefix = 'test.classes.'
-    filters_prefix = 'test.classes.'
-    psycopg2_prefix = 'test.classes.'
+    __is_prod = False
+    __daos_prefix = 'test.classes.'
+    __filters_prefix = 'test.classes.'
+    __psycopg2_prefix = 'test.classes.'
+    __services_prefix = 'test.classes.'
 
     def __init__ (self):
         if os.environ['ENV'] == 'production':
-            self.is_prod = True
-            daos_prefix = 'classes.dao.'
-            filters_prefix = 'classes.filter.'
-            services_prefix = 'classes.service.'
-            psycopg2_prefix = ''
+            self.__is_prod = True
+            self.__daos_prefix = 'classes.dao.'
+            self.__filters_prefix = 'classes.filter.'
+            self.__services_prefix = 'classes.service.'
+            self.__psycopg2_prefix = ''
 
     def get_instance (self, class_name):
         target = None
@@ -24,13 +25,13 @@ class DependencyProvider:
         target_class = None
         try:
             if 'dao' in class_name.lower():
-                package = self.daos_prefix
+                package = self.__daos_prefix
             if 'filter' in class_name.lower():
-                package = self.filters_prefix
+                package = self.__filters_prefix
             if 'service' in class_name.lower():
-                package = self.services_prefix
+                package = self.__services_prefix
             if 'psycopg2' in class_name.lower():
-                package = self.psycopg2_prefix
+                package = self.__psycopg2_prefix
             target_class = importlib.import_module(
                 package + self.to_snake_case(class_name)
             )
