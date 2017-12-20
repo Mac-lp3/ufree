@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-import inspect
 import importlib
 from pyramid.response import Response
 from classes.provider.dependency_provider import DependencyProvider
