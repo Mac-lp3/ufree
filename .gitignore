@@ -8,3 +8,4 @@ static/js/bundle.js
 **/dist/
 **/npm-debug.log
 /database
+.vscode
