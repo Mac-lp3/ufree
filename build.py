@@ -158,6 +158,13 @@ def load_config ():
         with open('build_config_prod.json') as json_data_file:
             config = json.load(json_data_file)
 
+    # populate builtins
+    builtins.daos_package = config.daoPackage
+    builtins.filters_package = config.filterPackage
+    builtins.services_package = config.daoPackage
+    builtins.validators_package = config.validatorPackage
+    builtins.psycopg2_package = config.databaseAdapter
+
 @task(description='pyb -P t="eventDao_test.py"')
 def spot (project):
     os.environ['ENV'] = 'test'
