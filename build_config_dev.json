@@ -6,8 +6,8 @@
     "user": "postgres",
     "password": ""
   },
-  "databaseAdapter": "test.classes.psycopg2",
-  "daoPackae": "test.classes",
+  "psycopg2Package": "test.classes",
+  "daoPackage": "test.classes",
   "filterPackage": "test.classes",
   "validatorPackage": "test.classes"
 }
