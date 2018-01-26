@@ -1,23 +1,10 @@
 import os
 import re
+import builtins
 import importlib
 from classes.exception.provider_exception import ProviderException
 
 class DependencyProvider:
-
-    __is_prod = False
-    __daos_prefix = 'test.classes.'
-    __filters_prefix = 'test.classes.'
-    __psycopg2_prefix = 'test.classes.'
-    __services_prefix = 'test.classes.'
-
-    def __init__ (self):
-        if os.environ['ENV'] == 'production':
-            self.__is_prod = True
-            self.__daos_prefix = 'classes.dao.'
-            self.__filters_prefix = 'classes.filter.'
-            self.__services_prefix = 'classes.service.'
-            self.__psycopg2_prefix = ''
 
     def get_instance (self, class_name):
         target = None
@@ -25,13 +12,13 @@ class DependencyProvider:
         target_class = None
         try:
             if 'dao' in class_name.lower():
-                package = self.__daos_prefix
-            if 'filter' in class_name.lower():
-                package = self.__filters_prefix
-            if 'service' in class_name.lower():
-                package = self.__services_prefix
-            if 'psycopg2' in class_name.lower():
-                package = self.__psycopg2_prefix
+                package = builtins.daos_package
+            elif 'filter' in class_name.lower():
+                package = builtins.filters_package
+            elif 'service' in class_name.lower():
+                package = builtins.services_package
+            elif 'psycopg2' in class_name.lower():
+                package = builtins.psycopg2_package
             target_class = importlib.import_module(
                 package + self.to_snake_case(class_name)
             )
