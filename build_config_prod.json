@@ -1,8 +1,13 @@
 {
-  "database":{
+  "database": {
     "host": "localhost",
     "port": 5432,
+    "name": "ufree",
     "user": "postgres",
     "password": ""
-  }
+  },
+  "psycopg2Package": "",
+  "daoPackage": "classes.dao.",
+  "filterPackage": "classes.filter.",
+  "validatorPackage": "classes.util."
 }
