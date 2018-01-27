@@ -158,15 +158,16 @@ def load_config ():
         with open('build_config_prod.json') as json_data_file:
             config = json.load(json_data_file)
 
-    # populate builtins
-    builtins.daos_package = config.daoPackage
-    builtins.filters_package = config.filterPackage
-    builtins.services_package = config.daoPackage
-    builtins.validators_package = config.validatorPackage
-    builtins.psycopg2_package = config.databaseAdapter
+    # populate environment vars
+    os.environ['DAOS_PACKAGE'] = config.daoPackage
+    os.environ['FILTERS_PACKAGE'] = config.filterPackage
+    os.environ['SERVICES_PACKAGE'] = config.daoPackage
+    os.environ['VALIDATORS_PACKAGE'] = config.validatorPackage
+    os.environ['PSYCOPG2_PACKAGE'] = config.databaseAdapter
+    os.environ['DB_NAME'] = config.database.name
 
 @task(description='pyb -P t="eventDao_test.py"')
-def spot (project):
+def spot ():
     os.environ['ENV'] = 'test'
     os.environ['DB_NAME'] = 'ufree_test'
     os.environ['TEST_DB_FAIL'] = 'False'
@@ -182,7 +183,6 @@ def test ():
     os.environ['ENV'] = 'test'
     os.environ['DB_NAME'] = 'ufree_test'
     os.environ['TEST_DB_FAIL'] = 'False'
-    builtins.db_fail = 'False'
     proc = subprocess.Popen(
         ['nosetests', '-v'],
         shell=True,
