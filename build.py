@@ -13,7 +13,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 __spot = ''
 
-def check_db_exists ():
+def check_db_exists():
 
     @init
     def initialize(project):
@@ -66,7 +66,7 @@ def check_db_exists ():
 
     print('Check complete')
 
-def check_db_cluster ():
+def check_db_cluster():
     # get status of the /database directory
     db_status = subprocess.Popen(
         ['pg_ctl', 'status', '-D', './database'],
@@ -89,12 +89,13 @@ def check_db_cluster ():
         if create_db.returncode > 0:
             sys.exit()
 
-def start_db_server ():
+def start_db_server():
     print('Starting database...')
     check_db_cluster()
     port_arg = '-p ' + str(config['database']['port'])
     print('using port: ' +  str(config['database']['port']))
-    start_db = subprocess.Popen([
+    start_db = subprocess.Popen(
+        [
             'pg_ctl',
             '-o',
             '"' + port_arg + '"',
@@ -112,7 +113,7 @@ def start_db_server ():
         print('return code > 0. exiting.')
         sys.exit()
 
-def stop_db ():
+def stop_db():
     proc = subprocess.Popen(
         ['pg_ctl', 'stop'],
         stdin=subprocess.PIPE
@@ -121,7 +122,7 @@ def stop_db ():
     if proc.returncode > 0:
         sys.exit()
 
-def build_client ():
+def build_client():
     prefix = os.path.join(dir_path, 'client')
     print(os.environ['PATH'])
     proc = subprocess.Popen(
@@ -133,7 +134,7 @@ def build_client ():
     if proc.returncode > 0:
         sys.exit()
 
-def start_app_server ():
+def start_app_server():
     print('starting the application server...')
     main_path = os.path.join(dir_path, 'main.py')
     print('starting ' + main_path)
@@ -147,7 +148,7 @@ def start_app_server ():
     if proc.returncode > 0:
         sys.exit()
 
-def load_config ():
+def load_config():
     global config
     if os.environ['ENV'] != 'production':
         print('Loading dev configuration')
@@ -159,18 +160,18 @@ def load_config ():
             config = json.load(json_data_file)
 
     # populate environment vars
-    os.environ['DAOS_PACKAGE'] = config.daoPackage
-    os.environ['FILTERS_PACKAGE'] = config.filterPackage
-    os.environ['SERVICES_PACKAGE'] = config.daoPackage
-    os.environ['VALIDATORS_PACKAGE'] = config.validatorPackage
-    os.environ['PSYCOPG2_PACKAGE'] = config.databaseAdapter
-    os.environ['DB_NAME'] = config.database.name
+    os.environ['TEST_DB_FAIL'] = 'False'
+    os.environ['DAOS_PACKAGE'] = config['daoPackage']
+    os.environ['FILTERS_PACKAGE'] = config['filterPackage']
+    os.environ['SERVICES_PACKAGE'] = config['daoPackage']
+    os.environ['VALIDATORS_PACKAGE'] = config['validatorPackage']
+    os.environ['PSYCOPG2_PACKAGE'] = config['psycopg2Package']
+    os.environ['DB_NAME'] = config['database']['name']
 
 @task(description='pyb -P t="eventDao_test.py"')
-def spot ():
+def spot():
     os.environ['ENV'] = 'test'
-    os.environ['DB_NAME'] = 'ufree_test'
-    os.environ['TEST_DB_FAIL'] = 'False'
+    load_config()
     proc = subprocess.Popen(
         ['nosetests', '-v', '--tests=test\\{0}'.format(__spot)],
         shell=True,
@@ -179,10 +180,11 @@ def spot ():
     print(proc.communicate())
 
 @task(description='Uses Nose to run all unit tests')
-def test ():
+def test():
     os.environ['ENV'] = 'test'
-    os.environ['DB_NAME'] = 'ufree_test'
     os.environ['TEST_DB_FAIL'] = 'False'
+    load_config()
+    #os.environ['DB_NAME'] = 'ufree_test'
     proc = subprocess.Popen(
         ['nosetests', '-v'],
         shell=True,
@@ -191,23 +193,21 @@ def test ():
     print(proc.communicate())
 
 @task(description='Compiles client-side code')
-def build ():
+def build():
     print('Building client side code...')
     build_client()
 
 @task(description='Starts the database and app server in production mode')
-def start ():
+def start():
     os.environ['ENV'] = 'production'
-    os.environ['DB_NAME'] = 'ufree'
     load_config()
     start_db_server()
     check_db_exists()
     start_app_server()
 
 @task(description='Starts the database and app server in development mode')
-def start_dev ():
+def start_dev():
     os.environ['ENV'] = 'development'
-    os.environ['DB_NAME'] = 'ufree_dev'
     load_config()
     start_db_server()
     check_db_exists()
