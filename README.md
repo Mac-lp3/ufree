@@ -34,6 +34,8 @@
   * ~~DB name/creds~~
   * ~~package names for dev/test/prod~~
     * ~~possible clean up of packages~~
+* document the api
+* built react front end
 * ensure uniform structure in tests, services, and validators
 * find way to test provider in production mode
 * Script to test DB load/save queries
