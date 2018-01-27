@@ -7,7 +7,7 @@ from classes.exception.dao_exception import DaoException
 class AvailabilityDaoTest(unittest.TestCase):
 
     def setUp (self):
-        builtins.db_fail = False
+        os.environ['TEST_DB_FAIL'] = 'False'
         self.__dao = AvailabilityDao()
         self.availability_object = {
             'id': 1234,
@@ -56,12 +56,12 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.assertTrue('december' in obj)
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.create_availability(self.availability_object)
         except Exception as e:
             self.assertTrue(isinstance(e, DaoException))
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
 
     def delete_attendee_availability_test (self):
         # test normal bevavior
@@ -73,7 +73,7 @@ class AvailabilityDaoTest(unittest.TestCase):
             self.assertTrue(False)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             self.__dao.delete_attendee_availability(12312)
             self.assertTrue(False)
@@ -90,7 +90,7 @@ class AvailabilityDaoTest(unittest.TestCase):
             self.assertTrue(False)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             self.__dao.delete_event_availability('jkh234kjlh1234')
             self.assertTrue(False)
@@ -107,7 +107,7 @@ class AvailabilityDaoTest(unittest.TestCase):
             self.assertTrue(False)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             self.__dao.delete_availability(1234)
             self.assertTrue(False)
@@ -124,12 +124,12 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.assertTrue('december' in obj)
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.update_availability(self.availability_object)
         except Exception as e:
             self.assertTrue(isinstance(e, DaoException))
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
 
     def get_attendee_availability_test (self):
         # test event_id and attendee_id input
@@ -141,12 +141,12 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.assertTrue('december' in obj)
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.get_attendee_availability(1234)
         except Exception as e:
             self.assertTrue(isinstance(e, DaoException))
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
 
     def get_event_availability_test (self):
         # test event_id input
@@ -158,12 +158,12 @@ class AvailabilityDaoTest(unittest.TestCase):
         self.assertTrue('december' in obj[0])
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.get_event_availability(event_id=1234)
         except Exception as e:
             self.assertTrue(isinstance(e, DaoException))
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
 
 if __name__ == '__main__':
     unittest.main()

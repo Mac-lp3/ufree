@@ -10,7 +10,7 @@ class UserFilter:
 
     def set_user_id (self, req):
         try:
-            if builtins.db_fail == 'True':
+            if os.environ['TEST_DB_FAIL'] == 'True':
                 raise ValidationException('mock exception')
         except ValidationException as e:
             raise # coding=utf-8

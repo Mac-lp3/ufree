@@ -2,7 +2,6 @@ import os
 import json
 import unittest
 import hashlib
-import builtins
 from test.classes.mock_request import MockRequest
 from classes.service.event_service import EventService
 from classes.exception.service_exception import ServiceException
@@ -11,7 +10,7 @@ import test.classes.const as const
 class EventServiceTest(unittest.TestCase):
 
     def setUp (self):
-        builtins.db_fail = False
+        os.environ['TEST_DB_FAIL'] = 'False'
         self.__event_service = EventService()
 
     def load_event_test (self):

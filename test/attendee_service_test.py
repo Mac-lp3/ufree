@@ -11,7 +11,7 @@ from classes.exception.service_exception import ServiceException
 class AttendeeServiceTest(unittest.TestCase):
 
     def setUp (self):
-        builtins.db_fail = False
+        os.environ['TEST_DB_FAIL'] = 'False'
         self.__attendee_service = AttendeeService()
 
     def load_event_attendees_test (self):
@@ -34,7 +34,7 @@ class AttendeeServiceTest(unittest.TestCase):
             self.assertTrue(isinstance(e, ServiceException))
 
         # test db exception
-        builtins.db_fail = True
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             req = MockRequest(event_id=const.GOOD_EVENT_ID)
             self.__attendee_service.load_event_attendees(req)
@@ -61,7 +61,7 @@ class AttendeeServiceTest(unittest.TestCase):
             self.assertTrue(isinstance(e, ServiceException))
 
         # test db exception
-        builtins.db_fail = True
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             req = MockRequest(attendee_id=const.GOOD_USER_ID)
             self.__attendee_service.load_attendee(req)
@@ -139,7 +139,7 @@ class AttendeeServiceTest(unittest.TestCase):
             self.assertTrue(isinstance(e, ServiceException))
 
         # test db exception
-        builtins.db_fail = True
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             req = MockRequest(
                 body = post_body,
@@ -178,7 +178,7 @@ class AttendeeServiceTest(unittest.TestCase):
             self.assertTrue(isinstance(e, ServiceException))
 
         # test db exception
-        builtins.db_fail = True
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             req = MockRequest(
                 body = post_body,

@@ -7,12 +7,12 @@ from classes.exception.dao_exception import DaoException
 class AttendeeDaoTest(unittest.TestCase):
 
     def setUp (self):
-        builtins.db_fail = os.environ['TEST_DB_FAIL']
+        os.environ['TEST_DB_FAIL'] = 'False'
         self.__dao = AttendeeDao()
 
     def delete_attendee_test (self):
         self.__dao.delete_attendee('asdb1234', 'idklol')
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             self.__dao.delete_attendee('asdb1234', 'idklol')
         except Exception as e:
@@ -28,7 +28,7 @@ class AttendeeDaoTest(unittest.TestCase):
         self.assertTrue(val is not None)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.update_attendee({
                 'id': 'abcd',
@@ -45,7 +45,7 @@ class AttendeeDaoTest(unittest.TestCase):
         self.assertTrue(val)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.attendee_exists('some id')
         except Exception as e:
@@ -53,7 +53,7 @@ class AttendeeDaoTest(unittest.TestCase):
 
     def load_attendee_test (self):
         # test normal functionality
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         builtins.db_return_object = [
             ['idk', 'some name', 'some@email.com']
         ]
@@ -63,7 +63,7 @@ class AttendeeDaoTest(unittest.TestCase):
         self.assertTrue('email' in val)
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.load_attendee('some id')
         except Exception as e:
@@ -71,7 +71,7 @@ class AttendeeDaoTest(unittest.TestCase):
 
     def load_event_attendees_test (self):
         # test normal functionality
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         builtins.db_return_object = [
             ['idk', 'some name', 'some@email.com'],
             ['lol', 'some name', 'some@email.com'],
@@ -85,7 +85,7 @@ class AttendeeDaoTest(unittest.TestCase):
         self.assertTrue('email' in val[0])
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.load_event_attendees('some_event_id')
         except Exception as e:
@@ -106,7 +106,7 @@ class AttendeeDaoTest(unittest.TestCase):
         self.assertTrue('email' in val)
 
         # test unable to generate unique id
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             self.__dao.save_attendee({
                 'name': 'Some cool thing',

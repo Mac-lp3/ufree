@@ -1,7 +1,6 @@
 import os
 import json
 import unittest
-import builtins
 import views.api as api
 from pyramid import testing
 from pyramid.httpexceptions import HTTPBadRequest
@@ -27,7 +26,7 @@ class ApiTest(unittest.TestCase):
 
     def post_event_fail_test (self):
         #test bad event name
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         post_body = {
             'name': self.__bad_name,
             'creator': self.__good_creator
@@ -55,7 +54,7 @@ class ApiTest(unittest.TestCase):
         )
 
         # test DB exception
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         post_body = {
             'name': self.__good_name,
             'creator': self.__good_creator
@@ -68,10 +67,10 @@ class ApiTest(unittest.TestCase):
             self.assertEqual(
                 'An error occurred while saving this event.', str(e)
             )
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
 
     def post_event_success_test (self):
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         post_body = {
             'name': self.__good_name,
             'creator': self.__good_creator
@@ -119,7 +118,7 @@ class ApiTest(unittest.TestCase):
 
     def get_event_success_test (self):
         # test bad id - too short
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         req = MockRequest(self.__good_id)
         resp = api.get_event(req)
         jbod = json.loads(resp.json_body)

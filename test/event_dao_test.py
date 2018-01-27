@@ -8,7 +8,7 @@ from classes.exception.dao_exception import DaoException
 class EventDaoTest(unittest.TestCase):
 
     def setUp (self):
-        builtins.db_fail = os.environ['TEST_DB_FAIL']
+        os.environ['TEST_DB_FAIL'] = 'False'
         self.__dao = EventDao()
 
     def delete_event_test (self):
@@ -17,7 +17,7 @@ class EventDaoTest(unittest.TestCase):
             'name': 'idklol',
             'creator': 'someguy'
         })
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             self.__dao.delete_event({
                 'id': 'asdb1234',
@@ -36,7 +36,7 @@ class EventDaoTest(unittest.TestCase):
         self.assertTrue(val is not None)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.update_event({
                 'id': 'abcd',
@@ -62,7 +62,7 @@ class EventDaoTest(unittest.TestCase):
         self.assertTrue(val)
 
         # test exception handling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.event_exists(const.GOOD_EVENT_ID)
         except Exception as e:
@@ -70,7 +70,7 @@ class EventDaoTest(unittest.TestCase):
 
     def load_event_test (self):
         # test normal functionality
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         builtins.db_return_object = [[
             const.GOOD_EVENT_ID,
             'some name',
@@ -84,7 +84,7 @@ class EventDaoTest(unittest.TestCase):
         self.assertTrue('created_date' in val)
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.load_event('some id')
         except Exception as e:
@@ -92,7 +92,7 @@ class EventDaoTest(unittest.TestCase):
 
     def load_attendee_events_test (self):
         # test normal functionality
-        builtins.db_fail = 'False'
+        os.environ['TEST_DB_FAIL'] = 'False'
         builtins.db_return_object = [[
             const.GOOD_EVENT_ID,
             'some name',
@@ -107,7 +107,7 @@ class EventDaoTest(unittest.TestCase):
         self.assertTrue('created_date' in val[0])
 
         # test exception handeling
-        builtins.db_fail = 'True'
+        os.environ['TEST_DB_FAIL'] = 'True'
         try:
             val = self.__dao.load_attendee_events(const.GOOD_USER_ID)
         except Exception as e:
