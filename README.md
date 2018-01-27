@@ -30,11 +30,10 @@
 * ~~file and class names should match python conventions.~~
 * ~~base DAO should use provider for psycopg2 instance.~~
 * ~~Dependency provider needs new logic so apply file naming convention to supplied class name.~~
-* build config file and import in each class. Config to include:
-  * DB name/creds
-  * package names for dev/test/prod
-    * possible clean up of packages
-  
+* ~~build config file and import in each class. Config to include:~~
+  * ~~DB name/creds~~
+  * ~~package names for dev/test/prod~~
+    * ~~possible clean up of packages~~
 * ensure uniform structure in tests, services, and validators
 * find way to test provider in production mode
 * Script to test DB load/save queries
