@@ -1,11 +1,10 @@
 import os
 import sys
-import importlib
 from classes.provider.dependency_provider import DependencyProvider
 
-class BaseDao ():
+class BaseDao():
 
-    def __init__ (self):
+    def __init__(self):
         self.__provider = DependencyProvider()
         self.__psycopg2 = self.__provider.get_instance('psycopg2')
 
