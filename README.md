@@ -147,3 +147,5 @@
   december: String
 }
 ```
+Could you assist me with my Stack Overflow question? I see you've answered a similar one in the past.
+https://stackoverflow.com/questions/62904257/how-to-add-a-query-string-to-a-url-for-a-google-sheet
